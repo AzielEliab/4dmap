@@ -38,7 +38,7 @@ def test_wrangler_ready() -> None:
     assert "AZIEL_RUNTIME" in WRANGLER
     assert "4DMAP_DOWNLOADS" in WRANGLER
     assert 'binding = "DOWNLOADS"' in WRANGLER
-    assert 'id = "e962292069794bcc8cb89e3f559cfa43"' in WRANGLER
+    assert 'id = "dc3f3b59125f42b08e0d6b716f2010fe"' in WRANGLER
     assert "/v1/mesh" in WRANGLER
 
 

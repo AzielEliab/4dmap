@@ -16,7 +16,7 @@ cross-map only. QNS/QNM do not carry 4DMap photons. No Node Gate.
 No public qnsd proxy. No auto-heal. Not anonymity. Human UI Live Nodes
 strip polls `GET /v1/mesh`. Softwares bucket **Plain**.
 
-KV namespace `4DMAP_DOWNLOADS` id `e962292069794bcc8cb89e3f559cfa43` (binding `DOWNLOADS`). Already live — do not recreate.
+KV namespace `4DMAP_DOWNLOADS` id `dc3f3b59125f42b08e0d6b716f2010fe` (binding `DOWNLOADS`). Real namespace — GitBaby can deploy `4dmap-download-tracker` with this id.
 
 Host: https://4dmap-download-tracker.vibelock.workers.dev
 
