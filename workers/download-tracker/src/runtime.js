@@ -68,7 +68,7 @@ Catalog OpenAPI: \`https://aziel-runtime.vibelock.workers.dev/openapi.json\`
 MCP: \`POST https://4dmap-download-tracker.vibelock.workers.dev/mcp\`
 also \`POST https://aziel-runtime.vibelock.workers.dev/mcp\`
 
-FragGate (when registered): \`fraggate_list\` → \`fraggate_describe slug=4dmap\` → \`fraggate_call\`. Softwares bucket **Plain**.
+FragGate is LIVE on aziel-runtime: \`fraggate_list\` → \`fraggate_describe slug=4dmap\` → \`fraggate_call\` (\`card_new\` / \`card_pin\` / \`card_span\` / \`card_join\` / \`card_walk\` / \`card_list\` / \`verify_hash\`). Softwares bucket **Plain**. Hubs list 4DMap.
 
 ## How to call (Mozilla/5.0)
 
@@ -185,7 +185,7 @@ function aiHtml(origin) {
 <p>Softwares bucket: Plain. Author Aziel Eliab only.</p>
 <p>Works with ChatGPT (GPT Actions / OpenAI), Grok (xAI), Venice, Claude (Anthropic), Cursor (MCP), Glama (MCP), Perplexity, Microsoft Copilot / Bing, Google Gemini / Vertex, Mistral, Meta AI, Apple Intelligence surfaces, Amazon Q tooling, DuckAssist, You.com, Cohere, and other MCP/OpenAPI-capable assistants.</p>
 <p>OpenAPI: <a href="${origin}/openapi.json">${origin}/openapi.json</a></p>
-<p>MCP: POST <code>${origin}/mcp</code> · Catalog: <a href="${CATALOG}/">${CATALOG}</a> · FragGate <code>slug=4dmap</code> (when registered)</p>
+<p>MCP: POST <code>${origin}/mcp</code> · Catalog: <a href="${CATALOG}/">${CATALOG}</a> · FragGate <code>slug=4dmap</code> LIVE</p>
 <p>Suite mesh: <code>GET ${origin}/v1/mesh</code> PROXY. Default OFF. GET never enables. No Node Gate.</p>
 <pre>curl -A Mozilla/5.0 ${origin}/v1/health
 curl -A Mozilla/5.0 -X POST ${origin}/v1/pin -H 'content-type: application/json' \\

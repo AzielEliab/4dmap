@@ -116,7 +116,7 @@ The Worker hosts a **stateless** JSON API. It does not increment DOWNLOADS. It n
 - OpenAPI: `/openapi.json`
 - MCP: this Worker `/mcp` and catalog `https://aziel-runtime.vibelock.workers.dev/mcp`
 
-FragGate (when the catalog lists it): `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call`. Softwares bucket **Plain**.
+FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call` (`card_new` / `card_pin` / `card_span` / `card_join` / `card_walk` / `card_list` / `verify_hash`). Softwares bucket **Plain**. Hubs list 4DMap.
 
 Always send `User-Agent: Mozilla/5.0`. Empty agents can 403.
 
