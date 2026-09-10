@@ -18,7 +18,14 @@ import re
 import uuid
 from typing import Any
 
-from .scope import GENESIS_PREV, PI_EMPTY, SCHEMA
+from .scope import (
+    AXIS_FRAME,
+    AXIS_GLYPH,
+    COMPANIONS,
+    GENESIS_PREV,
+    PI_EMPTY,
+    SCHEMA,
+)
 
 CORE_FIELDS = ("delta", "gamma", "id", "note", "pi", "prev", "src", "t")
 
@@ -202,3 +209,71 @@ def axis_of(card: dict[str, Any]) -> str:
     if card.get("t") not in (None, ""):
         return "T"
     return "T"
+
+
+def normalize_axis(raw: Any) -> str:
+    text = str(raw or "T").strip().upper().replace(" ", "")
+    text = text.replace("Δ", "DELTA").replace("Γ", "GAMMA").replace("Π", "PI")
+    aliases = {
+        "T": "T",
+        "CLOCK": "T",
+        "TIME": "T",
+        "D": "DELTA",
+        "DELTA": "DELTA",
+        "INTERVAL": "DELTA",
+        "CHANGE": "DELTA",
+        "G": "GAMMA",
+        "GAMMA": "GAMMA",
+        "TRAJECTORY": "GAMMA",
+        "GEOMETRY": "GAMMA",
+        "PATTERN": "PI",
+        "P": "PI",
+        "PI": "PI",
+        "PROVENANCE": "PI",
+        "PATH": "PI",
+    }
+    axis = aliases.get(text)
+    if axis is None:
+        raise CardError("AXIS_REFUSE", f"unknown axis {raw!r}; use T, Δ, Γ, or Π")
+    return axis
+
+
+def companion_cite(src: Any, axis: str | None = None) -> dict[str, Any] | None:
+    key = str(src or "").strip().lower()
+    info = COMPANIONS.get(key)
+    if not info:
+        return None
+    cite = {
+        "software": info["software"],
+        "slug": info["slug"],
+        "axes": list(info["axes"]),
+        "role": "inspection_input",
+        "cite_only": True,
+        "door": False,
+        "merged": False,
+    }
+    if axis:
+        cite["axis"] = axis
+    return cite
+
+
+def card_receipt(card: dict[str, Any]) -> dict[str, Any]:
+    """Non-hashed 4DM-CARD receipt. Does not change canonical ``h``."""
+    axis = axis_of(card)
+    src = str(card.get("src") or "")
+    frame = AXIS_FRAME[axis]
+    return {
+        "schema": SCHEMA,
+        "kind": "4DM-CARD",
+        "id": card.get("id"),
+        "h": card.get("h"),
+        "axis": axis,
+        "glyph": AXIS_GLYPH[axis],
+        "name": frame["name"],
+        "meaning": frame["meaning"],
+        "src": src,
+        "companion": companion_cite(src, axis),
+        "role": "inspection",
+        "door": False,
+        "truth": False,
+    }

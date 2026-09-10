@@ -5,7 +5,7 @@ Four-axis inspection coordinate frame (T Clock, Δ Interval, Γ Trajectory, Π P
 **Author:** Aziel Eliab
 **Date:** 10 September 2026
 **License:** [Apache-2.0](LICENSE)
-**Version:** 0.1.0
+**Version:** 0.2.0
 **Spec:** `4DM-WP-1.0`
 **Paper:** [docs/4DM-WP-1.0.md](docs/4DM-WP-1.0.md) · [PDF companion note](docs/PDF-COMPANION.md)
 **Softwares bucket:** **Plain** (name 4DMap — not Gate, not Lock)
@@ -50,7 +50,7 @@ The Worker serves the gzip itself (HTTP 200, no 302 to GitHub).
 # → [https://4dmap-download-tracker.vibelock.workers.dev/](https://4dmap-download-tracker.vibelock.workers.dev/) ←
 
 Direct tarball (also counted):
-[4dmap-0.1.0.tar.gz](https://4dmap-download-tracker.vibelock.workers.dev/download?asset=4dmap-0.1.0.tar.gz)
+[4dmap-0.2.0.tar.gz](https://4dmap-download-tracker.vibelock.workers.dev/download?asset=4dmap-0.2.0.tar.gz)
 
 - Live count JSON: [https://4dmap-download-tracker.vibelock.workers.dev/stats](https://4dmap-download-tracker.vibelock.workers.dev/stats)
 - OpenAPI: [https://4dmap-download-tracker.vibelock.workers.dev/openapi.json](https://4dmap-download-tracker.vibelock.workers.dev/openapi.json)
@@ -87,7 +87,7 @@ python3 4dmap.py demo -o result.json
 
 `4dmap ui` serves a loopback board at http://127.0.0.1:8844
 
-Four axes, a card list, pin / span / join. Binds `127.0.0.1` only.
+Four axes, a card list, pin / span / join / walk_trace / export. Binds `127.0.0.1` only.
 
 ## iPhone & Android
 
@@ -112,11 +112,16 @@ The Worker hosts a **stateless** JSON API. It does not increment DOWNLOADS. It n
 - `GET /v1/mesh/nodes` — PROXY Live Nodes roster
 - `POST /v1/mesh/{enable,disable,join,heartbeat,leave,broadcast}` — PROXY. Bearer required to enable.
 - `GET /v1/example` — synthetic cards
+- `GET /v1/frame_status` — MASTER-33 inspection-frame status (`domains_are_doors:false`)
+- `GET /v1/axis_describe` — T/Δ/Γ/Π + companion cites
+- `GET /llms.txt` — agent skill text
 - `POST /v1/{pin,span,stack,gap,fork,walk,lens,class,cohort,absence,cap,join}`
+- `POST /v1/{card_new,card_pin,card_span,card_join,card_walk,card_list,verify_hash}`
+- `POST /v1/{card_export,card_import,frame_status,axis_describe,walk_trace,verify_chain}`
 - OpenAPI: `/openapi.json`
 - MCP: this Worker `/mcp` and catalog `https://aziel-runtime.vibelock.workers.dev/mcp`
 
-FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call` (`card_new` / `card_pin` / `card_span` / `card_join` / `card_walk` / `card_list` / `verify_hash`). Softwares bucket **Plain**. Hubs list 4DMap.
+FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call` (`card_new` / `card_pin` / `card_span` / `card_join` / `card_walk` / `card_list` / `verify_hash` plus `card_export` / `card_import` / `frame_status` / `axis_describe` / `walk_trace` / `verify_chain`). Softwares bucket **Plain**. Hubs list 4DMap. Agent path remains FragGate only. 4DMap is an inspection frame after AZPIPE, not an extra door (`domains_are_doors:false`).
 
 Always send `User-Agent: Mozilla/5.0`. Empty agents can 403.
 
@@ -149,7 +154,7 @@ curl -s -A 'Mozilla/5.0' -X POST https://4dmap-download-tracker.vibelock.workers
 python -m pytest -q
 ```
 
-Card hash, illegal join refuse, fork keep, and Π-EMPTY are covered.
+Card hash, illegal join refuse, fork keep, Π-EMPTY, 0.2.0 export/import / walk_trace / verify_chain, and MASTER-33 inspection-frame (not door) framing are covered.
 
 ## Use with AI clients
 

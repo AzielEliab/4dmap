@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 SPEC = "4DM-WP-1.0"
 SCHEMA = "4DM-CARD"
 PRODUCT = "4dmap"
@@ -17,9 +17,165 @@ LOOPBACK = "127.0.0.1"
 ZION_CAP = 0.75
 PI_EMPTY = "Π-EMPTY"
 GENESIS_PREV = "0" * 64
+TARBALL = "4dmap-0.2.0.tar.gz"
 
 AXES = ("T", "DELTA", "GAMMA", "PI")
 AXIS_GLYPH = {"T": "T", "DELTA": "Δ", "GAMMA": "Γ", "PI": "Π"}
+
+# Companion softwares are inspection inputs only. Cite / functional pairing.
+# Do not merge products. Do not invent a second door.
+COMPANIONS = {
+    "temporallock": {
+        "software": "TemporalLock",
+        "slug": "temporallock",
+        "axes": ("T", "DELTA"),
+        "role": "inspection_input",
+        "cite_only": True,
+        "door": False,
+        "merged": False,
+    },
+    "staticclock": {
+        "software": "StaticClock",
+        "slug": "staticclock",
+        "axes": ("T",),
+        "role": "inspection_input",
+        "cite_only": True,
+        "door": False,
+        "merged": False,
+    },
+    "chronolock": {
+        "software": "ChronoLock",
+        "slug": "chronolock",
+        "axes": ("T", "DELTA"),
+        "role": "inspection_input",
+        "cite_only": True,
+        "door": False,
+        "merged": False,
+    },
+    "trajectorylock": {
+        "software": "TrajectoryLock",
+        "slug": "trajectorylock",
+        "axes": ("GAMMA",),
+        "role": "inspection_input",
+        "cite_only": True,
+        "door": False,
+        "merged": False,
+    },
+    "spectrallock": {
+        "software": "SpectralLock",
+        "slug": "spectrallock",
+        "axes": ("PI",),
+        "role": "inspection_input",
+        "cite_only": True,
+        "door": False,
+        "merged": False,
+    },
+}
+
+AXIS_FRAME = {
+    "T": {
+        "glyph": "T",
+        "name": "Clock",
+        "meaning": "time / when a pin sits",
+        "companions": ("temporallock", "staticclock", "chronolock"),
+        "ops": ("pin", "card_pin", "span", "card_span", "walk", "walk_trace"),
+    },
+    "DELTA": {
+        "glyph": "Δ",
+        "name": "Interval",
+        "meaning": "delta / change / span or gap between pins",
+        "companions": ("temporallock", "chronolock"),
+        "ops": ("span", "card_span", "gap", "walk", "walk_trace"),
+    },
+    "GAMMA": {
+        "glyph": "Γ",
+        "name": "Trajectory",
+        "meaning": "pattern / geometry / stacked or walked motion of pins",
+        "companions": ("trajectorylock",),
+        "ops": ("stack", "walk", "walk_trace", "pin", "card_pin"),
+    },
+    "PI": {
+        "glyph": "Π",
+        "name": "Pattern",
+        "meaning": "provenance / path / class / cohort / absence / silence",
+        "companions": ("spectrallock",),
+        "ops": ("lens", "class", "cohort", "absence", "pin", "card_pin"),
+    },
+}
+
+# MASTER-33: 4DMap is an inspection frame after AZPIPE, not an extra door.
+MASTER33 = {
+    "master": "MASTER-33",
+    "door": "fraggate",
+    "fraggate_single_door": True,
+    "domains_are_doors": False,
+    "sequential_gate": False,
+    "role": "inspection",
+    "layer": "Internal Domain Layer",
+    "after": "AZPIPE",
+    "software_door": False,
+    "fabric": False,
+    "software_tab": True,
+    "domain": "Research",
+    "domain_id": "06",
+    "note": (
+        "4DMap is a Research-domain inspection frame T/Δ/Γ/Π inside Internal "
+        "Domain Layer after AZPIPE. Isolated software, not an additional door. "
+        "Not a sequential gate. Not LIVE fabric. FragGate is THE single door."
+    ),
+}
+
+LIVE_OPS = (
+    "health",
+    "skill",
+    "pin",
+    "span",
+    "stack",
+    "gap",
+    "fork",
+    "walk",
+    "lens",
+    "class",
+    "cohort",
+    "absence",
+    "cap",
+    "join",
+    "list",
+    "example",
+    "card_new",
+    "card_pin",
+    "card_span",
+    "card_join",
+    "card_walk",
+    "card_list",
+    "verify_hash",
+    "card_export",
+    "card_import",
+    "frame_status",
+    "axis_describe",
+    "walk_trace",
+    "verify_chain",
+)
+
+OP_ALIASES = {
+    "card_pin": "pin",
+    "card_span": "span",
+    "card_join": "join",
+    "card_walk": "walk",
+    "card_list": "list",
+}
+
+REFUSE_OPS = {
+    "truth_score": ("STUB_REFUSE", "truth_score is stub — 4DMap is not a truth engine"),
+    "lumen_panel": ("STUB_REFUSE", "lumen_panel is stub — 4DMap is not Lumen"),
+    "invent_mark": ("STUB_REFUSE", "invent_mark is stub — 4DMap does not invent marks"),
+    "backdate_class": ("STUB_REFUSE", "backdate_class is stub — Π cannot rewrite T"),
+    "wipe": ("FANTASY_OP", "destructive wipe is refused"),
+    "purge": ("FANTASY_OP", "destructive purge is refused"),
+    "delete_all": ("FANTASY_OP", "destructive delete_all is refused"),
+    "merge_products": ("FANTASY_OP", "companion softwares are cite-only; products are not merged"),
+    "enable_door": ("FANTASY_OP", "4DMap is not a Softwares door; FragGate remains THE single door"),
+}
 
 ALLOWED_JOINS = frozenset(
     {

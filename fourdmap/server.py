@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 
 from .card import CardError
 from .ops import dispatch
-from .scope import AUTHOR, DEFAULT_PORT, LIMITATION, LOOPBACK, PRODUCT_NAME
+from .scope import AUTHOR, DEFAULT_PORT, LIMITATION, LIVE_OPS, LOOPBACK, PRODUCT_NAME, __version__
 
 STATIC = Path(__file__).resolve().parent / "static"
 
@@ -37,7 +37,16 @@ def make_server(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> ThreadingHTTP
                 self._send(200, html, "text/html; charset=utf-8")
                 return
             if path == "/v1/health":
-                payload = json.dumps({"ok": True, "product": "4dmap", "author": AUTHOR, "loopback": True}).encode()
+                payload = json.dumps({
+                    "ok": True,
+                    "product": "4dmap",
+                    "version": __version__,
+                    "author": AUTHOR,
+                    "loopback": True,
+                    "ops": list(LIVE_OPS),
+                    "domains_are_doors": False,
+                    "role": "inspection",
+                }).encode()
                 self._send(200, payload, "application/json; charset=utf-8")
                 return
             self._send(404, b'{"error":"not found"}', "application/json; charset=utf-8")

@@ -9,7 +9,17 @@ from .card import CardError, digest, make_card, verify_card
 from .example import EXAMPLE_PIN
 from .joins import join_cards
 from .ops import cap, dispatch, lens
-from .scope import AUTHOR, GUARDRAIL, LIMITATION, PRODUCT, SPEC, ZION_CAP, __version__
+from .scope import (
+    AUTHOR,
+    GUARDRAIL,
+    LIMITATION,
+    LIVE_OPS,
+    MASTER33,
+    PRODUCT,
+    SPEC,
+    ZION_CAP,
+    __version__,
+)
 from .store import MapStore
 
 Check = tuple[str, bool, str]
@@ -24,7 +34,7 @@ def _fail(name: str, detail: str) -> Check:
 
 
 def _check_version() -> Check:
-    if __version__ == "0.1.0" and SPEC == "4DM-WP-1.0":
+    if __version__ == "0.2.0" and SPEC == "4DM-WP-1.0":
         return _ok("version", f"{__version__} {SPEC}")
     return _fail("version", f"{__version__} {SPEC}")
 
@@ -119,6 +129,33 @@ def _check_limitation() -> Check:
     return _ok("limitation", "honest banner")
 
 
+def _check_frame() -> Check:
+    if MASTER33.get("domains_are_doors") is not False:
+        return _fail("frame", "domains must not be doors")
+    if MASTER33.get("sequential_gate") is not False:
+        return _fail("frame", "4DMap must not be a sequential gate")
+    if MASTER33.get("door") != "fraggate" or MASTER33.get("role") != "inspection":
+        return _fail("frame", str(MASTER33))
+    if MASTER33.get("software_door") is not False:
+        return _fail("frame", "4DMap must not be a Softwares door")
+    needed = ("card_export", "card_import", "frame_status", "axis_describe", "walk_trace", "verify_chain")
+    missing = [op for op in needed if op not in LIVE_OPS]
+    if missing:
+        return _fail("frame", f"missing LIVE_OPS {missing}")
+    try:
+        dispatch("truth_score", {})
+        return _fail("frame", "truth_score accepted")
+    except CardError as err:
+        if err.code != "STUB_REFUSE":
+            return _fail("frame", err.code)
+    status = dispatch("frame_status", {})
+    if status.get("domains_are_doors") is not False or status.get("get_enables") is True:
+        return _fail("frame", "frame_status framing drifted")
+    if status.get("mesh", {}).get("get_enables") is True:
+        return _fail("frame", "mesh GET must never enable")
+    return _ok("frame", "MASTER-33 inspection frame; FragGate single door")
+
+
 CHECKS: tuple[Callable[[], Check], ...] = (
     _check_version,
     _check_identity,
@@ -128,6 +165,7 @@ CHECKS: tuple[Callable[[], Check], ...] = (
     _check_pi_empty,
     _check_cap,
     _check_limitation,
+    _check_frame,
 )
 
 

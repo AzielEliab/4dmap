@@ -13,15 +13,16 @@
   .axis h2 { margin:0 0 .4rem; color:var(--gold); font-size:1rem; }
   .card { border:1px solid var(--line); padding:.45rem .55rem; margin:.35rem 0; border-radius:8px; font-size:.82rem; }
   label, .note { color:var(--muted); font-size:.88rem; }
-  input, select { width:100%; box-sizing:border-box; margin:.25rem 0 .6rem; padding:.45rem .55rem; background:#0e0e0e; color:var(--ink); border:1px solid var(--gold); border-radius:8px; }
-  button { background:var(--gold); color:#14110a; border:0; border-radius:8px; font-weight:700; padding:.55rem .9rem; cursor:pointer; }
+  input, select, textarea { width:100%; box-sizing:border-box; margin:.25rem 0 .6rem; padding:.45rem .55rem; background:#0e0e0e; color:var(--ink); border:1px solid var(--gold); border-radius:8px; }
+  textarea { min-height:5rem; font:12px/1.4 ui-monospace,monospace; }
+  button { background:var(--gold); color:#14110a; border:0; border-radius:8px; font-weight:700; padding:.55rem .9rem; cursor:pointer; margin:.15rem .15rem .15rem 0; }
   pre { background:#0e0e0e; padding:.7rem; overflow:auto; border-radius:8px; }
   .pipe { white-space:pre-wrap; font:12px/1.4 ui-monospace,monospace; color:var(--muted); border:1px dashed var(--line); padding:.7rem; border-radius:8px; }
 </style>
 <body>
   <h1>4DMap</h1>
-  <p>Inspection coordinate frame. Loopback only. Author Aziel Eliab.</p>
-  <p class="banner">Receipts are not truth. Not Lumen. Not certified forensics. Not GIS 4D. Not a Node Gate.</p>
+  <p>Inspection coordinate frame v0.2.0. Loopback only. Author Aziel Eliab.</p>
+  <p class="banner">Receipts are not truth. Not Lumen. Not certified forensics. Not GIS 4D. Not a Node Gate. Not a Softwares door. FragGate is THE single door.</p>
   <p class="pipe">PUBLIC/AGENTS/UI → FragGate → SweepGate → ChainLock-IN → DecisionGATE → AZPIPE
   → Domain Doors  ←──  4DMap cards sit HERE (read-side frame, not a hop gate)
   → TemporalLock → StaticClock → ChainLock-OUT → RESPONSE/RECEIPT</p>
@@ -32,8 +33,32 @@
     <div class="axis" id="col-PI"><h2>Π Pattern</h2></div>
   </div>
   <form id="pin-form">
-    <label>Pin T <input id="pin-t" placeholder="2026-09-10T00:00:00Z"></label>
+    <label>Pin T/Δ/Γ/Π
+      <select id="pin-axis">
+        <option value="T">T Clock</option>
+        <option value="DELTA">Δ Interval</option>
+        <option value="GAMMA">Γ Trajectory</option>
+        <option value="PI">Π Pattern</option>
+      </select>
+    </label>
+    <label>Value <input id="pin-t" placeholder="2026-09-10T00:00:00Z"></label>
+    <label>Src cite
+      <select id="pin-src">
+        <option value="operator">operator</option>
+        <option value="temporallock">TemporalLock</option>
+        <option value="staticclock">StaticClock</option>
+        <option value="chronolock">ChronoLock</option>
+        <option value="trajectorylock">TrajectoryLock</option>
+        <option value="spectrallock">SpectralLock</option>
+        <option value="synthetic">synthetic</option>
+      </select>
+    </label>
     <button type="submit">Pin</button>
+  </form>
+  <form id="span-form">
+    <label>From id <input id="span-from"></label>
+    <label>To id <input id="span-to"></label>
+    <button type="submit">Span Δ</button>
   </form>
   <form id="join-form">
     <label>Join type
@@ -49,7 +74,19 @@
     <label>Right id <input id="join-right"></label>
     <button type="submit">Join</button>
   </form>
-  <p class="note">Cards stay in this browser. Hosted Worker never stores a map. Π-EMPTY when the lens is silent.</p>
+  <form id="walk-form">
+    <label>Tip id <input id="walk-tip"></label>
+    <button type="submit">Walk</button>
+    <button type="button" id="trace-btn">Walk trace</button>
+    <button type="button" id="chain-btn">Verify chain</button>
+    <button type="button" id="frame-btn">Frame status</button>
+    <button type="button" id="export-btn">Export</button>
+  </form>
+  <form id="import-form">
+    <label>Import JSON <textarea id="import-json" placeholder='{"cards":[]}'></textarea></label>
+    <button type="submit">Import</button>
+  </form>
+  <p class="note">Cards stay in this browser. Hosted Worker never stores a map. Companions are cite-only. Π-EMPTY when the lens is silent.</p>
   <pre id="out">no op yet</pre>
   <script>
     const cards = [];
@@ -65,7 +102,7 @@
         const col = document.getElementById("col-"+axisOf(c));
         const d = document.createElement("div");
         d.className = "card";
-        d.textContent = (c.id||"") + " · " + (c.h||"").slice(0,12);
+        d.textContent = (c.id||"") + " · " + (c.src||"") + " · " + (c.h||"").slice(0,12);
         col.appendChild(d);
       });
     }
@@ -74,10 +111,40 @@
       const j = await r.json();
       document.getElementById("out").textContent = JSON.stringify(j, null, 2);
       if (j.card) cards.push(j.card);
+      if (op === "card_import" && Array.isArray(j.cards)) {
+        j.cards.forEach((c) => { if (!cards.some((x) => x.h === c.h)) cards.push(c); });
+      }
       paint();
+      return j;
     }
-    document.getElementById("pin-form").onsubmit = (e) => { e.preventDefault(); call("pin", { t: document.getElementById("pin-t").value || new Date().toISOString(), src:"operator" }); };
-    document.getElementById("join-form").onsubmit = (e) => { e.preventDefault(); call("join", { left: document.getElementById("join-left").value, right: document.getElementById("join-right").value, join_type: document.getElementById("join-type").value }); };
+    document.getElementById("pin-form").onsubmit = (e) => {
+      e.preventDefault();
+      const axis = document.getElementById("pin-axis").value;
+      call("pin", { t: document.getElementById("pin-t").value || new Date().toISOString(), axis, src: document.getElementById("pin-src").value, value: document.getElementById("pin-t").value });
+    };
+    document.getElementById("span-form").onsubmit = (e) => {
+      e.preventDefault();
+      call("span", { from_id: document.getElementById("span-from").value, to_id: document.getElementById("span-to").value });
+    };
+    document.getElementById("join-form").onsubmit = (e) => {
+      e.preventDefault();
+      call("join", { left: document.getElementById("join-left").value, right: document.getElementById("join-right").value, join_type: document.getElementById("join-type").value });
+    };
+    document.getElementById("walk-form").onsubmit = (e) => {
+      e.preventDefault();
+      call("walk", { tip: document.getElementById("walk-tip").value });
+    };
+    document.getElementById("trace-btn").onclick = () => call("walk_trace", { tip: document.getElementById("walk-tip").value });
+    document.getElementById("chain-btn").onclick = () => call("verify_chain", { tip: document.getElementById("walk-tip").value });
+    document.getElementById("frame-btn").onclick = () => call("frame_status", {});
+    document.getElementById("export-btn").onclick = async () => {
+      const j = await call("card_export", {});
+      if (j.bundle) document.getElementById("import-json").value = JSON.stringify(j.bundle, null, 2);
+    };
+    document.getElementById("import-form").onsubmit = (e) => {
+      e.preventDefault();
+      call("card_import", { bundle: JSON.parse(document.getElementById("import-json").value || "{}") });
+    };
     paint();
   </script>
 </body>

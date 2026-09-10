@@ -48,7 +48,7 @@ class _BoardPageState extends State<BoardPage> {
         children: [
           Text(limitation, style: Theme.of(context).textTheme.bodyMedium),
           const SizedBox(height: 12),
-          const Text('truth engine: False · author: Aziel Eliab · bucket: Plain'),
+          const Text('v0.2.0 · truth engine: False · author: Aziel Eliab · bucket: Plain · not a door'),
           const SizedBox(height: 16),
           const Text('T Clock · Δ Interval · Γ Trajectory · Π Pattern'),
           const SizedBox(height: 12),
@@ -87,6 +87,22 @@ class _BoardPageState extends State<BoardPage> {
                   });
                 },
                 child: const Text('Lens'),
+              ),
+              FilledButton(
+                onPressed: () {
+                  setState(() {
+                    kid = 'frame_status: inspection after AZPIPE. domains_are_doors:false. FragGate is THE single door.';
+                  });
+                },
+                child: const Text('Frame'),
+              ),
+              FilledButton(
+                onPressed: () {
+                  setState(() {
+                    kid = 'Export/import 4DM-CARD JSON on the desktop workbench. Fail-closed hashes.';
+                  });
+                },
+                child: const Text('Export'),
               ),
             ],
           ),

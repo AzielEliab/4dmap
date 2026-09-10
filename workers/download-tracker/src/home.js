@@ -12,7 +12,7 @@ export const PAGE_TITLE = "4DMap — Aziel Eliab";
 export const SEO_DESCRIPTION =
   "4DMap by Aziel Eliab: four-axis inspection coordinate frame (T clock, Δ interval, Γ trajectory, Π pattern). Not a truth engine, not Lumen, not GIS, not a Node Gate.";
 export const INSTALL_LINE = "curl -fsSL https://4dmap-download-tracker.vibelock.workers.dev/install.sh | bash";
-export const DEFAULT_ASSET = "4dmap-0.1.0.tar.gz";
+export const DEFAULT_ASSET = "4dmap-0.2.0.tar.gz";
 
 export function escapeHtml(value) {
   return String(value ?? "")
@@ -27,7 +27,7 @@ export function jsonLdDocument() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "4DMap",
-    softwareVersion: "0.1.0",
+    softwareVersion: "0.2.0",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Cloudflare Workers",
     author: { "@type": "Person", name: "Aziel Eliab", url: "https://github.com/AzielEliab" },
@@ -110,7 +110,11 @@ export function renderHomepage({ views, downloads, breakdown, github, asset }) {
   label { display:block; color:var(--muted); font-size:.85rem; margin:.35rem 0 .15rem; }
   input, select { width:100%; padding:.45rem .55rem; border:1px solid var(--gold); border-radius:8px; background:#0e0e0e; color:var(--ink); font:inherit; }
   .inline { display:grid; grid-template-columns:1fr 1fr auto; gap:.45rem; align-items:end; }
-  @media (max-width:720px) { .inline { grid-template-columns:1fr; } }
+  .inline4 { display:grid; grid-template-columns:1fr 1fr 1fr auto; gap:.45rem; align-items:end; }
+  @media (max-width:720px) { .inline, .inline4 { grid-template-columns:1fr; } }
+  textarea { width:100%; min-height:6rem; padding:.55rem; border:1px solid var(--gold); border-radius:8px; background:#0e0e0e; color:var(--ink); font:12px/1.4 ui-monospace, Menlo, Consolas, monospace; }
+  .receipt { border:1px solid var(--line); border-radius:8px; padding:.45rem .55rem; margin:.35rem 0; font-size:.78rem; }
+  .receipt b { color:var(--gold); }
   pre { background:#0e0e0e; padding:.7rem .85rem; overflow:auto; border-radius:8px; font-size:.8rem; }
   footer { color:var(--muted); font-size:.88rem; margin-top:1.5rem; }
 </style>
@@ -120,7 +124,7 @@ export function renderHomepage({ views, downloads, breakdown, github, asset }) {
     <img class="brandmark" src="/sigil.png" width="40" height="40" alt="Everblooming sigil — Aziel Eliab">
     <div>
       <p class="stamp">Everblooming sigil · Aziel Eliab</p>
-      <p class="tag">v0.1.0 · 4DM-WP-1.0 · Plain · Apache-2.0</p>
+      <p class="tag">v0.2.0 · 4DM-WP-1.0 · Plain · Apache-2.0 · inspection frame</p>
     </div>
   </header>
   <h1>4DMap</h1>
@@ -167,7 +171,7 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
 
   <section class="card" id="board">
     <h2>Four-axis board</h2>
-    <p class="note">Cards live in this browser. Hosted API is stateless. Fail-closed hashes. Forks kept. Π-EMPTY when the lens is silent.</p>
+    <p class="note">Cards live in this browser. Hosted API is stateless. Fail-closed hashes. Forks kept. Π-EMPTY when the lens is silent. Companion src values cite TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock as inspection inputs only — products are not merged.</p>
     <div class="axes">
       <div class="axis" id="col-T"><h2>T Clock</h2></div>
       <div class="axis" id="col-DELTA"><h2>Δ Interval</h2></div>
@@ -176,15 +180,29 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
     </div>
 
     <form id="pin-form" autocomplete="off">
-      <label for="pin-t">Pin T — clock</label>
-      <div class="inline">
-        <input id="pin-t" placeholder="2026-09-10T00:00:00Z">
-        <input id="pin-src" placeholder="src (temporallock / operator)">
+      <label for="pin-t">Pin — T time / Δ change / Γ geometry / Π path</label>
+      <div class="inline4">
+        <input id="pin-t" placeholder="2026-09-10T00:00:00Z or value">
+        <select id="pin-axis" aria-label="pin axis">
+          <option value="T">T Clock</option>
+          <option value="DELTA">Δ Interval</option>
+          <option value="GAMMA">Γ Trajectory</option>
+          <option value="PI">Π Pattern</option>
+        </select>
+        <select id="pin-src" aria-label="pin src cite">
+          <option value="operator">operator</option>
+          <option value="temporallock">TemporalLock (cite)</option>
+          <option value="staticclock">StaticClock (cite)</option>
+          <option value="chronolock">ChronoLock (cite)</option>
+          <option value="trajectorylock">TrajectoryLock (cite)</option>
+          <option value="spectrallock">SpectralLock (cite)</option>
+          <option value="synthetic">synthetic</option>
+        </select>
         <button class="btn gold" type="submit">Pin</button>
       </div>
     </form>
     <form id="span-form" autocomplete="off">
-      <label>Span Δ — from pin id → to pin id</label>
+      <label>Span Δ — from card id → to card id (any axis pair)</label>
       <div class="inline">
         <input id="span-from" placeholder="from id">
         <input id="span-to" placeholder="to id">
@@ -192,7 +210,7 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
       </div>
     </form>
     <form id="join-form" autocomplete="off">
-      <label>Typed join — T↔Δ, Δ↔Γ, Γ↔Π, T↔Π. Π→T backdate refuses.</label>
+      <label>Typed join — T↔Δ, Δ↔Γ, Γ↔Π, T↔Π. Π→T backdate refuses. Companions cited, not merged.</label>
       <div class="inline">
         <input id="join-left" placeholder="left id">
         <input id="join-right" placeholder="right id">
@@ -209,8 +227,28 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
       <button class="btn gold" type="button" id="lens-btn">Silent lens</button>
       <button class="btn gold" type="button" id="example-btn">Load example</button></p>
     </form>
-    <h3>Card list</h3>
+    <form id="walk-form" autocomplete="off">
+      <label>Walk / trace / verify chain — tip card id</label>
+      <div class="inline4">
+        <input id="walk-tip" placeholder="tip id">
+        <button class="btn gold" type="submit">Walk</button>
+        <button class="btn gold" type="button" id="trace-btn">Walk trace</button>
+        <button class="btn gold" type="button" id="chain-btn">Verify chain</button>
+      </div>
+    </form>
+    <p>
+      <button class="btn gold" type="button" id="frame-btn">Frame status</button>
+      <button class="btn gold" type="button" id="axis-btn">Axis describe</button>
+      <button class="btn gold" type="button" id="export-btn">Export JSON</button>
+    </p>
+    <form id="import-form" autocomplete="off">
+      <label for="import-json">Import 4DM-CARD JSON (fail-closed hashes)</label>
+      <textarea id="import-json" placeholder='{"cards":[...]}'></textarea>
+      <p><button class="btn gold" type="submit">Import</button></p>
+    </form>
+    <h3>Card list · 4DM-CARD receipts</h3>
     <ol id="card-list"></ol>
+    <div id="receipt-box" class="receipt" hidden></div>
     <p class="note" id="last-op">No op yet.</p>
     <pre id="last-json" hidden></pre>
     <p class="note">${escapeHtml(GUARDRAIL)}</p>
@@ -344,12 +382,22 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
           var col = $("col-"+axisOf(c));
           var d = document.createElement("div");
           d.className = "tick";
-          d.innerHTML = "<code>"+(c.id||"")+"</code><br>"+String(c.h||"").slice(0,16);
+          d.innerHTML = "<code>"+(c.id||"")+"</code><br>"+String(c.src||"")+" · "+String(c.h||"").slice(0,16);
           col.appendChild(d);
           var li = document.createElement("li");
-          li.textContent = (c.id||"") + " · " + axisOf(c) + " · " + String(c.h||"").slice(0,16);
+          li.textContent = (c.id||"") + " · " + axisOf(c) + " · " + (c.src||"") + " · " + String(c.h||"").slice(0,16);
           list.appendChild(li);
         });
+      }
+      function showReceipt(inner) {
+        var box = $("receipt-box");
+        var rec = inner && inner.receipt;
+        if (!rec) { box.hidden = true; return; }
+        box.hidden = false;
+        box.innerHTML = "<b>4DM-CARD</b> " + (rec.glyph||"") + " " + (rec.name||"") + " · " + (rec.id||"") +
+          "<br>h " + String(rec.h||"").slice(0,16) + " · src " + (rec.src||"") +
+          (rec.companion ? " · cite " + rec.companion.software + " (inspection input, not a door)" : "") +
+          "<br>role " + (rec.role||"inspection") + " · door " + String(rec.door) + " · truth " + String(rec.truth);
       }
       async function call(op, payload) {
         var r = await fetch("/v1/"+op, { method:"POST", headers:{"content-type":"application/json","user-agent":"Mozilla/5.0"}, body: JSON.stringify(Object.assign({}, payload, { cards: cards })) });
@@ -359,12 +407,19 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
         $("last-json").hidden = false;
         $("last-json").textContent = JSON.stringify(j, null, 2);
         if (inner.card) cards.push(inner.card);
+        if (op === "card_import" && Array.isArray(inner.cards)) {
+          inner.cards.forEach(function (c) {
+            if (!cards.some(function (x) { return x.h === c.h; })) cards.push(c);
+          });
+        }
+        showReceipt(inner);
         paint();
         return inner;
       }
       $("pin-form").onsubmit = function (e) {
         e.preventDefault();
-        call("pin", { t: $("pin-t").value || new Date().toISOString(), src: $("pin-src").value || "operator", note: "T pin" });
+        var axis = $("pin-axis").value || "T";
+        call("pin", { t: $("pin-t").value || new Date().toISOString(), axis: axis, src: $("pin-src").value || "operator", note: axis + " pin", value: $("pin-t").value });
       };
       $("span-form").onsubmit = function (e) {
         e.preventDefault();
@@ -373,6 +428,24 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
       $("join-form").onsubmit = function (e) {
         e.preventDefault();
         call("join", { left: $("join-left").value, right: $("join-right").value, join_type: $("join-type").value });
+      };
+      $("walk-form").onsubmit = function (e) {
+        e.preventDefault();
+        call("walk", { tip: $("walk-tip").value });
+      };
+      $("trace-btn").onclick = function () { call("walk_trace", { tip: $("walk-tip").value }); };
+      $("chain-btn").onclick = function () { call("verify_chain", { tip: $("walk-tip").value }); };
+      $("frame-btn").onclick = function () { call("frame_status", {}); };
+      $("axis-btn").onclick = function () { call("axis_describe", {}); };
+      $("export-btn").onclick = async function () {
+        var inner = await call("card_export", {});
+        if (inner && inner.bundle) $("import-json").value = JSON.stringify(inner.bundle, null, 2);
+      };
+      $("import-form").onsubmit = function (e) {
+        e.preventDefault();
+        var raw = $("import-json").value || "{}";
+        try { call("card_import", { bundle: JSON.parse(raw) }); }
+        catch (err) { $("last-op").textContent = "import refused (JSON)"; }
       };
       $("fork-btn").onclick = function () {
         if (!cards.length) return;

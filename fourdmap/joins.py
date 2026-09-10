@@ -10,7 +10,16 @@ from __future__ import annotations
 
 from typing import Any
 
-from .card import CardError, axis_of, digest, make_card, scan_identity, scan_intent
+from .card import (
+    CardError,
+    axis_of,
+    card_receipt,
+    companion_cite,
+    digest,
+    make_card,
+    scan_identity,
+    scan_intent,
+)
 from .scope import ALLOWED_JOINS, ILLEGAL_JOINS
 
 
@@ -92,6 +101,11 @@ def join_cards(
     # make_card may have set Π-EMPTY when pi is None; re-seal if we already hashed
     if card["h"] != digest(card):
         raise CardError("HASH_FAIL", "fail-closed: join card hash drifted")
+    cites = []
+    for src, axis in ((left.get("src"), left_axis), (right.get("src"), right_axis), (src, None)):
+        cite = companion_cite(src, axis)
+        if cite and cite not in cites and cite["slug"] not in {c["slug"] for c in cites}:
+            cites.append(cite)
     return {
         "ok": True,
         "join": f"{left_axis}-{right_axis}",
@@ -99,4 +113,9 @@ def join_cards(
         "card": card,
         "left": left.get("id"),
         "right": right.get("id"),
+        "receipt": card_receipt(card),
+        "cites": cites,
+        "companions_merged": False,
+        "second_door": False,
+        "note": "typed join cites companion softwares as inspection inputs only",
     }

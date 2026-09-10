@@ -5,9 +5,9 @@ description: Use this when inspecting time as four axes (T clock, Δ interval, �
 
 # 4DMap
 
-Four-axis temporal mapping and pattern mapping (4DM-WP-1.0). Author: **Aziel Eliab**.
+Four-axis temporal mapping and pattern mapping (4DM-WP-1.0). Version **0.2.0**. Author: **Aziel Eliab**.
 
-**THIS IS:** an inspection coordinate frame. 4DM-CARD receipts (id, t, delta, gamma, pi, prev, src, h, note). Ops pin / span / stack / gap / fork / walk / lens / class / cohort / absence / cap / join. Typed joins T↔Δ, Δ↔Γ, Γ↔Π, T↔Π. Fail-closed SHA-256. Forks kept. ZionPattern cap 75%. Π-EMPTY when the lens is silent.
+**THIS IS:** an inspection coordinate frame. 4DM-CARD receipts (id, t, delta, gamma, pi, prev, src, h, note) plus axis receipts. Ops pin / span / stack / gap / fork / walk / lens / class / cohort / absence / cap / join plus card_new / card_export / card_import / frame_status / axis_describe / walk_trace / verify_chain / verify_hash. Typed joins T↔Δ, Δ↔Γ, Γ↔Π, T↔Π cite TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock as inspection inputs only. Fail-closed SHA-256. Forks kept. ZionPattern cap 75%. Π-EMPTY when the lens is silent. Not a Softwares door (`domains_are_doors:false`). FragGate is THE single door.
 
 **THIS IS NOT:** a truth engine; Lumen; GIS 4D; a Node Gate; certified forensics; an identity store. Receipts are not truth. No legal name, home, or county on cards. Π→T backdate, intent, and identity leak refuse.
 
@@ -15,8 +15,8 @@ Always send a normal `User-Agent` (for example `Mozilla/5.0`). Cloudflare Worker
 
 ## When to call it
 
-- Pin a clock, span an interval, join two cards, walk a prev chain, or apply a lens.
-- Health / skill / OpenAPI. Never invent a person, a county, or a backdated clock.
+- Pin a clock, span an interval, join two cards, walk a prev chain, export/import JSON, or apply a lens.
+- Health / skill / OpenAPI / frame_status. Never invent a person, a county, or a backdated clock.
 
 Hosted `/v1/{op}` is stateless. Cards travel in the JSON body. The Worker does not store a map.
 
@@ -32,7 +32,12 @@ Host: `https://4dmap-download-tracker.vibelock.workers.dev`
 | GET | `/v1/mesh/nodes` | PROXY Live Nodes roster. |
 | POST | `/v1/mesh/{enable,disable,join,heartbeat,leave,broadcast}` | PROXY. Bearer required to enable. |
 | GET | `/v1/example` | Synthetic cards. Not a real case. |
+| GET | `/v1/frame_status` | MASTER-33 inspection-frame status. Not a door. |
+| GET | `/v1/axis_describe` | T/Δ/Γ/Π + companion cites. |
+| GET | `/llms.txt` | Agent-oriented skill text. |
 | POST | `/v1/{pin,span,stack,gap,fork,walk,lens,class,cohort,absence,cap,join}` | Stateless card ops. |
+| POST | `/v1/{card_new,card_pin,card_span,card_join,card_walk,card_list,verify_hash}` | FragGate aliases. |
+| POST | `/v1/{card_export,card_import,frame_status,axis_describe,walk_trace,verify_chain}` | 0.2.0 read/write ops. |
 
 OpenAPI: `https://4dmap-download-tracker.vibelock.workers.dev/openapi.json`
 
@@ -41,7 +46,7 @@ Catalog OpenAPI: `https://aziel-runtime.vibelock.workers.dev/openapi.json`
 MCP: `POST https://4dmap-download-tracker.vibelock.workers.dev/mcp`
 also `POST https://aziel-runtime.vibelock.workers.dev/mcp`
 
-FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call` (`card_new` / `card_pin` / `card_span` / `card_join` / `card_walk` / `card_list` / `verify_hash`). Softwares bucket **Plain**. Hubs list 4DMap.
+FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call` (`card_new` / `card_pin` / `card_span` / `card_join` / `card_walk` / `card_list` / `verify_hash` plus `card_export` / `card_import` / `frame_status` / `axis_describe` / `walk_trace` / `verify_chain`). Softwares bucket **Plain**. Hubs list 4DMap. Agent path remains FragGate only. 4DMap is not an extra door.
 
 ## How to call (Mozilla/5.0)
 
@@ -49,6 +54,8 @@ FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4
 curl -s -A 'Mozilla/5.0' https://4dmap-download-tracker.vibelock.workers.dev/v1/health
 
 curl -s -A 'Mozilla/5.0' https://4dmap-download-tracker.vibelock.workers.dev/v1/mesh
+
+curl -s -A 'Mozilla/5.0' https://4dmap-download-tracker.vibelock.workers.dev/v1/frame_status
 
 curl -s -A 'Mozilla/5.0' -X POST https://4dmap-download-tracker.vibelock.workers.dev/v1/pin \
   -H 'content-type: application/json' \
