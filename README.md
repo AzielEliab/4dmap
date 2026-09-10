@@ -1,0 +1,174 @@
+# 4DMap
+
+Four-axis inspection coordinate frame (T Clock, Δ Interval, Γ Trajectory, Π Pattern). Receipts are not truth. Not Lumen. Not certified forensics. Not GIS 4D. Not a Node Gate.
+
+**Author:** Aziel Eliab
+**Date:** 10 September 2026
+**License:** [Apache-2.0](LICENSE)
+**Version:** 0.1.0
+**Spec:** `4DM-WP-1.0`
+**Paper:** [docs/4DM-WP-1.0.md](docs/4DM-WP-1.0.md) · [PDF companion note](docs/PDF-COMPANION.md)
+**Softwares bucket:** **Plain** (name 4DMap — not Gate, not Lock)
+
+**Forks are welcome and always allowed.**
+
+## Three steps
+
+1. Install: `curl -fsSL https://4dmap-download-tracker.vibelock.workers.dev/install.sh | bash`
+2. Run `4dmap ui` and open http://127.0.0.1:8844 (this computer only).
+3. Pin a clock, span an interval, or join two cards. Read the board. **Doctor** if you want a self-check.
+
+Those cards are inspection coordinates. They do not certify facts, name people, or backdate a clock from a pattern.
+
+## Honest scope
+
+**THIS IS:** an inspection coordinate frame over TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock evidence. 4DM-CARD receipts. Fail-closed SHA-256. Forks kept. ZionPattern cap 75%. Π-EMPTY when the lens is silent.
+
+**THIS IS NOT:** a truth engine; Lumen; GIS 4D; a Node Gate; certified forensics; an identity store. No legal name, home, or county on cards. QNS/QNM do not carry 4DMap photons.
+
+Public identity **Aziel Eliab** only. GodLock is a sibling product name elsewhere. Never attach a GodLock-plus-AZ identity label.
+
+## Pipeline placement
+
+4DMap is **not** another sequential gate. It is a **domain-door / inspection frame**:
+
+```
+PUBLIC/AGENTS/UI → FragGate → SweepGate → ChainLock-IN → DecisionGATE → AZPIPE
+  → Domain Doors (isolated engines)  ←──  4DMap inspection cards sit HERE as
+       a read-side coordinate frame over TemporalLock/StaticClock/ChronoLock/
+       TrajectoryLock/SpectralLock evidence (not a hop gate)
+  → TemporalLock → StaticClock → ChainLock-OUT → RESPONSE/RECEIPT
+```
+
+Engines and operator UI write/read 4DM cards. FragGate grounded claims may cite join types. ChainLock may stamp a walk when the operator seals.
+
+## Counted download (Cloudflare Worker)
+
+**This is the counted download.** GitHub releases exist as a mirror.
+The Worker serves the gzip itself (HTTP 200, no 302 to GitHub).
+
+# → [https://4dmap-download-tracker.vibelock.workers.dev/](https://4dmap-download-tracker.vibelock.workers.dev/) ←
+
+Direct tarball (also counted):
+[4dmap-0.1.0.tar.gz](https://4dmap-download-tracker.vibelock.workers.dev/download?asset=4dmap-0.1.0.tar.gz)
+
+- Live count JSON: [https://4dmap-download-tracker.vibelock.workers.dev/stats](https://4dmap-download-tracker.vibelock.workers.dev/stats)
+- OpenAPI: [https://4dmap-download-tracker.vibelock.workers.dev/openapi.json](https://4dmap-download-tracker.vibelock.workers.dev/openapi.json)
+- Skill: [https://4dmap-download-tracker.vibelock.workers.dev/v1/skill](https://4dmap-download-tracker.vibelock.workers.dev/v1/skill)
+- Suite mesh proxy: [https://4dmap-download-tracker.vibelock.workers.dev/v1/mesh](https://4dmap-download-tracker.vibelock.workers.dev/v1/mesh) — default OFF; GET never enables; QNM live / locked / isolated; QNS-CD-1.0 cite only
+- GitHub: [https://github.com/AzielEliab/4dmap](https://github.com/AzielEliab/4dmap)
+
+Isolated counter: Worker `4dmap-download-tracker`, KV `4DMAP_DOWNLOADS`. Not mixed with any other product. `/v1` does not increment downloads. Hosted `/v1` never stores a map.
+
+Or tap **Download** / **One-click install** on the Worker homepage:
+https://4dmap-download-tracker.vibelock.workers.dev/
+
+## From source
+
+```bash
+python -m venv .venv && source .venv/bin/activate && pip install -e ".[dev]"
+4dmap doctor
+4dmap ui
+python -m pytest -q
+```
+
+Open http://127.0.0.1:8844. No CDN, no telemetry.
+
+## CLI
+
+```bash
+python3 4dmap.py pin --t 2026-09-10T00:00:00Z --src synthetic
+python3 4dmap.py demo -o result.json
+4dmap ui
+4dmap doctor
+```
+
+## Local UI
+
+`4dmap ui` serves a loopback board at http://127.0.0.1:8844
+
+Four axes, a card list, pin / span / join. Binds `127.0.0.1` only.
+
+## iPhone & Android
+
+Flutter sources: [`mobile/`](mobile/). Application id
+`com.azieeliab.fourdmap`. Offline. No analytics. Dark matte / gold.
+Not a store listing. Not a separate repo. Not store IPAs.
+
+```bash
+cd mobile
+flutter create --org com.azieeliab --project-name fourdmap .
+flutter pub get
+flutter run
+```
+
+## Hosted `/v1`
+
+The Worker hosts a **stateless** JSON API. It does not increment DOWNLOADS. It never stores a map.
+
+- `GET /v1/health`
+- `GET /v1/skill` — this repo's [SKILL.md](SKILL.md)
+- `GET /v1/mesh` — PROXY suite mesh status. Default OFF. Never enables.
+- `GET /v1/mesh/nodes` — PROXY Live Nodes roster
+- `POST /v1/mesh/{enable,disable,join,heartbeat,leave,broadcast}` — PROXY. Bearer required to enable.
+- `GET /v1/example` — synthetic cards
+- `POST /v1/{pin,span,stack,gap,fork,walk,lens,class,cohort,absence,cap,join}`
+- OpenAPI: `/openapi.json`
+- MCP: this Worker `/mcp` and catalog `https://aziel-runtime.vibelock.workers.dev/mcp`
+
+FragGate (when the catalog lists it): `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call`. Softwares bucket **Plain**.
+
+Always send `User-Agent: Mozilla/5.0`. Empty agents can 403.
+
+Works with ChatGPT (GPT Actions / OpenAI), Grok (xAI), Venice, Claude (Anthropic), Cursor (MCP), Glama (MCP), Perplexity, Microsoft Copilot / Bing, Google Gemini / Vertex, Mistral, Meta AI, Apple Intelligence surfaces, Amazon Q tooling, DuckAssist, You.com, Cohere, and other MCP/OpenAPI-capable assistants.
+
+OpenAPI import (GPT Actions, custom tools, HTTP tools):
+`https://aziel-runtime.vibelock.workers.dev/openapi.json`
+
+MCP remote: `POST https://aziel-runtime.vibelock.workers.dev/mcp`
+
+Example:
+
+```bash
+curl -s -A 'Mozilla/5.0' https://4dmap-download-tracker.vibelock.workers.dev/v1/health
+curl -s -A 'Mozilla/5.0' https://4dmap-download-tracker.vibelock.workers.dev/v1/mesh
+curl -s -A 'Mozilla/5.0' -X POST https://4dmap-download-tracker.vibelock.workers.dev/v1/pin \
+  -H 'content-type: application/json' \
+  -d '{"t":"2026-09-10T00:00:00Z","src":"synthetic","note":"synthetic T pin"}'
+```
+
+## Papers
+
+- Paper (markdown): [docs/4DM-WP-1.0.md](docs/4DM-WP-1.0.md)
+- PDF companion note: [docs/PDF-COMPANION.md](docs/PDF-COMPANION.md)
+- License: Apache-2.0. Creator: Eliab, Aziel. No invented DOI.
+
+## Tests
+
+```bash
+python -m pytest -q
+```
+
+Card hash, illegal join refuse, fork keep, and Π-EMPTY are covered.
+
+## Use with AI clients
+
+Works with ChatGPT (GPT Actions / OpenAI), Grok (xAI), Venice, Claude (Anthropic), Cursor (MCP), Glama (MCP), Perplexity, Microsoft Copilot / Bing, Google Gemini / Vertex, Mistral, Meta AI, Apple Intelligence surfaces, Amazon Q tooling, DuckAssist, You.com, Cohere, and other MCP/OpenAPI-capable assistants.
+
+Catalog OpenAPI: https://aziel-runtime.vibelock.workers.dev/openapi.json
+Catalog MCP: `POST https://aziel-runtime.vibelock.workers.dev/mcp`
+This Worker skill: https://4dmap-download-tracker.vibelock.workers.dev/v1/skill
+This Worker OpenAPI: https://4dmap-download-tracker.vibelock.workers.dev/openapi.json
+Suite mesh `/v1/mesh/*` PROXY via `AZIEL_RUNTIME` (default OFF; GET never enables; QNM-BUILD-1.0 live|locked|isolated; QNS-CD-1.0 cite only; no Node Gate; no public qnsd proxy). Local qnsd is [qnm-node](https://github.com/AzielEliab/qnm-node). Runtime cites live in [aziel-runtime](https://github.com/AzielEliab/aziel-runtime).
+
+Import the catalog or Worker OpenAPI as a custom tool, GPT Action, or HTTP tool. Connect MCP remotes in Cursor, Glama, and other MCP clients. Always send `User-Agent: Mozilla/5.0`.
+
+## Cite this
+
+Aziel Eliab. 4DMap. https://github.com/AzielEliab/4dmap. https://4dmap-download-tracker.vibelock.workers.dev.
+
+- Catalog: https://aziel-runtime.vibelock.workers.dev/
+- Worker homepage: https://4dmap-download-tracker.vibelock.workers.dev/
+- Counted download (gzip HTTP 200, no 302): https://4dmap-download-tracker.vibelock.workers.dev/download
+- GitHub: https://github.com/AzielEliab/4dmap
+- Citation JSON: https://4dmap-download-tracker.vibelock.workers.dev/cite.json
