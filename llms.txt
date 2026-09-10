@@ -1,0 +1,28 @@
+# 4DMap
+
+Inspection coordinate frame (4DM-WP-1.0) version 0.2.0.
+Author: Aziel Eliab. Softwares bucket: Plain. Apache-2.0.
+
+THIS IS: a four-axis inspection frame T/Δ/Γ/Π after AZPIPE.
+4DM-CARD receipts. Fail-closed SHA-256. Forks kept. ZionPattern cap 75%.
+Π-EMPTY when the lens is silent. Companion softwares
+(TemporalLock, StaticClock, ChronoLock, TrajectoryLock, SpectralLock)
+are inspection inputs only — cite, do not merge.
+
+THIS IS NOT: a truth engine; Lumen; GIS 4D; a Node Gate; certified
+forensics; an identity store; a Softwares door.
+domains_are_doors: false. FragGate is THE single door.
+Suite mesh default OFF. GET /v1/mesh never enables.
+
+LIVE_OPS: health, skill, pin, span, stack, gap, fork, walk, lens,
+class, cohort, absence, cap, join, list, example, card_new, card_pin,
+card_span, card_join, card_walk, card_list, verify_hash, card_export,
+card_import, frame_status, axis_describe, walk_trace, verify_chain.
+
+Agent path: fraggate_list → fraggate_describe slug=4dmap → fraggate_call.
+Worker: https://4dmap-download-tracker.vibelock.workers.dev/
+Skill: https://4dmap-download-tracker.vibelock.workers.dev/v1/skill
+OpenAPI: https://4dmap-download-tracker.vibelock.workers.dev/openapi.json
+Catalog MCP: https://aziel-runtime.vibelock.workers.dev/mcp
+
+Always send User-Agent Mozilla/5.0.

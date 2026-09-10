@@ -12,6 +12,7 @@ import {
   HOST,
   LIMITATION,
   LIVE_OPS,
+  MASTER33,
   PIPELINE,
   PIPELINE_NOTE,
   PRODUCT,
@@ -34,7 +35,7 @@ description: Use this when inspecting time as four axes (T clock, Δ interval, �
 
 Four-axis temporal mapping and pattern mapping (4DM-WP-1.0). Author: **Aziel Eliab**.
 
-**THIS IS:** an inspection coordinate frame. 4DM-CARD receipts (id, t, delta, gamma, pi, prev, src, h, note). Ops pin / span / stack / gap / fork / walk / lens / class / cohort / absence / cap / join. Typed joins T↔Δ, Δ↔Γ, Γ↔Π, T↔Π. Fail-closed SHA-256. Forks kept. ZionPattern cap 75%. Π-EMPTY when the lens is silent.
+**THIS IS:** an inspection coordinate frame (0.2.0). 4DM-CARD receipts (id, t, delta, gamma, pi, prev, src, h, note) plus axis receipts. Ops pin / span / stack / gap / fork / walk / lens / class / cohort / absence / cap / join plus card_new / card_export / card_import / frame_status / axis_describe / walk_trace / verify_chain / verify_hash. Typed joins T↔Δ, Δ↔Γ, Γ↔Π, T↔Π cite TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock as inspection inputs only. Fail-closed SHA-256. Forks kept. ZionPattern cap 75%. Π-EMPTY when the lens is silent. Not a Softwares door (\`domains_are_doors:false\`). FragGate is THE single door.
 
 **THIS IS NOT:** a truth engine; Lumen; GIS 4D; a Node Gate; certified forensics; an identity store. Receipts are not truth. No legal name, home, or county on cards. Π→T backdate, intent, and identity leak refuse.
 
@@ -59,7 +60,12 @@ Host: \`https://4dmap-download-tracker.vibelock.workers.dev\`
 | GET | \`/v1/mesh/nodes\` | PROXY Live Nodes roster. |
 | POST | \`/v1/mesh/{enable,disable,join,heartbeat,leave,broadcast}\` | PROXY. Bearer required to enable. |
 | GET | \`/v1/example\` | Synthetic cards. Not a real case. |
+| GET | \`/v1/frame_status\` | MASTER-33 inspection-frame status. Not a door. |
+| GET | \`/v1/axis_describe\` | T/Δ/Γ/Π + companion cites. |
+| GET | \`/llms.txt\` | Agent-oriented skill text. |
 | POST | \`/v1/{pin,span,stack,gap,fork,walk,lens,class,cohort,absence,cap,join}\` | Stateless card ops. |
+| POST | \`/v1/{card_new,card_pin,card_span,card_join,card_walk,card_list,verify_hash}\` | FragGate aliases. |
+| POST | \`/v1/{card_export,card_import,frame_status,axis_describe,walk_trace,verify_chain}\` | 0.2.0 read/write ops. |
 
 OpenAPI: \`https://4dmap-download-tracker.vibelock.workers.dev/openapi.json\`
 
@@ -68,7 +74,7 @@ Catalog OpenAPI: \`https://aziel-runtime.vibelock.workers.dev/openapi.json\`
 MCP: \`POST https://4dmap-download-tracker.vibelock.workers.dev/mcp\`
 also \`POST https://aziel-runtime.vibelock.workers.dev/mcp\`
 
-FragGate is LIVE on aziel-runtime: \`fraggate_list\` → \`fraggate_describe slug=4dmap\` → \`fraggate_call\` (\`card_new\` / \`card_pin\` / \`card_span\` / \`card_join\` / \`card_walk\` / \`card_list\` / \`verify_hash\`). Softwares bucket **Plain**. Hubs list 4DMap.
+FragGate is LIVE on aziel-runtime: \`fraggate_list\` → \`fraggate_describe slug=4dmap\` → \`fraggate_call\` (\`card_new\` / \`card_pin\` / \`card_span\` / \`card_join\` / \`card_walk\` / \`card_list\` / \`verify_hash\` plus \`card_export\` / \`card_import\` / \`frame_status\` / \`axis_describe\` / \`walk_trace\` / \`verify_chain\`). Softwares bucket **Plain**. Hubs list 4DMap. Agent path remains FragGate only. 4DMap is not an extra door.
 
 ## How to call (Mozilla/5.0)
 
@@ -163,6 +169,26 @@ function openapiSpec(origin) {
       "/v1/cap": opDoc("cap", "ZionPattern cap 75%"),
       "/v1/join": opDoc("join", "Typed join; Π→T backdate refuses"),
       "/v1/list": opDoc("list", "List cards + forks"),
+      "/v1/card_new": opDoc("card_new", "Create a 4DM-CARD on any axis"),
+      "/v1/card_pin": opDoc("card_pin", "FragGate alias of pin"),
+      "/v1/card_span": opDoc("card_span", "FragGate alias of span"),
+      "/v1/card_join": opDoc("card_join", "FragGate alias of join"),
+      "/v1/card_walk": opDoc("card_walk", "FragGate alias of walk"),
+      "/v1/card_list": opDoc("card_list", "FragGate alias of list"),
+      "/v1/verify_hash": opDoc("verify_hash", "Verify one 4DM-CARD hash"),
+      "/v1/card_export": opDoc("card_export", "Export 4DM-CARD JSON"),
+      "/v1/card_import": opDoc("card_import", "Import 4DM-CARD JSON (fail-closed)"),
+      "/v1/frame_status": {
+        get: { operationId: "fourdmap_frame_status_get", summary: "MASTER-33 inspection-frame status. Not a door.", responses: { "200": { description: "frame" } } },
+        post: opDoc("frame_status", "MASTER-33 inspection-frame status. Not a door.").post,
+      },
+      "/v1/axis_describe": {
+        get: { operationId: "fourdmap_axis_describe_get", summary: "Describe T/Δ/Γ/Π + companion cites.", responses: { "200": { description: "axes" } } },
+        post: opDoc("axis_describe", "Describe T/Δ/Γ/Π + companion cites.").post,
+      },
+      "/v1/walk_trace": opDoc("walk_trace", "Walk prev chain with axis receipts"),
+      "/v1/verify_chain": opDoc("verify_chain", "Verify a prev-hash chain fail-closed"),
+      "/llms.txt": { get: { operationId: "fourdmap_llms", summary: "Agent-oriented skill text.", responses: { "200": { description: "text" } } } },
       ...meshOpenApiPaths(),
     },
   };
@@ -284,6 +310,11 @@ export async function handleRuntimeApi(request, url) {
       gis: false,
       node_gate: false,
       certified_forensics: false,
+      domains_are_doors: false,
+      sequential_gate: false,
+      software_door: false,
+      role: "inspection",
+      master: "MASTER-33",
       limitation: LIMITATION,
       guardrail: GUARDRAIL,
       pipeline: PIPELINE,
@@ -292,6 +323,7 @@ export async function handleRuntimeApi(request, url) {
       author: AUTHOR,
       mesh: meshPointer(),
       ops: LIVE_OPS,
+      frame: MASTER33,
     });
   }
   if (path === "/v1/skill" && request.method === "GET") {
@@ -312,6 +344,31 @@ export async function handleRuntimeApi(request, url) {
     return html(aiHtml(originOf(request)));
   }
   if (path === "/v1/mesh" || path.startsWith("/v1/mesh/")) return null;
+  if ((path === "/llms.txt" || path === "/llms") && request.method === "GET") {
+    return new Response(SKILL, {
+      status: 200,
+      headers: {
+        "Content-Type": "text/plain; charset=utf-8",
+        "Cache-Control": "private, no-store",
+        ...corsHeaders(),
+      },
+    });
+  }
+  if (path === "/v1/frame_status" && request.method === "GET") {
+    try {
+      return json(displayEnvelope("frame_status", await runOp("frame_status", {}, [])));
+    } catch (err) {
+      return json({ error: String(err && err.message ? err.message : err) }, 400);
+    }
+  }
+  if (path === "/v1/axis_describe" && request.method === "GET") {
+    try {
+      const axis = url.searchParams.get("axis") || "";
+      return json(displayEnvelope("axis_describe", await runOp("axis_describe", axis ? { axis } : {}, [])));
+    } catch (err) {
+      return json({ error: String(err && err.message ? err.message : err) }, 400);
+    }
+  }
   if (path === "/v1/example" && request.method === "GET") {
     try {
       return json(await runOp("example", {}, []));
@@ -336,7 +393,7 @@ export async function handleRuntimeApi(request, url) {
     }
   }
   if (path.startsWith("/v1/") || path === "/v1") {
-    return json({ error: "not found", hint: "GET /v1/health  GET /v1/skill  GET /v1/example  POST /v1/pin|/span|/join|/fork|/walk|/lens|/cap  GET /v1/mesh", limitation: LIMITATION, stored: false }, 404);
+    return json({ error: "not found", hint: "GET /v1/health  GET /v1/skill  GET /v1/example  GET /v1/frame_status  GET /v1/axis_describe  POST /v1/pin|/span|/join|/walk_trace|/card_export|/verify_chain  GET /v1/mesh", limitation: LIMITATION, stored: false }, 404);
   }
   return null;
 }

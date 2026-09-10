@@ -1,15 +1,45 @@
-"""4DMap ops: pin, span, stack, gap, fork, walk, lens, class, cohort, absence, cap, join.
+"""4DMap ops: pin/span/walk across T/Δ/Γ/Π plus FragGate-safe 0.2.0 ops.
 
 Author: Aziel Eliab only.
 """
 
 from __future__ import annotations
 
+import json
 from typing import Any
 
-from .card import CardError, make_card, verify_card
+from .card import (
+    CardError,
+    axis_of,
+    card_receipt,
+    companion_cite,
+    make_card,
+    normalize_axis,
+    verify_card,
+)
 from .joins import join_cards
-from .scope import PI_EMPTY, ZION_CAP
+from .scope import (
+    AXIS_FRAME,
+    AXIS_GLYPH,
+    AUTHOR,
+    BUCKET,
+    COMPANIONS,
+    GUARDRAIL,
+    LIMITATION,
+    LIVE_OPS,
+    MASTER33,
+    OP_ALIASES,
+    PI_EMPTY,
+    PIPELINE,
+    PIPELINE_NOTE,
+    PRODUCT,
+    PRODUCT_NAME,
+    REFUSE_OPS,
+    SCHEMA,
+    SPEC,
+    ZION_CAP,
+    __version__,
+)
 from .store import MapStore
 
 
@@ -17,7 +47,23 @@ def envelope(op: str, result: dict[str, Any]) -> dict[str, Any]:
     title = f"4DMap {op}"
     summary = result.get("message") or result.get("note") or ("ok" if result.get("ok", True) else "refused")
     fields = []
-    for key in ("ok", "code", "id", "h", "join", "pi", "score", "capped", "forks_kept"):
+    for key in (
+        "ok",
+        "code",
+        "id",
+        "h",
+        "join",
+        "pi",
+        "score",
+        "capped",
+        "forks_kept",
+        "axis",
+        "glyph",
+        "n",
+        "verified",
+        "format",
+        "role",
+    ):
         if key in result:
             fields.append({"label": key, "value": str(result[key])})
     return {
@@ -31,18 +77,52 @@ def envelope(op: str, result: dict[str, Any]) -> dict[str, Any]:
     }
 
 
+def _with_receipt(result: dict[str, Any]) -> dict[str, Any]:
+    card = result.get("card")
+    if isinstance(card, dict):
+        result.setdefault("receipt", card_receipt(card))
+        result.setdefault("axis", result["receipt"]["axis"])
+        result.setdefault("glyph", result["receipt"]["glyph"])
+    return result
+
+
 def pin(payload: dict[str, Any], store: MapStore | None = None) -> dict[str, Any]:
-    card = make_card(
-        t=payload.get("t"),
-        src=str(payload.get("src") or "operator"),
-        note=str(payload.get("note") or "T pin"),
-        prev=payload.get("prev"),
-        id=payload.get("id"),
-        pi=PI_EMPTY,
-    )
+    axis = normalize_axis(payload.get("axis") or "T")
+    src = str(payload.get("src") or "operator")
+    note = str(payload.get("note") or f"{AXIS_GLYPH[axis]} pin")
+    kwargs: dict[str, Any] = {
+        "src": src,
+        "note": note,
+        "prev": payload.get("prev"),
+        "id": payload.get("id"),
+        "pi": PI_EMPTY,
+    }
+    if axis == "T":
+        kwargs["t"] = payload.get("t")
+    elif axis == "DELTA":
+        kwargs["delta"] = payload.get("delta") or {"change": payload.get("value") or payload.get("t")}
+        kwargs["t"] = payload.get("t")
+    elif axis == "GAMMA":
+        kwargs["gamma"] = payload.get("gamma") or {"geometry": payload.get("value") or payload.get("t")}
+        kwargs["t"] = payload.get("t")
+    else:
+        kwargs["pi"] = payload.get("pi") if payload.get("pi") is not None else (payload.get("value") or PI_EMPTY)
+        kwargs["t"] = payload.get("t")
+    card = make_card(**kwargs)
     if store is not None:
         store.add(card)
-    return {"ok": True, "op": "pin", "axis": "T", "card": card, "id": card["id"], "h": card["h"]}
+    return _with_receipt(
+        {
+            "ok": True,
+            "op": "pin",
+            "axis": axis,
+            "glyph": AXIS_GLYPH[axis],
+            "card": card,
+            "id": card["id"],
+            "h": card["h"],
+            "companion": companion_cite(src, axis),
+        }
+    )
 
 
 def span(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
@@ -50,16 +130,42 @@ def span(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
     right = store.by_id(str(payload.get("to_id") or payload.get("b") or ""))
     verify_card(left)
     verify_card(right)
+    from_axis = axis_of(left)
+    to_axis = axis_of(right)
+    src = str(payload.get("src") or "operator")
+    delta = {
+        "from": left.get("id"),
+        "to": right.get("id"),
+        "from_t": left.get("t"),
+        "to_t": right.get("t"),
+        "from_axis": from_axis,
+        "to_axis": to_axis,
+        "from_glyph": AXIS_GLYPH[from_axis],
+        "to_glyph": AXIS_GLYPH[to_axis],
+    }
     card = make_card(
         t=None,
-        delta={"from": left.get("id"), "to": right.get("id"), "from_t": left.get("t"), "to_t": right.get("t")},
-        src=str(payload.get("src") or "operator"),
+        delta=delta,
+        src=src,
         note=str(payload.get("note") or "Δ span"),
         prev=str(right.get("h") or left.get("h")),
         pi=PI_EMPTY,
     )
     store.add(card)
-    return {"ok": True, "op": "span", "axis": "DELTA", "card": card, "id": card["id"], "h": card["h"]}
+    cites = [c for c in (companion_cite(left.get("src"), from_axis), companion_cite(right.get("src"), to_axis), companion_cite(src, "DELTA")) if c]
+    return _with_receipt(
+        {
+            "ok": True,
+            "op": "span",
+            "axis": "DELTA",
+            "glyph": "Δ",
+            "card": card,
+            "id": card["id"],
+            "h": card["h"],
+            "cites": cites,
+            "companions_merged": False,
+        }
+    )
 
 
 def stack(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
@@ -75,7 +181,7 @@ def stack(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
         pi=PI_EMPTY,
     )
     store.add(stacked)
-    return {"ok": True, "op": "stack", "axis": "GAMMA", "card": stacked, "id": stacked["id"], "h": stacked["h"]}
+    return _with_receipt({"ok": True, "op": "stack", "axis": "GAMMA", "glyph": "Γ", "card": stacked, "id": stacked["id"], "h": stacked["h"]})
 
 
 def gap(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
@@ -87,7 +193,7 @@ def gap(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
         pi=PI_EMPTY,
     )
     store.add(card)
-    return {"ok": True, "op": "gap", "axis": "DELTA", "card": card, "id": card["id"], "h": card["h"]}
+    return _with_receipt({"ok": True, "op": "gap", "axis": "DELTA", "glyph": "Δ", "card": card, "id": card["id"], "h": card["h"]})
 
 
 def fork(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
@@ -104,22 +210,52 @@ def fork(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
     )
     store.add(sibling)
     forks = store.forks()
-    return {
-        "ok": True,
-        "op": "fork",
-        "card": sibling,
-        "id": sibling["id"],
-        "h": sibling["h"],
-        "forks_kept": True,
-        "winner": None,
-        "forks": forks,
-    }
+    return _with_receipt(
+        {
+            "ok": True,
+            "op": "fork",
+            "card": sibling,
+            "id": sibling["id"],
+            "h": sibling["h"],
+            "forks_kept": True,
+            "winner": None,
+            "forks": forks,
+        }
+    )
+
+
+def _trace_steps(chain: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    steps = []
+    for i, card in enumerate(chain):
+        axis = axis_of(card)
+        steps.append(
+            {
+                "i": i,
+                "id": card.get("id"),
+                "h": card.get("h"),
+                "prev": card.get("prev"),
+                "axis": axis,
+                "glyph": AXIS_GLYPH[axis],
+                "src": card.get("src"),
+                "companion": companion_cite(card.get("src"), axis),
+                "note": card.get("note"),
+            }
+        )
+    return steps
 
 
 def walk(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
     tip = str(payload.get("tip") or payload.get("id") or "")
     chain = store.walk(tip)
-    return {"ok": True, "op": "walk", "tip": tip, "cards": chain, "n": len(chain), "forks": store.forks()}
+    return {
+        "ok": True,
+        "op": "walk",
+        "tip": tip,
+        "cards": chain,
+        "n": len(chain),
+        "forks": store.forks(),
+        "steps": _trace_steps(chain),
+    }
 
 
 def lens(payload: dict[str, Any], store: MapStore | None = None) -> dict[str, Any]:
@@ -148,7 +284,7 @@ def classify(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
         prev=payload.get("prev"),
     )
     store.add(card)
-    return {"ok": True, "op": "class", "pi": card["pi"], "card": card, "id": card["id"], "h": card["h"]}
+    return _with_receipt({"ok": True, "op": "class", "pi": card["pi"], "card": card, "id": card["id"], "h": card["h"]})
 
 
 def cohort(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
@@ -162,7 +298,7 @@ def cohort(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
         prev=payload.get("prev"),
     )
     store.add(card)
-    return {"ok": True, "op": "cohort", "card": card, "id": card["id"], "h": card["h"]}
+    return _with_receipt({"ok": True, "op": "cohort", "card": card, "id": card["id"], "h": card["h"]})
 
 
 def absence(payload: dict[str, Any], store: MapStore | None = None) -> dict[str, Any]:
@@ -204,6 +340,204 @@ def join(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
     return out
 
 
+def card_new(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    card = make_card(
+        id=payload.get("id"),
+        t=payload.get("t"),
+        delta=payload.get("delta"),
+        gamma=payload.get("gamma"),
+        pi=payload.get("pi"),
+        prev=payload.get("prev"),
+        src=str(payload.get("src") or "operator"),
+        note=str(payload.get("note") or "4DM-CARD"),
+        expected_h=payload.get("expected_h") or payload.get("h"),
+    )
+    store.add(card)
+    return _with_receipt({"ok": True, "op": "card_new", "card": card, "id": card["id"], "h": card["h"]})
+
+
+def verify_hash(payload: dict[str, Any], store: MapStore | None = None) -> dict[str, Any]:
+    card = payload.get("card")
+    if card is None and store is not None and (payload.get("id") or payload.get("h")):
+        if payload.get("id"):
+            card = store.by_id(str(payload["id"]))
+        else:
+            card = store.by_hash(str(payload["h"]))
+    if not isinstance(card, dict):
+        raise CardError("HASH_FAIL", "fail-closed: card is not an object")
+    checked = verify_card(card)
+    return {"ok": True, "op": "verify_hash", **checked, "receipt": card_receipt(card)}
+
+
+def card_export(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    cards = store.as_list()
+    for card in cards:
+        verify_card(card)
+    bundle = {
+        "format": "4DM-CARD-JSON",
+        "schema": SCHEMA,
+        "spec": SPEC,
+        "version": __version__,
+        "product": PRODUCT,
+        "author": AUTHOR,
+        "role": "inspection",
+        "domains_are_doors": False,
+        "cards": cards,
+        "n": len(cards),
+        "forks": store.forks(),
+    }
+    return {"ok": True, "op": "card_export", **bundle, "bundle": bundle}
+
+
+def card_import(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    raw = payload.get("bundle") if payload.get("bundle") is not None else payload.get("json")
+    if raw is None:
+        raw = payload
+    if isinstance(raw, str):
+        raw = json.loads(raw)
+    if isinstance(raw, list):
+        incoming = raw
+    elif isinstance(raw, dict):
+        if isinstance(raw.get("cards"), list):
+            incoming = raw["cards"]
+        elif isinstance(raw.get("bundle"), dict) and isinstance(raw["bundle"].get("cards"), list):
+            incoming = raw["bundle"]["cards"]
+        elif raw.get("id") and raw.get("h"):
+            incoming = [raw]
+        else:
+            incoming = []
+    else:
+        raise CardError("IMPORT_REFUSE", "card_import expects a JSON object or card list")
+    imported = []
+    existing_h = {c.get("h") for c in store.as_list()}
+    for card in incoming:
+        if not isinstance(card, dict):
+            raise CardError("IMPORT_REFUSE", "each imported card must be an object")
+        verify_card(card)
+        if card.get("h") not in existing_h:
+            store.add(card)
+            existing_h.add(card.get("h"))
+        imported.append(card)
+    return {
+        "ok": True,
+        "op": "card_import",
+        "format": "4DM-CARD-JSON",
+        "n": len(imported),
+        "cards": imported,
+        "forks": store.forks(),
+        "receipts": [card_receipt(c) for c in imported],
+    }
+
+
+def frame_status(payload: dict[str, Any] | None = None, store: MapStore | None = None) -> dict[str, Any]:
+    _ = payload
+    n = len(store.as_list()) if store is not None else 0
+    companions = [
+        {
+            "software": info["software"],
+            "slug": slug,
+            "axes": list(info["axes"]),
+            "role": "inspection_input",
+            "cite_only": True,
+            "door": False,
+            "merged": False,
+        }
+        for slug, info in COMPANIONS.items()
+    ]
+    return {
+        "ok": True,
+        "op": "frame_status",
+        "product": PRODUCT,
+        "name": PRODUCT_NAME,
+        "version": __version__,
+        "spec": SPEC,
+        "schema": SCHEMA,
+        "bucket": BUCKET,
+        "author": AUTHOR,
+        "cards": n,
+        "live_ops": list(LIVE_OPS),
+        "refuse_ops": list(REFUSE_OPS),
+        "companions": companions,
+        "mesh": {"default_off": True, "get_enables": False, "node_gate": False},
+        "limitation": LIMITATION,
+        "guardrail": GUARDRAIL,
+        "pipeline": PIPELINE,
+        "pipeline_note": PIPELINE_NOTE,
+        **MASTER33,
+    }
+
+
+def axis_describe(payload: dict[str, Any] | None = None, store: MapStore | None = None) -> dict[str, Any]:
+    payload = payload or {}
+    wanted = payload.get("axis")
+    axes = {}
+    for key, frame in AXIS_FRAME.items():
+        if wanted and normalize_axis(wanted) != key:
+            continue
+        axes[key] = {
+            **frame,
+            "companions": [
+                {
+                    "software": COMPANIONS[slug]["software"],
+                    "slug": slug,
+                    "role": "inspection_input",
+                    "cite_only": True,
+                    "door": False,
+                    "merged": False,
+                }
+                for slug in frame["companions"]
+            ],
+            "ops": list(frame["ops"]),
+        }
+    if wanted and not axes:
+        raise CardError("AXIS_REFUSE", f"unknown axis {wanted!r}")
+    return {
+        "ok": True,
+        "op": "axis_describe",
+        "axis": normalize_axis(wanted) if wanted else None,
+        "axes": axes,
+        "role": "inspection",
+        "domains_are_doors": False,
+        "n": len(store.as_list()) if store is not None else 0,
+    }
+
+
+def walk_trace(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    walked = walk(payload, store)
+    steps = walked["steps"]
+    return {
+        "ok": True,
+        "op": "walk_trace",
+        "tip": walked["tip"],
+        "n": walked["n"],
+        "steps": steps,
+        "cards": walked["cards"],
+        "forks": walked["forks"],
+        "genesis": bool(steps) and str(steps[0].get("prev") or "").strip("0") == "",
+        "role": "inspection",
+    }
+
+
+def verify_chain(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    tip = str(payload.get("tip") or payload.get("id") or "")
+    chain = store.walk(tip)
+    hashes = []
+    for card in chain:
+        checked = verify_card(card)
+        hashes.append(checked["h"])
+    return {
+        "ok": True,
+        "op": "verify_chain",
+        "tip": tip,
+        "verified": len(hashes),
+        "n": len(hashes),
+        "hashes": hashes,
+        "broken": None,
+        "steps": _trace_steps(chain),
+        "forks": store.forks(),
+    }
+
+
 OPS = {
     "pin": pin,
     "span": span,
@@ -217,21 +551,38 @@ OPS = {
     "absence": absence,
     "cap": cap,
     "join": join,
+    "card_new": card_new,
+    "verify_hash": verify_hash,
+    "card_export": card_export,
+    "card_import": card_import,
+    "frame_status": frame_status,
+    "axis_describe": axis_describe,
+    "walk_trace": walk_trace,
+    "verify_chain": verify_chain,
 }
+
+
+def _refuse(op: str) -> None:
+    if op in REFUSE_OPS:
+        code, message = REFUSE_OPS[op]
+        raise CardError(code, message)
 
 
 def dispatch(op: str, payload: dict[str, Any] | None = None, cards: list[dict[str, Any]] | None = None) -> dict[str, Any]:
     payload = payload or {}
+    resolved = OP_ALIASES.get(op, op)
+    _refuse(op)
+    _refuse(resolved)
     store = MapStore(cards)
-    if op == "list":
-        return {"ok": True, "op": "list", "cards": store.as_list(), "forks": store.forks()}
-    fn = OPS.get(op)
+    if resolved in {"list", "card_list"}:
+        return {"ok": True, "op": "list", "cards": store.as_list(), "forks": store.forks(), "receipts": [card_receipt(c) for c in store.as_list()]}
+    if resolved == "example":
+        from .example import EXAMPLE_CARDS
+
+        return {"ok": True, "synthetic": True, "cards": EXAMPLE_CARDS, "limitation": LIMITATION}
+    fn = OPS.get(resolved)
     if fn is None:
         raise CardError("UNKNOWN_OP", f"unknown op {op}")
-    if op in {"pin"}:
-        return fn(payload, store)
-    if op in {"cap"}:
+    if resolved == "cap":
         return fn(payload)
-    if op in {"lens", "absence"}:
-        return fn(payload, store)
     return fn(payload, store)

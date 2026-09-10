@@ -4,7 +4,7 @@ from fourdmap.cli import main
 def test_version(capsys) -> None:
     assert main(["version"]) == 0
     out = capsys.readouterr().out
-    assert "4dmap 0.1.0" in out
+    assert "4dmap 0.2.0" in out
     assert "Aziel Eliab" in out
 
 

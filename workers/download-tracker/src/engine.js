@@ -4,7 +4,7 @@
  */
 export const PRODUCT = "4dmap";
 export const PRODUCT_NAME = "4DMap";
-export const VERSION = "0.1.0";
+export const VERSION = "0.2.0";
 export const SPEC = "4DM-WP-1.0";
 export const SCHEMA = "4DM-CARD";
 export const AUTHOR = "Aziel Eliab";
@@ -34,6 +34,61 @@ export const PIPELINE_NOTE =
 
 export const ALLOWED_JOINS = new Set(["T-DELTA", "DELTA-T", "DELTA-GAMMA", "GAMMA-DELTA", "GAMMA-PI", "PI-GAMMA", "T-PI"]);
 export const ILLEGAL_JOINS = new Set(["PI-T"]);
+export const TARBALL = "4dmap-0.2.0.tar.gz";
+
+export const COMPANIONS = {
+  temporallock: { software: "TemporalLock", slug: "temporallock", axes: ["T", "DELTA"], role: "inspection_input", cite_only: true, door: false, merged: false },
+  staticclock: { software: "StaticClock", slug: "staticclock", axes: ["T"], role: "inspection_input", cite_only: true, door: false, merged: false },
+  chronolock: { software: "ChronoLock", slug: "chronolock", axes: ["T", "DELTA"], role: "inspection_input", cite_only: true, door: false, merged: false },
+  trajectorylock: { software: "TrajectoryLock", slug: "trajectorylock", axes: ["GAMMA"], role: "inspection_input", cite_only: true, door: false, merged: false },
+  spectrallock: { software: "SpectralLock", slug: "spectrallock", axes: ["PI"], role: "inspection_input", cite_only: true, door: false, merged: false },
+};
+
+export const AXIS_FRAME = {
+  T: { glyph: "T", name: "Clock", meaning: "time / when a pin sits", companions: ["temporallock", "staticclock", "chronolock"], ops: ["pin", "card_pin", "span", "card_span", "walk", "walk_trace"] },
+  DELTA: { glyph: "Δ", name: "Interval", meaning: "delta / change / span or gap between pins", companions: ["temporallock", "chronolock"], ops: ["span", "card_span", "gap", "walk", "walk_trace"] },
+  GAMMA: { glyph: "Γ", name: "Trajectory", meaning: "pattern / geometry / stacked or walked motion of pins", companions: ["trajectorylock"], ops: ["stack", "walk", "walk_trace", "pin", "card_pin"] },
+  PI: { glyph: "Π", name: "Pattern", meaning: "provenance / path / class / cohort / absence / silence", companions: ["spectrallock"], ops: ["lens", "class", "cohort", "absence", "pin", "card_pin"] },
+};
+
+export const AXIS_GLYPH = { T: "T", DELTA: "Δ", GAMMA: "Γ", PI: "Π" };
+
+export const MASTER33 = {
+  master: "MASTER-33",
+  door: "fraggate",
+  fraggate_single_door: true,
+  domains_are_doors: false,
+  sequential_gate: false,
+  role: "inspection",
+  layer: "Internal Domain Layer",
+  after: "AZPIPE",
+  software_door: false,
+  fabric: false,
+  software_tab: true,
+  domain: "Research",
+  domain_id: "06",
+  note: "4DMap is a Research-domain inspection frame T/Δ/Γ/Π inside Internal Domain Layer after AZPIPE. Isolated software, not an additional door. Not a sequential gate. Not LIVE fabric. FragGate is THE single door.",
+};
+
+export const OP_ALIASES = {
+  card_pin: "pin",
+  card_span: "span",
+  card_join: "join",
+  card_walk: "walk",
+  card_list: "list",
+};
+
+export const REFUSE_OPS = {
+  truth_score: { code: "STUB_REFUSE", message: "truth_score is stub — 4DMap is not a truth engine" },
+  lumen_panel: { code: "STUB_REFUSE", message: "lumen_panel is stub — 4DMap is not Lumen" },
+  invent_mark: { code: "STUB_REFUSE", message: "invent_mark is stub — 4DMap does not invent marks" },
+  backdate_class: { code: "STUB_REFUSE", message: "backdate_class is stub — Π cannot rewrite T" },
+  wipe: { code: "FANTASY_OP", message: "destructive wipe is refused" },
+  purge: { code: "FANTASY_OP", message: "destructive purge is refused" },
+  delete_all: { code: "FANTASY_OP", message: "destructive delete_all is refused" },
+  merge_products: { code: "FANTASY_OP", message: "companion softwares are cite-only; products are not merged" },
+  enable_door: { code: "FANTASY_OP", message: "4DMap is not a Softwares door; FragGate remains THE single door" },
+};
 
 const FORBIDDEN_KEYS = new Set([
   "legal_name",
@@ -190,6 +245,96 @@ export function axisOf(card) {
   return "T";
 }
 
+export function normalizeAxis(raw) {
+  let text = String(raw || "T").trim().toUpperCase().replace(/\s+/g, "");
+  text = text.replace(/Δ/g, "DELTA").replace(/Γ/g, "GAMMA").replace(/Π/g, "PI");
+  const aliases = {
+    T: "T",
+    CLOCK: "T",
+    TIME: "T",
+    D: "DELTA",
+    DELTA: "DELTA",
+    INTERVAL: "DELTA",
+    CHANGE: "DELTA",
+    G: "GAMMA",
+    GAMMA: "GAMMA",
+    TRAJECTORY: "GAMMA",
+    GEOMETRY: "GAMMA",
+    PATTERN: "PI",
+    P: "PI",
+    PI: "PI",
+    PROVENANCE: "PI",
+    PATH: "PI",
+  };
+  const axis = aliases[text];
+  if (!axis) throw new CardError("AXIS_REFUSE", `unknown axis ${raw}; use T, Δ, Γ, or Π`);
+  return axis;
+}
+
+export function companionCite(src, axis) {
+  const key = String(src || "").trim().toLowerCase();
+  const info = COMPANIONS[key];
+  if (!info) return null;
+  const cite = {
+    software: info.software,
+    slug: info.slug,
+    axes: info.axes.slice(),
+    role: "inspection_input",
+    cite_only: true,
+    door: false,
+    merged: false,
+  };
+  if (axis) cite.axis = axis;
+  return cite;
+}
+
+export function cardReceipt(card) {
+  const axis = axisOf(card);
+  const src = String(card.src || "");
+  const frame = AXIS_FRAME[axis];
+  return {
+    schema: SCHEMA,
+    kind: "4DM-CARD",
+    id: card.id,
+    h: card.h,
+    axis,
+    glyph: AXIS_GLYPH[axis],
+    name: frame.name,
+    meaning: frame.meaning,
+    src,
+    companion: companionCite(src, axis),
+    role: "inspection",
+    door: false,
+    truth: false,
+  };
+}
+
+function withReceipt(result) {
+  if (result && result.card && typeof result.card === "object") {
+    result.receipt = result.receipt || cardReceipt(result.card);
+    if (result.axis == null) result.axis = result.receipt.axis;
+    if (result.glyph == null) result.glyph = result.receipt.glyph;
+  }
+  return result;
+}
+
+function traceSteps(chain) {
+  return (chain || []).map((card, i) => {
+    const axis = axisOf(card);
+    return {
+      i,
+      id: card.id,
+      h: card.h,
+      prev: card.prev,
+      axis,
+      glyph: AXIS_GLYPH[axis],
+      src: card.src,
+      companion: companionCite(card.src, axis),
+      note: card.note,
+    };
+  });
+}
+
 export function normalizeJoinType(raw) {
   let text = String(raw || "").trim().toUpperCase().replace(/\s+/g, "");
   text = text.replace(/Δ/g, "DELTA").replace(/Γ/g, "GAMMA").replace(/Π/g, "PI");
@@ -235,7 +380,27 @@ export async function joinCards(left, right, joinType, { backdate = false, note 
     src,
     note: note || `typed join ${leftAxis}-${rightAxis}`,
   });
-  return { ok: true, join: `${leftAxis}-${rightAxis}`, allowed: true, card, left: left.id, right: right.id };
+  const cites = [];
+  const seen = new Set();
+  for (const [citeSrc, citeAxis] of [[left.src, leftAxis], [right.src, rightAxis], [src, null]]) {
+    const cite = companionCite(citeSrc, citeAxis);
+    if (cite && !seen.has(cite.slug)) {
+      seen.add(cite.slug);
+      cites.push(cite);
+    }
+  }
+  return withReceipt({
+    ok: true,
+    join: `${leftAxis}-${rightAxis}`,
+    allowed: true,
+    card,
+    left: left.id,
+    right: right.id,
+    cites,
+    companions_merged: false,
+    second_door: false,
+    note: "typed join cites companion softwares as inspection inputs only",
+  });
 }
 
 export function findForks(cards) {
@@ -257,26 +422,59 @@ function byId(cards, id) {
 }
 
 export async function runOp(op, payload = {}, cards = []) {
-  const store = [...cards];
-  if (op === "pin") {
-    const card = await makeCard({ t: payload.t, src: payload.src || "operator", note: payload.note || "T pin", prev: payload.prev, id: payload.id, pi: PI_EMPTY });
-    return { ok: true, op: "pin", axis: "T", card, id: card.id, h: card.h };
+  const resolved = OP_ALIASES[op] || op;
+  if (REFUSE_OPS[op] || REFUSE_OPS[resolved]) {
+    const refused = REFUSE_OPS[op] || REFUSE_OPS[resolved];
+    throw new CardError(refused.code, refused.message);
   }
-  if (op === "span") {
+  const store = [...cards];
+  if (resolved === "pin") {
+    const axis = normalizeAxis(payload.axis || "T");
+    const src = payload.src || "operator";
+    const note = payload.note || `${AXIS_GLYPH[axis]} pin`;
+    const fields = { src, note, prev: payload.prev, id: payload.id, pi: PI_EMPTY };
+    if (axis === "T") fields.t = payload.t;
+    else if (axis === "DELTA") {
+      fields.delta = payload.delta || { change: payload.value || payload.t };
+      fields.t = payload.t;
+    } else if (axis === "GAMMA") {
+      fields.gamma = payload.gamma || { geometry: payload.value || payload.t };
+      fields.t = payload.t;
+    } else {
+      fields.pi = payload.pi != null ? payload.pi : payload.value || PI_EMPTY;
+      fields.t = payload.t;
+    }
+    const card = await makeCard(fields);
+    return withReceipt({ ok: true, op: "pin", axis, glyph: AXIS_GLYPH[axis], card, id: card.id, h: card.h, companion: companionCite(src, axis) });
+  }
+  if (resolved === "span") {
     const left = byId(store, String(payload.from_id || payload.a || ""));
     const right = byId(store, String(payload.to_id || payload.b || ""));
     await verifyCard(left);
     await verifyCard(right);
+    const fromAxis = axisOf(left);
+    const toAxis = axisOf(right);
+    const src = payload.src || "operator";
     const card = await makeCard({
-      delta: { from: left.id, to: right.id, from_t: left.t, to_t: right.t },
-      src: payload.src || "operator",
+      delta: {
+        from: left.id,
+        to: right.id,
+        from_t: left.t,
+        to_t: right.t,
+        from_axis: fromAxis,
+        to_axis: toAxis,
+        from_glyph: AXIS_GLYPH[fromAxis],
+        to_glyph: AXIS_GLYPH[toAxis],
+      },
+      src,
       note: payload.note || "Δ span",
       prev: String(right.h || left.h),
       pi: PI_EMPTY,
     });
-    return { ok: true, op: "span", axis: "DELTA", card, id: card.id, h: card.h };
+    const cites = [companionCite(left.src, fromAxis), companionCite(right.src, toAxis), companionCite(src, "DELTA")].filter(Boolean);
+    return withReceipt({ ok: true, op: "span", axis: "DELTA", glyph: "Δ", card, id: card.id, h: card.h, cites, companions_merged: false });
   }
-  if (op === "stack") {
+  if (resolved === "stack") {
     const ids = payload.ids || [];
     const picked = ids.map((i) => byId(store, String(i)));
     for (const c of picked) await verifyCard(c);
@@ -287,9 +485,9 @@ export async function runOp(op, payload = {}, cards = []) {
       prev: picked.length ? String(picked[picked.length - 1].h) : undefined,
       pi: PI_EMPTY,
     });
-    return { ok: true, op: "stack", axis: "GAMMA", card, id: card.id, h: card.h };
+    return withReceipt({ ok: true, op: "stack", axis: "GAMMA", glyph: "Γ", card, id: card.id, h: card.h });
   }
-  if (op === "gap") {
+  if (resolved === "gap") {
     const card = await makeCard({
       delta: { gap: true, from: payload.from_id || payload.t0, to: payload.to_id || payload.t1 },
       src: payload.src || "operator",
@@ -297,9 +495,9 @@ export async function runOp(op, payload = {}, cards = []) {
       prev: payload.prev,
       pi: PI_EMPTY,
     });
-    return { ok: true, op: "gap", axis: "DELTA", card, id: card.id, h: card.h };
+    return withReceipt({ ok: true, op: "gap", axis: "DELTA", glyph: "Δ", card, id: card.id, h: card.h });
   }
-  if (op === "fork") {
+  if (resolved === "fork") {
     const source = byId(store, String(payload.id || ""));
     await verifyCard(source);
     const sibling = await makeCard({
@@ -312,9 +510,9 @@ export async function runOp(op, payload = {}, cards = []) {
       note: payload.note || "fork kept",
     });
     const next = store.concat([sibling]);
-    return { ok: true, op: "fork", card: sibling, id: sibling.id, h: sibling.h, forks_kept: true, winner: null, forks: findForks(next) };
+    return withReceipt({ ok: true, op: "fork", card: sibling, id: sibling.id, h: sibling.h, forks_kept: true, winner: null, forks: findForks(next) });
   }
-  if (op === "walk") {
+  if (resolved === "walk" || resolved === "walk_trace") {
     const tip = String(payload.tip || payload.id || "");
     const seen = new Set();
     const chain = [];
@@ -329,38 +527,52 @@ export async function runOp(op, payload = {}, cards = []) {
       card = store.find((c) => c.h === prev) || null;
     }
     chain.reverse();
-    return { ok: true, op: "walk", tip, cards: chain, n: chain.length, forks: findForks(store) };
+    const steps = traceSteps(chain);
+    if (resolved === "walk_trace") {
+      return {
+        ok: true,
+        op: "walk_trace",
+        tip,
+        cards: chain,
+        n: chain.length,
+        forks: findForks(store),
+        steps,
+        genesis: Boolean(steps.length) && String(steps[0].prev || "").replace(/0/g, "") === "",
+        role: "inspection",
+      };
+    }
+    return { ok: true, op: "walk", tip, cards: chain, n: chain.length, forks: findForks(store), steps };
   }
-  if (op === "lens" || op === "absence") {
+  if (resolved === "lens" || resolved === "absence") {
     const query = String(payload.query || "").trim();
-    if (!query) return { ok: true, op, pi: PI_EMPTY, silent: true, note: "lens silent → Π-EMPTY" };
+    if (!query) return { ok: true, op: resolved, pi: PI_EMPTY, silent: true, note: "lens silent → Π-EMPTY" };
     const hits = [];
     for (const card of store.concat(payload.cards || [])) {
       const blob = ["id", "note", "src", "t", "pi"].map((k) => String(card[k] || "")).join(" ");
       if (blob.toLowerCase().includes(query.toLowerCase())) hits.push(card.id);
     }
-    if (!hits.length) return { ok: true, op, pi: PI_EMPTY, silent: true, note: "lens silent → Π-EMPTY" };
-    return { ok: true, op, pi: { class: "lens-hit", ids: hits }, silent: false, hits };
+    if (!hits.length) return { ok: true, op: resolved, pi: PI_EMPTY, silent: true, note: "lens silent → Π-EMPTY" };
+    return { ok: true, op: resolved, pi: { class: "lens-hit", ids: hits }, silent: false, hits };
   }
-  if (op === "class") {
+  if (resolved === "class") {
     const label = String(payload.label || "").trim();
     if (!label) return { ok: true, op: "class", pi: PI_EMPTY, silent: true };
     const card = await makeCard({ pi: { class: label }, src: payload.src || "operator", note: payload.note || `Π class ${label}`, prev: payload.prev });
-    return { ok: true, op: "class", pi: card.pi, card, id: card.id, h: card.h };
+    return withReceipt({ ok: true, op: "class", pi: card.pi, card, id: card.id, h: card.h });
   }
-  if (op === "cohort") {
+  if (resolved === "cohort") {
     const ids = (payload.ids || []).map(String);
     if (!ids.length) return { ok: true, op: "cohort", pi: PI_EMPTY, silent: true };
     const card = await makeCard({ pi: { cohort: ids }, src: payload.src || "operator", note: payload.note || "Π cohort", prev: payload.prev });
-    return { ok: true, op: "cohort", card, id: card.id, h: card.h };
+    return withReceipt({ ok: true, op: "cohort", card, id: card.id, h: card.h });
   }
-  if (op === "cap") {
+  if (resolved === "cap") {
     const score = Number(payload.score ?? payload.confidence ?? 0);
     if (!Number.isFinite(score)) throw new CardError("CAP_REFUSE", "score must be a number");
     const capped = Math.min(Math.max(score, 0), ZION_CAP);
     return { ok: true, op: "cap", score: capped, raw: score, capped: score > ZION_CAP, zion_cap: ZION_CAP, note: "ZionPattern cap 75%" };
   }
-  if (op === "join") {
+  if (resolved === "join") {
     const left = byId(store, String(payload.left || payload.a || ""));
     const right = byId(store, String(payload.right || payload.b || ""));
     return joinCards(left, right, payload.join_type || payload.type, {
@@ -369,8 +581,10 @@ export async function runOp(op, payload = {}, cards = []) {
       src: payload.src || "4dmap",
     });
   }
-  if (op === "list") return { ok: true, op: "list", cards: store, forks: findForks(store) };
-  if (op === "example") {
+  if (resolved === "list") {
+    return { ok: true, op: "list", cards: store, forks: findForks(store), receipts: store.map(cardReceipt) };
+  }
+  if (resolved === "example") {
     const pin = await makeCard({
       id: "4dm-example-pin",
       t: "2026-09-10T00:00:00Z",
@@ -381,12 +595,157 @@ export async function runOp(op, payload = {}, cards = []) {
     });
     return { ok: true, synthetic: true, cards: [pin], limitation: LIMITATION };
   }
+  if (resolved === "card_new") {
+    const card = await makeCard({
+      id: payload.id,
+      t: payload.t,
+      delta: payload.delta,
+      gamma: payload.gamma,
+      pi: payload.pi,
+      prev: payload.prev,
+      src: payload.src || "operator",
+      note: payload.note || "4DM-CARD",
+      expected_h: payload.expected_h || payload.h,
+    });
+    return withReceipt({ ok: true, op: "card_new", card, id: card.id, h: card.h });
+  }
+  if (resolved === "verify_hash") {
+    let card = payload.card;
+    if (!card && (payload.id || payload.h)) {
+      card = payload.id ? byId(store, String(payload.id)) : store.find((c) => c.h === payload.h);
+    }
+    const checked = await verifyCard(card);
+    return { ok: true, op: "verify_hash", ...checked, receipt: cardReceipt(card) };
+  }
+  if (resolved === "card_export") {
+    for (const card of store) await verifyCard(card);
+    const bundle = {
+      format: "4DM-CARD-JSON",
+      schema: SCHEMA,
+      spec: SPEC,
+      version: VERSION,
+      product: PRODUCT,
+      author: AUTHOR,
+      role: "inspection",
+      domains_are_doors: false,
+      cards: store,
+      n: store.length,
+      forks: findForks(store),
+    };
+    return { ok: true, op: "card_export", ...bundle, bundle };
+  }
+  if (resolved === "card_import") {
+    let raw = payload.bundle != null ? payload.bundle : payload.json;
+    if (raw == null) raw = payload;
+    if (typeof raw === "string") raw = JSON.parse(raw);
+    let incoming = [];
+    if (Array.isArray(raw)) incoming = raw;
+    else if (raw && typeof raw === "object") {
+      if (Array.isArray(raw.cards)) incoming = raw.cards;
+      else if (raw.bundle && Array.isArray(raw.bundle.cards)) incoming = raw.bundle.cards;
+      else if (raw.id && raw.h) incoming = [raw];
+    } else {
+      throw new CardError("IMPORT_REFUSE", "card_import expects a JSON object or card list");
+    }
+    const imported = [];
+    const existing = new Set(store.map((c) => c.h));
+    for (const card of incoming) {
+      if (!card || typeof card !== "object") throw new CardError("IMPORT_REFUSE", "each imported card must be an object");
+      await verifyCard(card);
+      if (!existing.has(card.h)) {
+        store.push(card);
+        existing.add(card.h);
+      }
+      imported.push(card);
+    }
+    return { ok: true, op: "card_import", format: "4DM-CARD-JSON", n: imported.length, cards: imported, forks: findForks(store), receipts: imported.map(cardReceipt) };
+  }
+  if (resolved === "frame_status") {
+    const companions = Object.entries(COMPANIONS).map(([slug, info]) => ({
+      software: info.software,
+      slug,
+      axes: info.axes.slice(),
+      role: "inspection_input",
+      cite_only: true,
+      door: false,
+      merged: false,
+    }));
+    return {
+      ok: true,
+      op: "frame_status",
+      product: PRODUCT,
+      name: PRODUCT_NAME,
+      version: VERSION,
+      spec: SPEC,
+      schema: SCHEMA,
+      bucket: BUCKET,
+      author: AUTHOR,
+      cards: store.length,
+      live_ops: LIVE_OPS.slice(),
+      refuse_ops: Object.keys(REFUSE_OPS),
+      companions,
+      mesh: { default_off: true, get_enables: false, node_gate: false },
+      limitation: LIMITATION,
+      guardrail: GUARDRAIL,
+      pipeline: PIPELINE,
+      pipeline_note: PIPELINE_NOTE,
+      ...MASTER33,
+    };
+  }
+  if (resolved === "axis_describe") {
+    const wanted = payload.axis;
+    const axes = {};
+    for (const [key, frame] of Object.entries(AXIS_FRAME)) {
+      if (wanted && normalizeAxis(wanted) !== key) continue;
+      axes[key] = {
+        ...frame,
+        companions: frame.companions.map((slug) => ({
+          software: COMPANIONS[slug].software,
+          slug,
+          role: "inspection_input",
+          cite_only: true,
+          door: false,
+          merged: false,
+        })),
+        ops: frame.ops.slice(),
+      };
+    }
+    return {
+      ok: true,
+      op: "axis_describe",
+      axis: wanted ? normalizeAxis(wanted) : null,
+      axes,
+      role: "inspection",
+      domains_are_doors: false,
+      n: store.length,
+    };
+  }
+  if (resolved === "verify_chain") {
+    const tip = String(payload.tip || payload.id || "");
+    const walked = await runOp("walk", { tip }, store);
+    const hashes = [];
+    for (const card of walked.cards) {
+      const checked = await verifyCard(card);
+      hashes.push(checked.h);
+    }
+    return {
+      ok: true,
+      op: "verify_chain",
+      tip,
+      verified: hashes.length,
+      n: hashes.length,
+      hashes,
+      broken: null,
+      steps: walked.steps,
+      forks: walked.forks,
+    };
+  }
   throw new CardError("UNKNOWN_OP", `unknown op ${op}`);
 }
 
 export function displayEnvelope(op, result) {
   const fields = [];
-  for (const key of ["ok", "code", "id", "h", "join", "pi", "score", "capped", "forks_kept"]) {
+  for (const key of ["ok", "code", "id", "h", "join", "pi", "score", "capped", "forks_kept", "axis", "glyph", "n", "verified", "format", "role"]) {
     if (result && result[key] !== undefined) fields.push({ label: key, value: String(result[key]) });
   }
   return {
@@ -400,4 +759,34 @@ export function displayEnvelope(op, result) {
   };
 }
 
-export const LIVE_OPS = ["health", "skill", "pin", "span", "stack", "gap", "fork", "walk", "lens", "class", "cohort", "absence", "cap", "join", "list", "example"];
+export const LIVE_OPS = [
+  "health",
+  "skill",
+  "pin",
+  "span",
+  "stack",
+  "gap",
+  "fork",
+  "walk",
+  "lens",
+  "class",
+  "cohort",
+  "absence",
+  "cap",
+  "join",
+  "list",
+  "example",
+  "card_new",
+  "card_pin",
+  "card_span",
+  "card_join",
+  "card_walk",
+  "card_list",
+  "verify_hash",
+  "card_export",
+  "card_import",
+  "frame_status",
+  "axis_describe",
+  "walk_trace",
+  "verify_chain",
+];

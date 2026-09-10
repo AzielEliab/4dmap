@@ -32,6 +32,9 @@ Python 3.10+. pytest is the dev extra. No network.
    no Node Gate; no auto-heal; not anonymity.
 10. Softwares bucket is **Plain** (not Gate, not Lock).
 11. New behavior needs a test that fails without the change.
+12. 4DMap is an inspection frame (`domains_are_doors:false`). Do not make it a Softwares door. FragGate stays THE single door.
+13. Companion softwares (TemporalLock, StaticClock, ChronoLock, TrajectoryLock, SpectralLock) are cite-only inspection inputs. Do not merge products.
+14. Do not enable mesh by default. GET `/v1/mesh` never enables.
 
 ## Where to change things
 

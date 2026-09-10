@@ -81,18 +81,31 @@ No legal name, home, or county may appear on a card.
 
 | Op | Axis / effect |
 |----|----------------|
-| `pin` | write a T clock |
-| `span` | write a Δ between two pins |
+| `pin` / `card_pin` | write a pin on T, Δ, Γ, or Π (default T) |
+| `span` / `card_span` | write a Δ between two cards; records from/to axes |
 | `stack` | write a Γ stack |
 | `gap` | write a Δ absence of span |
 | `fork` | sibling with the same `prev`; **both branches kept**; no winner |
-| `walk` | follow `prev` from a tip |
+| `walk` / `card_walk` | follow `prev` from a tip |
+| `walk_trace` | walk with per-step axis / src / companion cite |
+| `verify_chain` | fail-closed hash check of a `prev` chain |
+| `verify_hash` | fail-closed check of one 4DM-CARD |
 | `lens` | inspect Π; silent → `Π-EMPTY` |
 | `class` | Π class (not identity) |
 | `cohort` | Π grouping |
 | `absence` | Π absence; silent → `Π-EMPTY` |
 | `cap` | ZionPattern confidence **capped at 75%** |
-| `join` | typed join or refuse |
+| `join` / `card_join` | typed join or refuse; companion softwares cited, not merged |
+| `card_new` | construct a 4DM-CARD on any axis |
+| `card_list` | list cards + receipts |
+| `card_export` | export a 4DM-CARD-JSON bundle |
+| `card_import` | import JSON; fail-closed hashes |
+| `frame_status` | MASTER-33 inspection-frame status (`domains_are_doors:false`) |
+| `axis_describe` | describe T/Δ/Γ/Π and cite-only companions |
+
+Refused (not LIVE): `truth_score`, `lumen_panel`, `invent_mark`, `backdate_class`, `wipe`, `purge`, `delete_all`, `merge_products`, `enable_door`.
+
+Companion cites (inspection inputs only): TemporalLock, StaticClock, ChronoLock, TrajectoryLock, SpectralLock. Functional pairing / cite. Do not merge products. Do not invent a second door. FragGate remains THE single door.
 
 ---
 

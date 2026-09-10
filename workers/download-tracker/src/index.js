@@ -362,7 +362,7 @@ export default {
       });
     }
     if ((url.pathname === "/sitemap.xml" || url.pathname === "/sitemap.xml/") && request.method === "GET") {
-      const locs = [HOST + "/", HOST + "/download", HOST + "/install.sh", HOST + "/v1/skill", HOST + "/v1/mesh", HOST + "/openapi.json", GITHUB_REPO];
+      const locs = [HOST + "/", HOST + "/download", HOST + "/install.sh", HOST + "/v1/skill", HOST + "/v1/mesh", HOST + "/v1/frame_status", HOST + "/openapi.json", HOST + "/llms.txt", GITHUB_REPO];
       const xml =
         '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
         locs.map((u) => "  <url><loc>" + u + "</loc></url>").join("\n") +
@@ -377,12 +377,16 @@ export default {
         author: "Aziel Eliab",
         title: "4DMap",
         spec: "4DM-WP-1.0",
+        version: "0.2.0",
         github: GITHUB_REPO,
         download: HOST + "/download",
         doi: null,
         license: "Apache-2.0",
         catalog: "https://aziel-runtime.vibelock.workers.dev/",
         bucket: "Plain",
+        role: "inspection",
+        domains_are_doors: false,
+        door: "fraggate",
       });
     }
     return json({ error: "not found" }, 404);

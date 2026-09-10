@@ -45,10 +45,12 @@ def _build_parser() -> argparse.ArgumentParser:
         p.add_argument("--cards", help="JSON file of existing cards")
         p.add_argument("-o", "--output", help="Write JSON result")
 
-    p_pin = sub.add_parser("pin", help="Pin a T clock card")
-    p_pin.add_argument("--t", required=True)
+    p_pin = sub.add_parser("pin", help="Pin a T/Δ/Γ/Π card")
+    p_pin.add_argument("--t", default=None)
+    p_pin.add_argument("--axis", default="T")
     p_pin.add_argument("--src", default="operator")
     p_pin.add_argument("--note", default="T pin")
+    p_pin.add_argument("--value", default=None)
     add_cards(p_pin)
 
     p_span = sub.add_parser("span", help="Span Δ between two pins")
@@ -79,6 +81,26 @@ def _build_parser() -> argparse.ArgumentParser:
 
     p_demo = sub.add_parser("demo", help="Run the synthetic example (not a real case)")
     p_demo.add_argument("-o", "--output")
+
+    p_export = sub.add_parser("export", help="Export 4DM-CARD JSON")
+    add_cards(p_export)
+    p_import = sub.add_parser("import", help="Import 4DM-CARD JSON (fail-closed hashes)")
+    p_import.add_argument("--bundle", required=True, help="JSON file to import")
+    add_cards(p_import)
+    p_frame = sub.add_parser("frame-status", help="Inspection-frame status (MASTER-33)")
+    add_cards(p_frame)
+    p_axis = sub.add_parser("axis-describe", help="Describe T/Δ/Γ/Π + companion cites")
+    p_axis.add_argument("--axis", default=None)
+    add_cards(p_axis)
+    p_trace = sub.add_parser("walk-trace", help="Walk prev chain with axis receipts")
+    p_trace.add_argument("--tip", required=True)
+    add_cards(p_trace)
+    p_chain = sub.add_parser("verify-chain", help="Verify a prev-hash chain")
+    p_chain.add_argument("--tip", required=True)
+    add_cards(p_chain)
+    p_vh = sub.add_parser("verify-hash", help="Verify one 4DM-CARD hash")
+    p_vh.add_argument("--id", default=None)
+    add_cards(p_vh)
     return parser
 
 
@@ -119,9 +141,23 @@ def main(argv: Sequence[str] | None = None) -> int:
             return _write(result, args.output)
         if args.command == "cap":
             return _write(dispatch("cap", {"score": args.score}), None)
+        op_map = {
+            "export": "card_export",
+            "import": "card_import",
+            "frame-status": "frame_status",
+            "axis-describe": "axis_describe",
+            "walk-trace": "walk_trace",
+            "verify-chain": "verify_chain",
+            "verify-hash": "verify_hash",
+        }
+        op = op_map.get(args.command, args.command)
         cards = _load_cards(getattr(args, "cards", None))
-        payload = {k: v for k, v in vars(args).items() if k not in {"command", "cards", "output"} and v is not None}
-        result = dispatch(args.command, payload, cards)
+        payload = {k: v for k, v in vars(args).items() if k not in {"command", "cards", "output", "bundle"} and v is not None}
+        if args.command == "import":
+            payload["bundle"] = _load_cards(args.bundle)
+            if isinstance(payload["bundle"], list):
+                payload = {"cards": payload["bundle"]}
+        result = dispatch(op, payload, cards)
         result["cards_out"] = cards
         if "card" in result:
             cards = cards + [result["card"]]
