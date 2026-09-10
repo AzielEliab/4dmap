@@ -16,13 +16,7 @@ cross-map only. QNS/QNM do not carry 4DMap photons. No Node Gate.
 No public qnsd proxy. No auto-heal. Not anonymity. Human UI Live Nodes
 strip polls `GET /v1/mesh`. Softwares bucket **Plain**.
 
-Create the KV namespace before first deploy:
-
-```bash
-wrangler kv namespace create 4DMAP_DOWNLOADS
-```
-
-Then replace `id` in `wrangler.toml`.
+KV namespace `4DMAP_DOWNLOADS` id `e962292069794bcc8cb89e3f559cfa43` (binding `DOWNLOADS`). Already live — do not recreate.
 
 Host: https://4dmap-download-tracker.vibelock.workers.dev
 

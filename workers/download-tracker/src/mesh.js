@@ -210,22 +210,14 @@ export function emptyMesh(extra = {}) {
   return {
     ok: true,
     code: extra.code || "MESH-OK",
-    spec: QNM_SPEC,
     kernel: MESH_KERNEL,
     enabled: false,
     default_off: true,
     live_nodes: 0,
     status: extra.status || "off",
     source: extra.source || "fallback",
-    node_gate: false,
-    auto_heal: false,
-    anonymity_network: false,
-    author: MESH_IDENTITY,
-    identity: MESH_IDENTITY,
     note: MESH_NOTE,
     door: MESH_PATH,
-    qns_cd_spec: QNS_CD_SPEC,
-    qns_cd: QNS_CD,
     ...extra,
     spec: QNM_SPEC,
     rollup,
@@ -496,8 +488,14 @@ async function originFetch(env, pathAndQuery, init, request) {
   const door_url = joinOriginUrl(runtimeOrigin(env), path);
   const bind = runtimeService(env);
   if (bind) {
-    const res = await bind.fetch(new Request(SERVICE_BINDING_ORIGIN + path, next));
-    return { res, via: "service-binding", door_url };
+    try {
+      const res = await bind.fetch(new Request(SERVICE_BINDING_ORIGIN + path, next));
+      if (res && res.ok) return { res, via: "service-binding", door_url };
+      // Local wrangler often has AZIEL_RUNTIME [not connected]. GET never enables;
+      // fall through to the public origin instead of surfacing a raw 503.
+    } catch {
+      /* fall through to HTTP */
+    }
   }
 
   try {
