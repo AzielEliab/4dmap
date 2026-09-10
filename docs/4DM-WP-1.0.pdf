@@ -9,7 +9,7 @@ endobj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
 endobj
 4 0 obj
-<< /Length 2651 >>
+<< /Length 2706 >>
 stream
 BT
 /F1 10 Tf
@@ -55,12 +55,12 @@ BT
 1 0 0 1 48 214 Tm () Tj
 1 0 0 1 48 200 Tm (## Pipeline placement) Tj
 1 0 0 1 48 186 Tm () Tj
-1 0 0 1 48 172 Tm (4DMap is **not** inserted as another sequential gate. It sits at the) Tj
-1 0 0 1 48 158 Tm (**domain-door / inspection frame**:) Tj
+1 0 0 1 48 172 Tm (4DMap is **not** inserted as another sequential gate. It sits in the) Tj
+1 0 0 1 48 158 Tm (**Internal Domain Layer** as an **inspection frame** \(`domains_are_doors:false`\):) Tj
 1 0 0 1 48 144 Tm () Tj
 1 0 0 1 48 130 Tm (```) Tj
 1 0 0 1 48 116 Tm (PUBLIC/AGENTS/UI ? FragGate ? SweepGate ? ChainLock-IN ? DecisionGATE ? AZPIPE) Tj
-1 0 0 1 48 102 Tm (  ? Domain Doors \(isolated engines\)  ???  4DMap inspection cards sit HERE as) Tj
+1 0 0 1 48 102 Tm (  ? Internal Domain Layer \(isolated softwares; domains_are_doors:false\)  ???  4DMap) Tj
 ET
 endstream
 endobj
@@ -74,9 +74,9 @@ xref
 0000000058 00000 n 
 0000000115 00000 n 
 0000000241 00000 n 
-0000002944 00000 n 
+0000002999 00000 n 
 trailer
 << /Size 6 /Root 1 0 R >>
 startxref
-3012
+3067
 %%EOF

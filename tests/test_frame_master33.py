@@ -40,6 +40,10 @@ def test_frame_status_matches_master33() -> None:
     assert "wipe" in status["refuse_ops"]
     slugs = {c["slug"] for c in status["companions"]}
     assert slugs == {"temporallock", "staticclock", "chronolock", "trajectorylock", "spectrallock"}
+    assert "akm" not in slugs
+    assert status["akm"]["software_tab"] is False
+    assert status["akm"]["door"] is False
+    assert "memory_cite" in status["live_ops"]
     assert all(c["cite_only"] and c["door"] is False and c["merged"] is False for c in status["companions"])
 
 
@@ -58,6 +62,9 @@ def test_pipeline_copy_not_hop_gate() -> None:
     assert "not a hop gate" in PIPELINE.lower() or "not a hop gate" in PIPELINE_NOTE.lower()
     assert "AZPIPE" in PIPELINE
     assert "FragGate" in PIPELINE or "FragGate" in PIPELINE_NOTE
+    assert "Domain Door" not in PIPELINE
+    assert "domain-door" not in PIPELINE_NOTE
+    assert "domains_are_doors:false" in PIPELINE or "domains_are_doors:false" in PIPELINE_NOTE
 
 
 def test_repo_docs_keep_inspection_framing() -> None:
@@ -75,3 +82,7 @@ def test_repo_docs_keep_inspection_framing() -> None:
     assert 'VERSION = "0.2.0"' in engine
     assert "4dmap-0.2.0.tar.gz" in home
     assert "GET never enables" in readme
+    for blob in (readme, skill, paper, home, engine):
+        assert "Domain Door" not in blob
+        assert "Domain Doors" not in blob
+        assert "domain-door" not in blob

@@ -131,7 +131,7 @@ export function renderHomepage({ views, downloads, breakdown, github, asset }) {
   <p class="byline">Aziel Eliab only</p>
   <p class="motto">Four-axis inspection coordinate frame. T Clock · Δ Interval · Γ Trajectory · Π Pattern. Not a truth engine.</p>
   <p class="banner" role="note">${escapeHtml(LIMITATION)}</p>
-  <p class="note">Pipeline strip — 4DMap sits at Domain Doors as a read-side frame, not a hop gate.</p>
+  <p class="note">Pipeline strip — 4DMap sits in the Internal Domain Layer as a read-side inspection frame (domains_are_doors:false), not a hop gate.</p>
   <pre class="pipe" id="pipeline">${escapeHtml(PIPELINE)}
 
 ${escapeHtml(PIPELINE_NOTE)}</pre>
@@ -240,7 +240,10 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
       <button class="btn gold" type="button" id="frame-btn">Frame status</button>
       <button class="btn gold" type="button" id="axis-btn">Axis describe</button>
       <button class="btn gold" type="button" id="export-btn">Export JSON</button>
+      <button class="btn gold" type="button" id="memory-cite-btn" title="Optional AKM-TRIAD-1.0 fabric cite. Not a Softwares slug.">Cite memory</button>
+      <button class="btn gold" type="button" id="memory-observe-btn" title="Build FragGate memory_observe packet. Posterior ≠ truth.">Observe card</button>
     </p>
+    <p class="note">AKM-TRIAD-1.0 is LIVE fabric behind FragGate — not a Softwares-tab product, not a second door. Cite/observe leaves the 4DM-CARD unchanged. Posterior ≠ truth. No history rewrite.</p>
     <form id="import-form" autocomplete="off">
       <label for="import-json">Import 4DM-CARD JSON (fail-closed hashes)</label>
       <textarea id="import-json" placeholder='{"cards":[...]}'></textarea>
@@ -378,6 +381,7 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
         });
         var list = $("card-list");
         list.innerHTML = "";
+        var pinIds = [];
         cards.forEach(function (c) {
           var col = $("col-"+axisOf(c));
           var d = document.createElement("div");
@@ -387,7 +391,13 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
           var li = document.createElement("li");
           li.textContent = (c.id||"") + " · " + axisOf(c) + " · " + (c.src||"") + " · " + String(c.h||"").slice(0,16);
           list.appendChild(li);
+          if (axisOf(c) === "T") pinIds.push(c.id);
         });
+        if (pinIds.length >= 2) {
+          if (!$("span-from").value) $("span-from").value = pinIds[pinIds.length - 2];
+          if (!$("span-to").value) $("span-to").value = pinIds[pinIds.length - 1];
+        }
+        if (cards.length && !$("walk-tip").value) $("walk-tip").value = cards[cards.length - 1].id;
       }
       function showReceipt(inner) {
         var box = $("receipt-box");
@@ -437,6 +447,8 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
       $("chain-btn").onclick = function () { call("verify_chain", { tip: $("walk-tip").value }); };
       $("frame-btn").onclick = function () { call("frame_status", {}); };
       $("axis-btn").onclick = function () { call("axis_describe", {}); };
+      $("memory-cite-btn").onclick = function () { call("memory_cite", { id: $("walk-tip").value }); };
+      $("memory-observe-btn").onclick = function () { call("memory_observe", { id: $("walk-tip").value }); };
       $("export-btn").onclick = async function () {
         var inner = await call("card_export", {});
         if (inner && inner.bundle) $("import-json").value = JSON.stringify(inner.bundle, null, 2);

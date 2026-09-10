@@ -38,6 +38,7 @@ Host: `https://4dmap-download-tracker.vibelock.workers.dev`
 | POST | `/v1/{pin,span,stack,gap,fork,walk,lens,class,cohort,absence,cap,join}` | Stateless card ops. |
 | POST | `/v1/{card_new,card_pin,card_span,card_join,card_walk,card_list,verify_hash}` | FragGate aliases. |
 | POST | `/v1/{card_export,card_import,frame_status,axis_describe,walk_trace,verify_chain}` | 0.2.0 read/write ops. |
+| POST | `/v1/{memory_cite,memory_observe}` | Optional AKM-TRIAD-1.0 fabric cite/observe. Not a Softwares slug. |
 
 OpenAPI: `https://4dmap-download-tracker.vibelock.workers.dev/openapi.json`
 
@@ -46,7 +47,7 @@ Catalog OpenAPI: `https://aziel-runtime.vibelock.workers.dev/openapi.json`
 MCP: `POST https://4dmap-download-tracker.vibelock.workers.dev/mcp`
 also `POST https://aziel-runtime.vibelock.workers.dev/mcp`
 
-FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call` (`card_new` / `card_pin` / `card_span` / `card_join` / `card_walk` / `card_list` / `verify_hash` plus `card_export` / `card_import` / `frame_status` / `axis_describe` / `walk_trace` / `verify_chain`). Softwares bucket **Plain**. Hubs list 4DMap. Agent path remains FragGate only. 4DMap is not an extra door.
+FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call` (`card_new` / `card_pin` / `card_span` / `card_join` / `card_walk` / `card_list` / `verify_hash` plus `card_export` / `card_import` / `frame_status` / `axis_describe` / `walk_trace` / `verify_chain` / `memory_cite` / `memory_observe`). Softwares bucket **Plain**. Hubs list 4DMap. Agent path remains FragGate only. 4DMap is not an extra door. AKM-TRIAD-1.0 is LIVE fabric (not a Softwares-tab product): optional card cite/observe only; posterior ≠ truth; no history rewrite. Memory writes stay on FragGate `memory_*` / `POST /v1/memory/*`.
 
 ## How to call (Mozilla/5.0)
 

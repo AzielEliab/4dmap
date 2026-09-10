@@ -101,6 +101,12 @@ def _build_parser() -> argparse.ArgumentParser:
     p_vh = sub.add_parser("verify-hash", help="Verify one 4DM-CARD hash")
     p_vh.add_argument("--id", default=None)
     add_cards(p_vh)
+    p_mc = sub.add_parser("memory-cite", help="Optional AKM-TRIAD-1.0 fabric cite (card unchanged)")
+    p_mc.add_argument("--id", required=True)
+    add_cards(p_mc)
+    p_mo = sub.add_parser("memory-observe", help="Build FragGate memory_observe packet from a card")
+    p_mo.add_argument("--id", required=True)
+    add_cards(p_mo)
     return parser
 
 
@@ -149,6 +155,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             "walk-trace": "walk_trace",
             "verify-chain": "verify_chain",
             "verify-hash": "verify_hash",
+            "memory-cite": "memory_cite",
+            "memory-observe": "memory_observe",
         }
         op = op_map.get(args.command, args.command)
         cards = _load_cards(getattr(args, "cards", None))

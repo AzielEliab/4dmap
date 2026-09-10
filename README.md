@@ -30,13 +30,14 @@ Public identity **Aziel Eliab** only. GodLock is a sibling product name elsewher
 
 ## Pipeline placement
 
-4DMap is **not** another sequential gate. It is a **domain-door / inspection frame**:
+4DMap is **not** another sequential gate. It is an **inspection frame** in the Internal Domain Layer (`domains_are_doors:false`):
 
 ```
 PUBLIC/AGENTS/UI → FragGate → SweepGate → ChainLock-IN → DecisionGATE → AZPIPE
-  → Domain Doors (isolated engines)  ←──  4DMap inspection cards sit HERE as
-       a read-side coordinate frame over TemporalLock/StaticClock/ChronoLock/
-       TrajectoryLock/SpectralLock evidence (not a hop gate)
+  → Internal Domain Layer (isolated softwares; domains_are_doors:false)  ←──  4DMap
+       inspection cards sit HERE as a read-side coordinate frame over
+       TemporalLock/StaticClock/ChronoLock/TrajectoryLock/SpectralLock evidence
+       (not a hop gate; not a door)
   → TemporalLock → StaticClock → ChainLock-OUT → RESPONSE/RECEIPT
 ```
 
@@ -118,10 +119,11 @@ The Worker hosts a **stateless** JSON API. It does not increment DOWNLOADS. It n
 - `POST /v1/{pin,span,stack,gap,fork,walk,lens,class,cohort,absence,cap,join}`
 - `POST /v1/{card_new,card_pin,card_span,card_join,card_walk,card_list,verify_hash}`
 - `POST /v1/{card_export,card_import,frame_status,axis_describe,walk_trace,verify_chain}`
+- `POST /v1/{memory_cite,memory_observe}` — optional AKM-TRIAD-1.0 fabric cite/observe (not a Softwares slug; posterior ≠ truth; no history rewrite)
 - OpenAPI: `/openapi.json`
 - MCP: this Worker `/mcp` and catalog `https://aziel-runtime.vibelock.workers.dev/mcp`
 
-FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call` (`card_new` / `card_pin` / `card_span` / `card_join` / `card_walk` / `card_list` / `verify_hash` plus `card_export` / `card_import` / `frame_status` / `axis_describe` / `walk_trace` / `verify_chain`). Softwares bucket **Plain**. Hubs list 4DMap. Agent path remains FragGate only. 4DMap is an inspection frame after AZPIPE, not an extra door (`domains_are_doors:false`).
+FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call` (`card_new` / `card_pin` / `card_span` / `card_join` / `card_walk` / `card_list` / `verify_hash` plus `card_export` / `card_import` / `frame_status` / `axis_describe` / `walk_trace` / `verify_chain` / `memory_cite` / `memory_observe`). Softwares bucket **Plain**. Hubs list 4DMap. Agent path remains FragGate only. 4DMap is an inspection frame after AZPIPE, not an extra door (`domains_are_doors:false`). AKM-TRIAD-1.0 is LIVE fabric, not a Softwares-tab product.
 
 Always send `User-Agent: Mozilla/5.0`. Empty agents can 403.
 

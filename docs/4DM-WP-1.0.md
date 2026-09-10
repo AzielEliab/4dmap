@@ -40,18 +40,19 @@ name elsewhere. Never attach a GodLock-plus-AZ identity label.
 
 ## Pipeline placement
 
-4DMap is **not** inserted as another sequential gate. It sits at the
-**domain-door / inspection frame**:
+4DMap is **not** inserted as another sequential gate. It sits in the
+**Internal Domain Layer** as an **inspection frame** (`domains_are_doors:false`):
 
 ```
 PUBLIC/AGENTS/UI → FragGate → SweepGate → ChainLock-IN → DecisionGATE → AZPIPE
-  → Domain Doors (isolated engines)  ←──  4DMap inspection cards sit HERE as
-       a read-side coordinate frame over TemporalLock/StaticClock/ChronoLock/
-       TrajectoryLock/SpectralLock evidence (not a hop gate)
+  → Internal Domain Layer (isolated softwares; domains_are_doors:false)  ←──  4DMap
+       inspection cards sit HERE as a read-side coordinate frame over
+       TemporalLock/StaticClock/ChronoLock/TrajectoryLock/SpectralLock evidence
+       (not a hop gate; not a door)
   → TemporalLock → StaticClock → ChainLock-OUT → RESPONSE/RECEIPT
 ```
 
-Engines and operator UI write/read 4DM cards on the domain-door side.
+Engines and operator UI write/read 4DM cards in the Internal Domain Layer.
 FragGate may cite a join type on a grounded claim. ChainLock may stamp
 a walk when the operator seals. The public mesh GET never enables.
 
@@ -102,10 +103,14 @@ No legal name, home, or county may appear on a card.
 | `card_import` | import JSON; fail-closed hashes |
 | `frame_status` | MASTER-33 inspection-frame status (`domains_are_doors:false`) |
 | `axis_describe` | describe T/Δ/Γ/Π and cite-only companions |
+| `memory_cite` | optional AKM-TRIAD-1.0 fabric cite; card unchanged |
+| `memory_observe` | build a FragGate `memory_observe` packet from a 4DM-CARD |
 
-Refused (not LIVE): `truth_score`, `lumen_panel`, `invent_mark`, `backdate_class`, `wipe`, `purge`, `delete_all`, `merge_products`, `enable_door`.
+Refused (not LIVE): `truth_score`, `lumen_panel`, `invent_mark`, `backdate_class`, `wipe`, `purge`, `delete_all`, `merge_products`, `enable_door`, `akm`, `akm_triad`, `memory_rewrite`, `posterior_truth`.
 
 Companion cites (inspection inputs only): TemporalLock, StaticClock, ChronoLock, TrajectoryLock, SpectralLock. Functional pairing / cite. Do not merge products. Do not invent a second door. FragGate remains THE single door.
+
+AKM-TRIAD-1.0 (Adaptive Knowledge Memory) is **LIVE fabric** on aziel-runtime — not a Softwares-tab product, not a 4DMap companion slug, not a second door. Optional cite/observe of inspection cards only. Bayesian 3-of-4 triad E/C/P/B. Posterior ≠ truth. No history rewrite. Agent writes stay on FragGate `memory_*` / `POST /v1/memory/observe|resolve|calibrate|recall`.
 
 ---
 

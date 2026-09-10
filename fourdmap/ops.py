@@ -18,9 +18,11 @@ from .card import (
     verify_card,
 )
 from .joins import join_cards
+from .memory import cite_card, observe_card
 from .scope import (
     AXIS_FRAME,
     AXIS_GLYPH,
+    AKM,
     AUTHOR,
     BUCKET,
     COMPANIONS,
@@ -459,6 +461,7 @@ def frame_status(payload: dict[str, Any] | None = None, store: MapStore | None =
         "refuse_ops": list(REFUSE_OPS),
         "companions": companions,
         "mesh": {"default_off": True, "get_enables": False, "node_gate": False},
+        "akm": AKM,
         "limitation": LIMITATION,
         "guardrail": GUARDRAIL,
         "pipeline": PIPELINE,
@@ -538,6 +541,23 @@ def verify_chain(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
     }
 
 
+def _card_from_payload(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    if isinstance(payload.get("card"), dict):
+        return payload["card"]
+    card_id = str(payload.get("id") or payload.get("tip") or "")
+    if card_id:
+        return store.by_id(card_id)
+    raise CardError("NOT_FOUND", "memory cite/observe needs a card id or card object")
+
+
+def memory_cite(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    return cite_card(_card_from_payload(payload, store), payload)
+
+
+def memory_observe(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    return observe_card(_card_from_payload(payload, store), payload)
+
+
 OPS = {
     "pin": pin,
     "span": span,
@@ -559,6 +579,8 @@ OPS = {
     "axis_describe": axis_describe,
     "walk_trace": walk_trace,
     "verify_chain": verify_chain,
+    "memory_cite": memory_cite,
+    "memory_observe": memory_observe,
 }
 
 

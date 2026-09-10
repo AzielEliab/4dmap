@@ -7,6 +7,7 @@ Author: Aziel Eliab only.
 from .card import CardError, digest, make_card, verify_card
 from .ops import dispatch
 from .scope import (
+    AKM,
     AUTHOR,
     BUCKET,
     GUARDRAIL,
@@ -22,6 +23,7 @@ from .scope import (
 )
 
 __all__ = [
+    "AKM",
     "AUTHOR",
     "BUCKET",
     "CardError",
