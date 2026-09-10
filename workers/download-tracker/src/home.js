@@ -240,7 +240,10 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
       <button class="btn gold" type="button" id="frame-btn">Frame status</button>
       <button class="btn gold" type="button" id="axis-btn">Axis describe</button>
       <button class="btn gold" type="button" id="export-btn">Export JSON</button>
+      <button class="btn gold" type="button" id="memory-cite-btn" title="Optional AKM-TRIAD-1.0 fabric cite. Not a Softwares slug.">Cite memory</button>
+      <button class="btn gold" type="button" id="memory-observe-btn" title="Build FragGate memory_observe packet. Posterior ≠ truth.">Observe card</button>
     </p>
+    <p class="note">AKM-TRIAD-1.0 is LIVE fabric behind FragGate — not a Softwares-tab product, not a second door. Cite/observe leaves the 4DM-CARD unchanged. Posterior ≠ truth. No history rewrite.</p>
     <form id="import-form" autocomplete="off">
       <label for="import-json">Import 4DM-CARD JSON (fail-closed hashes)</label>
       <textarea id="import-json" placeholder='{"cards":[...]}'></textarea>
@@ -444,6 +447,8 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
       $("chain-btn").onclick = function () { call("verify_chain", { tip: $("walk-tip").value }); };
       $("frame-btn").onclick = function () { call("frame_status", {}); };
       $("axis-btn").onclick = function () { call("axis_describe", {}); };
+      $("memory-cite-btn").onclick = function () { call("memory_cite", { id: $("walk-tip").value }); };
+      $("memory-observe-btn").onclick = function () { call("memory_observe", { id: $("walk-tip").value }); };
       $("export-btn").onclick = async function () {
         var inner = await call("card_export", {});
         if (inner && inner.bundle) $("import-json").value = JSON.stringify(inner.bundle, null, 2);

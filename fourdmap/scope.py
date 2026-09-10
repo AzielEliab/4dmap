@@ -103,6 +103,39 @@ AXIS_FRAME = {
     },
 }
 
+# AKM-TRIAD-1.0 is LIVE fabric on aziel-runtime — not a Softwares-tab product,
+# not a 4DMap companion slug, not a second door. Optional card cite/observe only.
+AKM = {
+    "spec": "AKM-TRIAD-1.0",
+    "name": "Adaptive Knowledge Memory",
+    "fabric": True,
+    "software_tab": False,
+    "door": False,
+    "slug": None,
+    "softwares_product": False,
+    "pairing": "optional cite/observe",
+    "posterior_is_truth": False,
+    "belief_is_not_truth": True,
+    "authorizes_action": False,
+    "history_rewrite": False,
+    "triad": ("E", "C", "P", "B"),
+    "triad_rule": "3-of-4",
+    "mcp": ("memory_observe", "memory_resolve", "memory_calibrate", "memory_recall", "memory_get"),
+    "http": (
+        "POST /v1/memory/observe",
+        "POST /v1/memory/resolve",
+        "POST /v1/memory/calibrate",
+        "POST /v1/memory/recall",
+    ),
+    "learn": "ChainLock learn",
+    "note": (
+        "LIVE fabric on aziel-runtime. Not a Softwares-tab product. Behind FragGate. "
+        "Optional 4DMap inspection-card cite/observe only. Bayesian 3-of-4 triad E/C/P/B. "
+        "Posterior ≠ truth. No history rewrite. Author: Aziel Eliab only."
+    ),
+    "author": AUTHOR,
+}
+
 # MASTER-33: 4DMap is an inspection frame after AZPIPE, not an extra door.
 MASTER33 = {
     "master": "MASTER-33",
@@ -155,6 +188,8 @@ LIVE_OPS = (
     "axis_describe",
     "walk_trace",
     "verify_chain",
+    "memory_cite",
+    "memory_observe",
 )
 
 OP_ALIASES = {
@@ -175,6 +210,10 @@ REFUSE_OPS = {
     "delete_all": ("FANTASY_OP", "destructive delete_all is refused"),
     "merge_products": ("FANTASY_OP", "companion softwares are cite-only; products are not merged"),
     "enable_door": ("FANTASY_OP", "4DMap is not a Softwares door; FragGate remains THE single door"),
+    "akm": ("AKM_SOFTWARE", "AKM-TRIAD-1.0 is LIVE fabric, not a Softwares-tab slug"),
+    "akm_triad": ("AKM_SOFTWARE", "AKM-TRIAD-1.0 is LIVE fabric, not a Softwares-tab slug"),
+    "memory_rewrite": ("AKM_REWRITE", "AKM-TRIAD-1.0 does not rewrite history"),
+    "posterior_truth": ("AKM_TRUTH", "posterior ≠ truth; 4DMap receipts are not truth"),
 }
 
 ALLOWED_JOINS = frozenset(

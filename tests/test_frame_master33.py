@@ -40,6 +40,10 @@ def test_frame_status_matches_master33() -> None:
     assert "wipe" in status["refuse_ops"]
     slugs = {c["slug"] for c in status["companions"]}
     assert slugs == {"temporallock", "staticclock", "chronolock", "trajectorylock", "spectrallock"}
+    assert "akm" not in slugs
+    assert status["akm"]["software_tab"] is False
+    assert status["akm"]["door"] is False
+    assert "memory_cite" in status["live_ops"]
     assert all(c["cite_only"] and c["door"] is False and c["merged"] is False for c in status["companions"])
 
 

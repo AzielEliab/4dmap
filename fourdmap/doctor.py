@@ -10,6 +10,7 @@ from .example import EXAMPLE_PIN
 from .joins import join_cards
 from .ops import cap, dispatch, lens
 from .scope import (
+    AKM,
     AUTHOR,
     GUARDRAIL,
     LIMITATION,
@@ -138,7 +139,7 @@ def _check_frame() -> Check:
         return _fail("frame", str(MASTER33))
     if MASTER33.get("software_door") is not False:
         return _fail("frame", "4DMap must not be a Softwares door")
-    needed = ("card_export", "card_import", "frame_status", "axis_describe", "walk_trace", "verify_chain")
+    needed = ("card_export", "card_import", "frame_status", "axis_describe", "walk_trace", "verify_chain", "memory_cite", "memory_observe")
     missing = [op for op in needed if op not in LIVE_OPS]
     if missing:
         return _fail("frame", f"missing LIVE_OPS {missing}")
@@ -153,6 +154,15 @@ def _check_frame() -> Check:
         return _fail("frame", "frame_status framing drifted")
     if status.get("mesh", {}).get("get_enables") is True:
         return _fail("frame", "mesh GET must never enable")
+    akm = status.get("akm") or {}
+    if akm.get("software_tab") is not False or akm.get("door") is not False:
+        return _fail("frame", "AKM must not be a Softwares slug or door")
+    if akm.get("posterior_is_truth") is True or akm.get("history_rewrite") is True:
+        return _fail("frame", "AKM posterior/history framing drifted")
+    if "akm" in {c.get("slug") for c in status.get("companions") or []}:
+        return _fail("frame", "AKM must not appear as a companion software")
+    if AKM.get("software_tab") is not False:
+        return _fail("frame", "AKM constant leaked onto Softwares tab")
     return _ok("frame", "MASTER-33 inspection frame; FragGate single door")
 
 

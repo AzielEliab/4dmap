@@ -81,6 +81,8 @@
     <button type="button" id="chain-btn">Verify chain</button>
     <button type="button" id="frame-btn">Frame status</button>
     <button type="button" id="export-btn">Export</button>
+    <button type="button" id="memory-cite-btn">Cite memory</button>
+    <button type="button" id="memory-observe-btn">Observe card</button>
   </form>
   <form id="import-form">
     <label>Import JSON <textarea id="import-json" placeholder='{"cards":[]}'></textarea></label>
@@ -137,6 +139,8 @@
     document.getElementById("trace-btn").onclick = () => call("walk_trace", { tip: document.getElementById("walk-tip").value });
     document.getElementById("chain-btn").onclick = () => call("verify_chain", { tip: document.getElementById("walk-tip").value });
     document.getElementById("frame-btn").onclick = () => call("frame_status", {});
+    document.getElementById("memory-cite-btn").onclick = () => call("memory_cite", { id: document.getElementById("walk-tip").value });
+    document.getElementById("memory-observe-btn").onclick = () => call("memory_observe", { id: document.getElementById("walk-tip").value });
     document.getElementById("export-btn").onclick = async () => {
       const j = await call("card_export", {});
       if (j.bundle) document.getElementById("import-json").value = JSON.stringify(j.bundle, null, 2);

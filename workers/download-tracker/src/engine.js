@@ -70,6 +70,28 @@ export const MASTER33 = {
   note: "4DMap is a Research-domain inspection frame T/Δ/Γ/Π inside Internal Domain Layer after AZPIPE. Isolated software, not an additional door. Not a sequential gate. Not LIVE fabric. FragGate is THE single door.",
 };
 
+export const AKM = {
+  spec: "AKM-TRIAD-1.0",
+  name: "Adaptive Knowledge Memory",
+  fabric: true,
+  software_tab: false,
+  door: false,
+  slug: null,
+  softwares_product: false,
+  pairing: "optional cite/observe",
+  posterior_is_truth: false,
+  belief_is_not_truth: true,
+  authorizes_action: false,
+  history_rewrite: false,
+  triad: ["E", "C", "P", "B"],
+  triad_rule: "3-of-4",
+  mcp: ["memory_observe", "memory_resolve", "memory_calibrate", "memory_recall", "memory_get"],
+  http: ["POST /v1/memory/observe", "POST /v1/memory/resolve", "POST /v1/memory/calibrate", "POST /v1/memory/recall"],
+  learn: "ChainLock learn",
+  note: "LIVE fabric on aziel-runtime. Not a Softwares-tab product. Behind FragGate. Optional 4DMap inspection-card cite/observe only. Bayesian 3-of-4 triad E/C/P/B. Posterior ≠ truth. No history rewrite. Author: Aziel Eliab only.",
+  author: AUTHOR,
+};
+
 export const OP_ALIASES = {
   card_pin: "pin",
   card_span: "span",
@@ -88,6 +110,10 @@ export const REFUSE_OPS = {
   delete_all: { code: "FANTASY_OP", message: "destructive delete_all is refused" },
   merge_products: { code: "FANTASY_OP", message: "companion softwares are cite-only; products are not merged" },
   enable_door: { code: "FANTASY_OP", message: "4DMap is not a Softwares door; FragGate remains THE single door" },
+  akm: { code: "AKM_SOFTWARE", message: "AKM-TRIAD-1.0 is LIVE fabric, not a Softwares-tab slug" },
+  akm_triad: { code: "AKM_SOFTWARE", message: "AKM-TRIAD-1.0 is LIVE fabric, not a Softwares-tab slug" },
+  memory_rewrite: { code: "AKM_REWRITE", message: "AKM-TRIAD-1.0 does not rewrite history" },
+  posterior_truth: { code: "AKM_TRUTH", message: "posterior ≠ truth; 4DMap receipts are not truth" },
 };
 
 const FORBIDDEN_KEYS = new Set([
@@ -316,6 +342,60 @@ function withReceipt(result) {
     if (result.glyph == null) result.glyph = result.receipt.glyph;
   }
   return result;
+}
+
+function refuseAkmAbuse(payload) {
+  const p = payload || {};
+  if (p.rewrite || p.history_rewrite || p.backdate) {
+    throw new CardError("AKM_REWRITE", "AKM-TRIAD-1.0 does not rewrite history; 4DM-CARD prev chain is fail-closed");
+  }
+  if (p.truth || p.posterior_is_truth === true) {
+    throw new CardError("AKM_TRUTH", "posterior ≠ truth; 4DMap receipts are not truth");
+  }
+  const slug = String(p.slug || p.software || "").trim().toLowerCase().replace(/_/g, "-");
+  if (p.software_tab || ["akm", "akm-triad", "akm-triad-1.0", "memory"].includes(slug)) {
+    throw new CardError("AKM_SOFTWARE", "AKM-TRIAD-1.0 is LIVE fabric, not a Softwares-tab slug or second door");
+  }
+}
+
+function observationFromCard(card, payload) {
+  const p = payload || {};
+  const axis = axisOf(card);
+  const fact = String(
+    p.fact
+    || `4DM-CARD ${card.id} axis=${axis} glyph=${AXIS_GLYPH[axis]} h=${card.h} src=${card.src} — inspection receipt, not truth`,
+  );
+  return {
+    kind: "memory_observation",
+    spec: AKM.spec,
+    subject: String(p.subject || `${PRODUCT}:${card.id}`),
+    fact,
+    memory_id: p.memory_id || null,
+    use_case: String(p.use_case || "4dmap-inspection-cite"),
+    card: { schema: SCHEMA, spec: SPEC, id: card.id, h: card.h, axis, glyph: AXIS_GLYPH[axis], src: card.src, prev: card.prev },
+    triad: AKM.triad.slice(),
+    triad_rule: AKM.triad_rule,
+    posterior_is_truth: false,
+    belief_is_not_truth: true,
+    authorizes_action: false,
+    history_rewrite: false,
+    software_tab: false,
+    door: false,
+    fabric: true,
+    learn: AKM.learn,
+    fraggate: "memory_observe",
+    http: "POST /v1/memory/observe",
+    note: AKM.note,
+    author: AKM.author,
+    fourdmap_version: VERSION,
+  };
+}
+
+function cardFromPayload(payload, store) {
+  if (payload.card && typeof payload.card === "object") return payload.card;
+  const id = String(payload.id || payload.tip || "");
+  if (id) return byId(store, id);
+  throw new CardError("NOT_FOUND", "memory cite/observe needs a card id or card object");
 }
 
 function traceSteps(chain) {
@@ -685,6 +765,7 @@ export async function runOp(op, payload = {}, cards = []) {
       refuse_ops: Object.keys(REFUSE_OPS),
       companions,
       mesh: { default_off: true, get_enables: false, node_gate: false },
+      akm: AKM,
       limitation: LIMITATION,
       guardrail: GUARDRAIL,
       pipeline: PIPELINE,
@@ -740,6 +821,55 @@ export async function runOp(op, payload = {}, cards = []) {
       forks: walked.forks,
     };
   }
+  if (resolved === "memory_cite") {
+    refuseAkmAbuse(payload);
+    const card = cardFromPayload(payload, store);
+    await verifyCard(card);
+    return {
+      ok: true,
+      op: "memory_cite",
+      id: card.id,
+      h: card.h,
+      receipt: cardReceipt(card),
+      cited: true,
+      card_rewritten: false,
+      history_rewrite: false,
+      posterior_is_truth: false,
+      belief_is_not_truth: true,
+      authorizes_action: false,
+      software_tab: false,
+      door: false,
+      fabric: true,
+      akm: AKM,
+      note: "optional AKM-TRIAD-1.0 fabric cite. Inspection card unchanged. Posterior ≠ truth.",
+    };
+  }
+  if (resolved === "memory_observe") {
+    refuseAkmAbuse(payload);
+    const card = cardFromPayload(payload, store);
+    await verifyCard(card);
+    return {
+      ok: true,
+      op: "memory_observe",
+      id: card.id,
+      h: card.h,
+      receipt: cardReceipt(card),
+      observation: observationFromCard(card, payload),
+      forwarded: false,
+      card_rewritten: false,
+      history_rewrite: false,
+      posterior_is_truth: false,
+      belief_is_not_truth: true,
+      authorizes_action: false,
+      software_tab: false,
+      door: false,
+      fabric: true,
+      akm: AKM,
+      fraggate: "memory_observe",
+      http: "POST /v1/memory/observe",
+      note: "optional observation packet for FragGate memory_observe. 4DMap does not own AKM. Not forwarded unless the operator uses FragGate. Posterior ≠ truth. No history rewrite.",
+    };
+  }
   throw new CardError("UNKNOWN_OP", `unknown op ${op}`);
 }
 
@@ -789,4 +919,6 @@ export const LIVE_OPS = [
   "axis_describe",
   "walk_trace",
   "verify_chain",
+  "memory_cite",
+  "memory_observe",
 ];

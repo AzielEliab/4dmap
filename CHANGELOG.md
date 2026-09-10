@@ -33,6 +33,13 @@ Refused: `truth_score`, `lumen_panel`, `invent_mark`, `backdate_class`, `wipe`, 
 - Counted tarball name: `4dmap-0.2.0.tar.gz`.
 - Local `4dmap ui` workbench mirrors the new ops.
 
+### AKM-TRIAD-1.0 fabric pairing (optional)
+
+- `memory_cite` / `memory_observe` build a fabric cite or FragGate observation packet from a 4DM-CARD.
+- AKM is LIVE fabric — not a Softwares-tab slug, not a companion software, not a second door.
+- Posterior ≠ truth. No history rewrite. Card `h` / `prev` unchanged.
+- Agent path for memory writes remains FragGate `memory_*`.
+
 ### Framing
 
 - Mesh stays default-off. GET never enables.

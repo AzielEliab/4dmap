@@ -102,10 +102,14 @@ No legal name, home, or county may appear on a card.
 | `card_import` | import JSON; fail-closed hashes |
 | `frame_status` | MASTER-33 inspection-frame status (`domains_are_doors:false`) |
 | `axis_describe` | describe T/Δ/Γ/Π and cite-only companions |
+| `memory_cite` | optional AKM-TRIAD-1.0 fabric cite; card unchanged |
+| `memory_observe` | build a FragGate `memory_observe` packet from a 4DM-CARD |
 
-Refused (not LIVE): `truth_score`, `lumen_panel`, `invent_mark`, `backdate_class`, `wipe`, `purge`, `delete_all`, `merge_products`, `enable_door`.
+Refused (not LIVE): `truth_score`, `lumen_panel`, `invent_mark`, `backdate_class`, `wipe`, `purge`, `delete_all`, `merge_products`, `enable_door`, `akm`, `akm_triad`, `memory_rewrite`, `posterior_truth`.
 
 Companion cites (inspection inputs only): TemporalLock, StaticClock, ChronoLock, TrajectoryLock, SpectralLock. Functional pairing / cite. Do not merge products. Do not invent a second door. FragGate remains THE single door.
+
+AKM-TRIAD-1.0 (Adaptive Knowledge Memory) is **LIVE fabric** on aziel-runtime — not a Softwares-tab product, not a 4DMap companion slug, not a second door. Optional cite/observe of inspection cards only. Bayesian 3-of-4 triad E/C/P/B. Posterior ≠ truth. No history rewrite. Agent writes stay on FragGate `memory_*` / `POST /v1/memory/observe|resolve|calibrate|recall`.
 
 ---
 

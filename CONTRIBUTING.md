@@ -35,6 +35,9 @@ Python 3.10+. pytest is the dev extra. No network.
 12. 4DMap is an inspection frame (`domains_are_doors:false`). Do not make it a Softwares door. FragGate stays THE single door.
 13. Companion softwares (TemporalLock, StaticClock, ChronoLock, TrajectoryLock, SpectralLock) are cite-only inspection inputs. Do not merge products.
 14. Do not enable mesh by default. GET `/v1/mesh` never enables.
+15. AKM-TRIAD-1.0 is LIVE fabric, not a Softwares-tab slug. Optional card
+    cite/observe only. Posterior ≠ truth. No history rewrite. Do not add
+    `akm` to companion src list.
 
 ## Where to change things
 

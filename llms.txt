@@ -14,10 +14,15 @@ forensics; an identity store; a Softwares door.
 domains_are_doors: false. FragGate is THE single door.
 Suite mesh default OFF. GET /v1/mesh never enables.
 
+AKM-TRIAD-1.0 is LIVE fabric (not a Softwares-tab product). Optional
+4DMap card cite/observe only. Posterior ≠ truth. No history rewrite.
+Agent memory writes: FragGate memory_* / POST /v1/memory/*.
+
 LIVE_OPS: health, skill, pin, span, stack, gap, fork, walk, lens,
 class, cohort, absence, cap, join, list, example, card_new, card_pin,
 card_span, card_join, card_walk, card_list, verify_hash, card_export,
-card_import, frame_status, axis_describe, walk_trace, verify_chain.
+card_import, frame_status, axis_describe, walk_trace, verify_chain,
+memory_cite, memory_observe.
 
 Agent path: fraggate_list → fraggate_describe slug=4dmap → fraggate_call.
 Worker: https://4dmap-download-tracker.vibelock.workers.dev/
