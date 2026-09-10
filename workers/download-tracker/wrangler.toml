@@ -5,11 +5,10 @@ compatibility_date = "2026-09-10"
 workers_dev = true
 account_id = "ac575a9b822bea2bed97d0ab73aed238"
 
-# Operator creates KV namespace 4DMAP_DOWNLOADS and replaces this id:
-#   wrangler kv namespace create 4DMAP_DOWNLOADS
+# Isolated counter: KV namespace 4DMAP_DOWNLOADS (already live — do not recreate)
 [[kv_namespaces]]
 binding = "DOWNLOADS"
-id = "00000000000000000000000000000000"
+id = "e962292069794bcc8cb89e3f559cfa43"
 
 [assets]
 directory = "./public"

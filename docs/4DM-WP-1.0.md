@@ -134,7 +134,7 @@ A refused join is ledgered as a refuse. It does not rewrite cards.
 
 1. **Human software** — Cloudflare Worker UI (black / gold), Flutter
    stubs under `mobile/`, counted `/download` tarball, local `4dmap ui`.
-2. **Agent / MCP** — FragGate `slug=4dmap` (when registered) plus this
+2. **Agent / MCP** — FragGate `slug=4dmap` is LIVE on aziel-runtime, plus this
    Worker `/v1` OpenAPI / MCP. Agents show `display.title` /
    `display.summary` / `display.fields`. No technical MCP chrome as
    the product.

@@ -41,7 +41,7 @@ Catalog OpenAPI: `https://aziel-runtime.vibelock.workers.dev/openapi.json`
 MCP: `POST https://4dmap-download-tracker.vibelock.workers.dev/mcp`
 also `POST https://aziel-runtime.vibelock.workers.dev/mcp`
 
-FragGate (when registered): `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call`. Softwares bucket **Plain**.
+FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call` (`card_new` / `card_pin` / `card_span` / `card_join` / `card_walk` / `card_list` / `verify_hash`). Softwares bucket **Plain**. Hubs list 4DMap.
 
 ## How to call (Mozilla/5.0)
 

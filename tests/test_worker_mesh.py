@@ -38,6 +38,7 @@ def test_wrangler_ready() -> None:
     assert "AZIEL_RUNTIME" in WRANGLER
     assert "4DMAP_DOWNLOADS" in WRANGLER
     assert 'binding = "DOWNLOADS"' in WRANGLER
+    assert 'id = "e962292069794bcc8cb89e3f559cfa43"' in WRANGLER
     assert "/v1/mesh" in WRANGLER
 
 
@@ -70,5 +71,13 @@ def test_readme_cites_worker_download() -> None:
 
 def test_skill_dual_surface() -> None:
     assert "slug=4dmap" in SKILL
+    assert "FragGate is LIVE" in SKILL
+    assert "FragGate is LIVE" in README
+    assert "FragGate is LIVE" in RUNTIME
+    assert "when registered" not in SKILL
+    assert "when registered" not in README
+    assert "when the catalog lists it" not in README
+    assert "FG-HALLUC-TOOL" not in SKILL
+    assert "FG-HALLUC-TOOL" not in README
     assert "GET never enables" in SKILL
     assert "Π-EMPTY" in SKILL or "PI-EMPTY" in SKILL or "Π-EMPTY" in RUNTIME
