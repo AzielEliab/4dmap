@@ -23,6 +23,10 @@ Host: https://4dmap-download-tracker.vibelock.workers.dev
 Version 0.2.0 adds `card_export` / `card_import` / `frame_status` /
 `axis_describe` / `walk_trace` / `verify_chain` plus FragGate aliases.
 `GET /llms.txt` serves the agent skill. Counted tarball
-`4dmap-0.2.0.tar.gz`. 4DMap remains an inspection frame, not a door.
+`4dmap-0.2.0.tar.gz` must live in `public/` (Worker `ASSETS` /
+`DEFAULT_ASSET`). Rebuild from repo sources with
+`tools/pack_counted_tarball.sh`. Nested `*.tar.gz` are omitted.
+Prior `4dmap-0.1.0.tar.gz` stays for old links. Mesh remain-OFF.
+4DMap remains an inspection frame, not a door.
 
 Paper: [docs/4DM-WP-1.0.md](../../docs/4DM-WP-1.0.md)
