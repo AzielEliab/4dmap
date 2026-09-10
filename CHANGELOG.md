@@ -44,6 +44,7 @@ Refused: `truth_score`, `lumen_panel`, `invent_mark`, `backdate_class`, `wipe`, 
 
 - Mesh stays default-off. GET never enables.
 - 4DMap remains an inspection frame, not a Softwares door. FragGate is THE single door.
+- Pipeline copy uses Internal Domain Layer (`domains_are_doors:false`). Domain Door wording scrubbed.
 
 ## 0.1.0
 

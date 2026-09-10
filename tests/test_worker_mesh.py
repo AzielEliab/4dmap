@@ -54,7 +54,10 @@ def test_homepage_board_and_pipeline() -> None:
     assert "Δ Interval" in HOME
     assert "Γ Trajectory" in HOME
     assert "Π Pattern" in HOME
-    assert "Domain Doors" in HOME
+    assert "Domain Door" not in HOME
+    assert "Domain Doors" not in HOME
+    assert "Internal Domain Layer" in HOME
+    assert "domains_are_doors:false" in HOME
     assert "not a hop gate" in HOME
     assert "GET never enables" in HOME
     assert "Plain" in HOME

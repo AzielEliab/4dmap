@@ -262,14 +262,16 @@ GUARDRAIL = (
 )
 
 PIPELINE = """PUBLIC/AGENTS/UI → FragGate → SweepGate → ChainLock-IN → DecisionGATE → AZPIPE
-  → Domain Doors (isolated engines)  ←──  4DMap inspection cards sit HERE as
-       a read-side coordinate frame over TemporalLock/StaticClock/ChronoLock/
-       TrajectoryLock/SpectralLock evidence (not a hop gate)
+  → Internal Domain Layer (isolated softwares; domains_are_doors:false)  ←──  4DMap
+       inspection cards sit HERE as a read-side coordinate frame over
+       TemporalLock/StaticClock/ChronoLock/TrajectoryLock/SpectralLock evidence
+       (not a hop gate; not a door)
   → TemporalLock → StaticClock → ChainLock-OUT → RESPONSE/RECEIPT"""
 
 PIPELINE_NOTE = (
-    "4DMap is not inserted as another sequential gate. It is a domain-door / "
-    "inspection frame: engines and operator UI write/read 4DM cards; FragGate "
-    "grounded claims may cite join types; ChainLock may stamp a walk when the "
-    "operator seals. QNS/QNM do not carry 4DMap photons."
+    "4DMap is not inserted as another sequential gate. It is an inspection "
+    "frame in the Internal Domain Layer after AZPIPE (domains_are_doors:false): "
+    "engines and operator UI write/read 4DM cards; FragGate grounded claims may "
+    "cite join types; ChainLock may stamp a walk when the operator seals. "
+    "QNS/QNM do not carry 4DMap photons. FragGate is THE single door."
 )

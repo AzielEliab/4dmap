@@ -131,7 +131,7 @@ export function renderHomepage({ views, downloads, breakdown, github, asset }) {
   <p class="byline">Aziel Eliab only</p>
   <p class="motto">Four-axis inspection coordinate frame. T Clock · Δ Interval · Γ Trajectory · Π Pattern. Not a truth engine.</p>
   <p class="banner" role="note">${escapeHtml(LIMITATION)}</p>
-  <p class="note">Pipeline strip — 4DMap sits at Domain Doors as a read-side frame, not a hop gate.</p>
+  <p class="note">Pipeline strip — 4DMap sits in the Internal Domain Layer as a read-side inspection frame (domains_are_doors:false), not a hop gate.</p>
   <pre class="pipe" id="pipeline">${escapeHtml(PIPELINE)}
 
 ${escapeHtml(PIPELINE_NOTE)}</pre>

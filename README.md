@@ -30,13 +30,14 @@ Public identity **Aziel Eliab** only. GodLock is a sibling product name elsewher
 
 ## Pipeline placement
 
-4DMap is **not** another sequential gate. It is a **domain-door / inspection frame**:
+4DMap is **not** another sequential gate. It is an **inspection frame** in the Internal Domain Layer (`domains_are_doors:false`):
 
 ```
 PUBLIC/AGENTS/UI → FragGate → SweepGate → ChainLock-IN → DecisionGATE → AZPIPE
-  → Domain Doors (isolated engines)  ←──  4DMap inspection cards sit HERE as
-       a read-side coordinate frame over TemporalLock/StaticClock/ChronoLock/
-       TrajectoryLock/SpectralLock evidence (not a hop gate)
+  → Internal Domain Layer (isolated softwares; domains_are_doors:false)  ←──  4DMap
+       inspection cards sit HERE as a read-side coordinate frame over
+       TemporalLock/StaticClock/ChronoLock/TrajectoryLock/SpectralLock evidence
+       (not a hop gate; not a door)
   → TemporalLock → StaticClock → ChainLock-OUT → RESPONSE/RECEIPT
 ```
 

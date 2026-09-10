@@ -40,18 +40,19 @@ name elsewhere. Never attach a GodLock-plus-AZ identity label.
 
 ## Pipeline placement
 
-4DMap is **not** inserted as another sequential gate. It sits at the
-**domain-door / inspection frame**:
+4DMap is **not** inserted as another sequential gate. It sits in the
+**Internal Domain Layer** as an **inspection frame** (`domains_are_doors:false`):
 
 ```
 PUBLIC/AGENTS/UI → FragGate → SweepGate → ChainLock-IN → DecisionGATE → AZPIPE
-  → Domain Doors (isolated engines)  ←──  4DMap inspection cards sit HERE as
-       a read-side coordinate frame over TemporalLock/StaticClock/ChronoLock/
-       TrajectoryLock/SpectralLock evidence (not a hop gate)
+  → Internal Domain Layer (isolated softwares; domains_are_doors:false)  ←──  4DMap
+       inspection cards sit HERE as a read-side coordinate frame over
+       TemporalLock/StaticClock/ChronoLock/TrajectoryLock/SpectralLock evidence
+       (not a hop gate; not a door)
   → TemporalLock → StaticClock → ChainLock-OUT → RESPONSE/RECEIPT
 ```
 
-Engines and operator UI write/read 4DM cards on the domain-door side.
+Engines and operator UI write/read 4DM cards in the Internal Domain Layer.
 FragGate may cite a join type on a grounded claim. ChainLock may stamp
 a walk when the operator seals. The public mesh GET never enables.
 
