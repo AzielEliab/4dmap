@@ -378,6 +378,7 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
         });
         var list = $("card-list");
         list.innerHTML = "";
+        var pinIds = [];
         cards.forEach(function (c) {
           var col = $("col-"+axisOf(c));
           var d = document.createElement("div");
@@ -387,7 +388,13 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
           var li = document.createElement("li");
           li.textContent = (c.id||"") + " · " + axisOf(c) + " · " + (c.src||"") + " · " + String(c.h||"").slice(0,16);
           list.appendChild(li);
+          if (axisOf(c) === "T") pinIds.push(c.id);
         });
+        if (pinIds.length >= 2) {
+          if (!$("span-from").value) $("span-from").value = pinIds[pinIds.length - 2];
+          if (!$("span-to").value) $("span-to").value = pinIds[pinIds.length - 1];
+        }
+        if (cards.length && !$("walk-tip").value) $("walk-tip").value = cards[cards.length - 1].id;
       }
       function showReceipt(inner) {
         var box = $("receipt-box");
