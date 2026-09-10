@@ -1,0 +1,82 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 2651 >>
+stream
+BT
+/F1 10 Tf
+1 0 0 1 48 760 Tm (# 4DM-WP-1.0) Tj
+1 0 0 1 48 746 Tm () Tj
+1 0 0 1 48 732 Tm (**Four-Axis Temporal Mapping and Pattern Mapping**) Tj
+1 0 0 1 48 718 Tm () Tj
+1 0 0 1 48 704 Tm (Aziel Eliab  ) Tj
+1 0 0 1 48 690 Tm (2026  ) Tj
+1 0 0 1 48 676 Tm (License: Apache-2.0  ) Tj
+1 0 0 1 48 662 Tm (Product: **4DMap** \(Softwares bucket: **Plain** ? not Gate, not Lock\)) Tj
+1 0 0 1 48 648 Tm () Tj
+1 0 0 1 48 634 Tm (> Receipts are not truth. 4DMap is an inspection coordinate frame.) Tj
+1 0 0 1 48 620 Tm () Tj
+1 0 0 1 48 606 Tm (A typeset PDF companion may be generated from this markdown) Tj
+1 0 0 1 48 592 Tm (\(`tools/build_whitepaper.py`\). This file is the canonical paper.) Tj
+1 0 0 1 48 578 Tm () Tj
+1 0 0 1 48 564 Tm (---) Tj
+1 0 0 1 48 550 Tm () Tj
+1 0 0 1 48 536 Tm (## Abstract) Tj
+1 0 0 1 48 522 Tm () Tj
+1 0 0 1 48 508 Tm (4DMap is an **inspection coordinate frame**. It is not a truth engine,) Tj
+1 0 0 1 48 494 Tm (not Lumen, not GIS, not a Node Gate, and not certified forensics.) Tj
+1 0 0 1 48 480 Tm () Tj
+1 0 0 1 48 466 Tm (It maps evidence already produced by TemporalLock, StaticClock,) Tj
+1 0 0 1 48 452 Tm (ChronoLock, TrajectoryLock, and SpectralLock onto four axes:) Tj
+1 0 0 1 48 438 Tm () Tj
+1 0 0 1 48 424 Tm (| Glyph | Name | Axis |) Tj
+1 0 0 1 48 410 Tm (|-------|------|------|) Tj
+1 0 0 1 48 396 Tm (| **T** | Clock | when a pin sits |) Tj
+1 0 0 1 48 382 Tm (| **?** | Interval | span or gap between pins |) Tj
+1 0 0 1 48 368 Tm (| **?** | Trajectory | stacked / walked motion of pins |) Tj
+1 0 0 1 48 354 Tm (| **?** | Pattern | class, cohort, absence, or silence |) Tj
+1 0 0 1 48 340 Tm () Tj
+1 0 0 1 48 326 Tm (Operators and engines write and read **4DM-CARD** receipts. FragGate) Tj
+1 0 0 1 48 312 Tm (grounded claims may cite join types. ChainLock may stamp a walk when) Tj
+1 0 0 1 48 298 Tm (the operator seals. QNS/QNM do not carry 4DMap photons.) Tj
+1 0 0 1 48 284 Tm () Tj
+1 0 0 1 48 270 Tm (Public identity is **Aziel Eliab** only. GodLock is a sibling product) Tj
+1 0 0 1 48 256 Tm (name elsewhere. Never attach a GodLock-plus-AZ identity label.) Tj
+1 0 0 1 48 242 Tm () Tj
+1 0 0 1 48 228 Tm (---) Tj
+1 0 0 1 48 214 Tm () Tj
+1 0 0 1 48 200 Tm (## Pipeline placement) Tj
+1 0 0 1 48 186 Tm () Tj
+1 0 0 1 48 172 Tm (4DMap is **not** inserted as another sequential gate. It sits at the) Tj
+1 0 0 1 48 158 Tm (**domain-door / inspection frame**:) Tj
+1 0 0 1 48 144 Tm () Tj
+1 0 0 1 48 130 Tm (```) Tj
+1 0 0 1 48 116 Tm (PUBLIC/AGENTS/UI ? FragGate ? SweepGate ? ChainLock-IN ? DecisionGATE ? AZPIPE) Tj
+1 0 0 1 48 102 Tm (  ? Domain Doors \(isolated engines\)  ???  4DMap inspection cards sit HERE as) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Courier >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000241 00000 n 
+0000002944 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+3012
+%%EOF

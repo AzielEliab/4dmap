@@ -1,0 +1,35 @@
+{
+  "synthetic": true,
+  "cards": [
+    {
+      "schema": "4DM-CARD",
+      "id": "4dm-example-pin",
+      "t": "2026-09-10T00:00:00Z",
+      "delta": null,
+      "gamma": null,
+      "pi": "Π-EMPTY",
+      "prev": "0000000000000000000000000000000000000000000000000000000000000000",
+      "src": "synthetic",
+      "note": "synthetic T pin — not a real case",
+      "h": "4215f48020fe35ca9f29d71024811eda75895a9c93fafaa0f9b1a4ce818ee8df"
+    },
+    {
+      "schema": "4DM-CARD",
+      "id": "4dm-example-span",
+      "t": null,
+      "delta": {
+        "from": "4dm-example-pin",
+        "to": "4dm-example-later",
+        "from_t": "2026-09-10T00:00:00Z",
+        "to_t": "2026-09-10T01:00:00Z"
+      },
+      "gamma": null,
+      "pi": "Π-EMPTY",
+      "prev": "4215f48020fe35ca9f29d71024811eda75895a9c93fafaa0f9b1a4ce818ee8df",
+      "src": "synthetic",
+      "note": "synthetic Δ span — not a real case",
+      "h": "839e51821c93680122ac4b537db716093895b1193527d8bdb4a419efea01d1e3"
+    }
+  ],
+  "limitation": "THIS IS: an inspection coordinate frame (4DM-WP-1.0) over TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock evidence. Cards are 4DM-CARD receipts with fail-closed SHA-256. Forks are kept. ZionPattern confidence is capped at 75%. A silent lens returns Π-EMPTY. THIS IS NOT: a truth engine; Lumen; GIS 4D; a Node Gate; certified forensics; an identity store. Receipts are not truth. No legal name, home, or county on cards. QNS/QNM do not carry 4DMap photons. Author: Aziel Eliab only."
+}

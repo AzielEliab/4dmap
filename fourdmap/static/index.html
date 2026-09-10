@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4DMap — local workbench</title>
+<style>
+  :root { color-scheme: dark; --bg:#0b0b0b; --gold:#c9a227; --ink:#e8e0d0; --muted:#9a917f; --line:#3d3420; --surface:#141414; }
+  body { margin:0 auto; max-width:52rem; padding:1.5rem 1rem 3rem; background:var(--bg); color:var(--ink); font:16px/1.45 system-ui,sans-serif; }
+  h1 { color:var(--gold); margin:0 0 .3rem; }
+  .banner { border:1px solid var(--gold); background:#241c0d; color:#f0d78c; padding:.8rem 1rem; border-radius:8px; font-size:.92rem; }
+  .axes { display:grid; grid-template-columns:repeat(4,1fr); gap:.6rem; margin:1rem 0; }
+  .axis { border:1px solid var(--line); border-radius:10px; padding:.7rem; background:var(--surface); min-height:6rem; }
+  .axis h2 { margin:0 0 .4rem; color:var(--gold); font-size:1rem; }
+  .card { border:1px solid var(--line); padding:.45rem .55rem; margin:.35rem 0; border-radius:8px; font-size:.82rem; }
+  label, .note { color:var(--muted); font-size:.88rem; }
+  input, select { width:100%; box-sizing:border-box; margin:.25rem 0 .6rem; padding:.45rem .55rem; background:#0e0e0e; color:var(--ink); border:1px solid var(--gold); border-radius:8px; }
+  button { background:var(--gold); color:#14110a; border:0; border-radius:8px; font-weight:700; padding:.55rem .9rem; cursor:pointer; }
+  pre { background:#0e0e0e; padding:.7rem; overflow:auto; border-radius:8px; }
+  .pipe { white-space:pre-wrap; font:12px/1.4 ui-monospace,monospace; color:var(--muted); border:1px dashed var(--line); padding:.7rem; border-radius:8px; }
+</style>
+<body>
+  <h1>4DMap</h1>
+  <p>Inspection coordinate frame. Loopback only. Author Aziel Eliab.</p>
+  <p class="banner">Receipts are not truth. Not Lumen. Not certified forensics. Not GIS 4D. Not a Node Gate.</p>
+  <p class="pipe">PUBLIC/AGENTS/UI → FragGate → SweepGate → ChainLock-IN → DecisionGATE → AZPIPE
+  → Domain Doors  ←──  4DMap cards sit HERE (read-side frame, not a hop gate)
+  → TemporalLock → StaticClock → ChainLock-OUT → RESPONSE/RECEIPT</p>
+  <div class="axes">
+    <div class="axis" id="col-T"><h2>T Clock</h2></div>
+    <div class="axis" id="col-DELTA"><h2>Δ Interval</h2></div>
+    <div class="axis" id="col-GAMMA"><h2>Γ Trajectory</h2></div>
+    <div class="axis" id="col-PI"><h2>Π Pattern</h2></div>
+  </div>
+  <form id="pin-form">
+    <label>Pin T <input id="pin-t" placeholder="2026-09-10T00:00:00Z"></label>
+    <button type="submit">Pin</button>
+  </form>
+  <form id="join-form">
+    <label>Join type
+      <select id="join-type">
+        <option>T-DELTA</option>
+        <option>DELTA-GAMMA</option>
+        <option>GAMMA-PI</option>
+        <option>T-PI</option>
+        <option>PI-T</option>
+      </select>
+    </label>
+    <label>Left id <input id="join-left"></label>
+    <label>Right id <input id="join-right"></label>
+    <button type="submit">Join</button>
+  </form>
+  <p class="note">Cards stay in this browser. Hosted Worker never stores a map. Π-EMPTY when the lens is silent.</p>
+  <pre id="out">no op yet</pre>
+  <script>
+    const cards = [];
+    function axisOf(c) {
+      if (c.delta) return "DELTA";
+      if (c.gamma) return "GAMMA";
+      if (c.pi && c.pi !== "Π-EMPTY") return "PI";
+      return "T";
+    }
+    function paint() {
+      ["T","DELTA","GAMMA","PI"].forEach((a) => { document.getElementById("col-"+a).innerHTML = "<h2>"+({T:"T Clock",DELTA:"Δ Interval",GAMMA:"Γ Trajectory",PI:"Π Pattern"})[a]+"</h2>"; });
+      cards.forEach((c) => {
+        const col = document.getElementById("col-"+axisOf(c));
+        const d = document.createElement("div");
+        d.className = "card";
+        d.textContent = (c.id||"") + " · " + (c.h||"").slice(0,12);
+        col.appendChild(d);
+      });
+    }
+    async function call(op, payload) {
+      const r = await fetch("/v1/"+op, { method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify({ ...payload, cards }) });
+      const j = await r.json();
+      document.getElementById("out").textContent = JSON.stringify(j, null, 2);
+      if (j.card) cards.push(j.card);
+      paint();
+    }
+    document.getElementById("pin-form").onsubmit = (e) => { e.preventDefault(); call("pin", { t: document.getElementById("pin-t").value || new Date().toISOString(), src:"operator" }); };
+    document.getElementById("join-form").onsubmit = (e) => { e.preventDefault(); call("join", { left: document.getElementById("join-left").value, right: document.getElementById("join-right").value, join_type: document.getElementById("join-type").value }); };
+    paint();
+  </script>
+</body>
+</html>

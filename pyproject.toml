@@ -1,0 +1,56 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fourdmap"
+version = "0.1.0"
+description = "4DMap: four-axis inspection coordinate frame (4DM-WP-1.0). Not a truth engine. Author Aziel Eliab."
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [{name = "Aziel Eliab"}]
+requires-python = ">=3.10"
+keywords = [
+  "4dmap",
+  "fourdmap",
+  "inspection",
+  "temporal",
+  "pattern",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering",
+]
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=7.4"]
+
+[project.scripts]
+fourdmap = "fourdmap.cli:main"
+"4dmap" = "fourdmap.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/AzielEliab/4dmap"
+Download = "https://4dmap-download-tracker.vibelock.workers.dev/download?asset=4dmap-0.1.0.tar.gz"
+Issues = "https://github.com/AzielEliab/4dmap/issues"
+Counted-downloads = "https://4dmap-download-tracker.vibelock.workers.dev/"
+Paper = "https://github.com/AzielEliab/4dmap/blob/main/docs/4DM-WP-1.0.md"
+
+[tool.setuptools.packages.find]
+include = ["fourdmap*"]
+
+[tool.setuptools.package-data]
+fourdmap = ["static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"

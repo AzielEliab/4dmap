@@ -1,0 +1,394 @@
+/**
+ * 4DMap Worker homepage — complete human software surface.
+ * Four-axis board + card list + pin/span/join forms.
+ * Author: Aziel Eliab only. Apache-2.0.
+ */
+import { GUARDRAIL, LIMITATION, PIPELINE, PIPELINE_NOTE } from "./engine.js";
+
+export const HOST = "https://4dmap-download-tracker.vibelock.workers.dev";
+export const GITHUB_REPO = "https://github.com/AzielEliab/4dmap";
+export const CATALOG = "https://aziel-runtime.vibelock.workers.dev/";
+export const PAGE_TITLE = "4DMap — Aziel Eliab";
+export const SEO_DESCRIPTION =
+  "4DMap by Aziel Eliab: four-axis inspection coordinate frame (T clock, Δ interval, Γ trajectory, Π pattern). Not a truth engine, not Lumen, not GIS, not a Node Gate.";
+export const INSTALL_LINE = "curl -fsSL https://4dmap-download-tracker.vibelock.workers.dev/install.sh | bash";
+export const DEFAULT_ASSET = "4dmap-0.1.0.tar.gz";
+
+export function escapeHtml(value) {
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+export function jsonLdDocument() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: "4DMap",
+    softwareVersion: "0.1.0",
+    applicationCategory: "DeveloperApplication",
+    operatingSystem: "Cloudflare Workers",
+    author: { "@type": "Person", name: "Aziel Eliab", url: "https://github.com/AzielEliab" },
+    codeRepository: GITHUB_REPO,
+    downloadUrl: HOST + "/download",
+    license: "https://www.apache.org/licenses/LICENSE-2.0",
+    url: HOST + "/",
+    description: SEO_DESCRIPTION,
+  };
+}
+
+function breakdownList(breakdown) {
+  if (!Array.isArray(breakdown) || !breakdown.length) return "<li>none yet</li>";
+  return breakdown
+    .map((b) => {
+      return `<li><code>${escapeHtml(b.owner)}/${escapeHtml(b.repo)}</code> branch <code>${escapeHtml(b.branch)}</code> fork=${escapeHtml(b.fork)} → ${escapeHtml(b.count)}</li>`;
+    })
+    .join("");
+}
+
+export function renderHomepage({ views, downloads, breakdown, github, asset }) {
+  const v = Number(views || 0).toLocaleString("en-US");
+  const n = Number(downloads || 0).toLocaleString("en-US");
+  const gh = github || {};
+  const ld = JSON.stringify(jsonLdDocument());
+  const rows = breakdownList(breakdown);
+  const assetName = escapeHtml(asset || DEFAULT_ASSET);
+
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${PAGE_TITLE}</title>
+<meta name="description" content="${escapeHtml(SEO_DESCRIPTION)}">
+<meta name="author" content="Aziel Eliab">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="${HOST}/">
+<link rel="icon" href="/sigil.png" type="image/png">
+<link rel="sitemap" type="application/xml" href="${HOST}/sitemap.xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="${PAGE_TITLE}">
+<meta property="og:description" content="${escapeHtml(SEO_DESCRIPTION)}">
+<meta property="og:url" content="${HOST}/">
+<meta property="og:image" content="${HOST}/sigil.png">
+<script type="application/ld+json">${ld}</script>
+<style>
+  :root { color-scheme: dark; --bg:#0b0b0b; --surface:#141414; --ink:#e8e0d0; --muted:#9a917f; --gold:#c9a227; --line:#3d3420; --ok:#7dcf9a; --err:#d27a7a; }
+  * { box-sizing: border-box; }
+  body { margin: 0 auto; max-width: 56rem; padding: 1.6rem 1.1rem 4rem; background: var(--bg); color: var(--ink); font: 16px/1.45 system-ui, sans-serif; }
+  .brandrow { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:0 0 1rem; }
+  .brandmark { width:40px; height:40px; border-radius:10px; box-shadow:0 0 0 1px #d4af3733; }
+  .stamp { margin:0; color:var(--gold); font-size:.88rem; }
+  .tag { margin:.15rem 0 0; color:var(--muted); font-size:.78rem; letter-spacing:.08em; text-transform:uppercase; }
+  h1 { font-size:2rem; margin:0 0 .15rem; color:var(--gold); }
+  .byline { margin:0 0 .4rem; color:var(--gold); }
+  .motto { color:var(--muted); margin:0 0 1rem; }
+  .banner { border:1px solid var(--gold); background:#241c0d; color:#f0d78c; padding:.85rem 1rem; border-radius:8px; margin:0 0 1rem; font-size:.92rem; }
+  .pipe { white-space:pre-wrap; font:12px/1.45 ui-monospace, Menlo, Consolas, monospace; color:var(--muted); border:1px dashed var(--line); padding:.75rem .9rem; border-radius:8px; margin:0 0 1rem; background:#100e0a; }
+  #meshStrip { border:1px solid var(--gold); border-radius:12px; padding:.85rem 1rem; background:var(--surface); margin:0 0 1.2rem; display:flex; flex-wrap:wrap; align-items:center; gap:.7rem 1rem; font-size:.88rem; color:var(--muted); }
+  #meshStrip .live b, #meshStrip .rollup b { color:var(--gold); }
+  #meshStrip button { font:700 .78rem/1 ui-monospace,monospace; height:2rem; padding:0 .75rem; border-radius:8px; background:#101010; color:var(--ink); border:1px solid var(--gold); cursor:pointer; }
+  #meshStrip input { width:10rem; padding:.4rem .55rem; border:1px solid var(--gold); border-radius:8px; background:#0e0e0e; color:var(--ink); font:inherit; }
+  .card { border:1px solid var(--line); border-radius:12px; padding:1.15rem 1.25rem; background:var(--surface); margin:0 0 1.1rem; }
+  .nums { display:grid; grid-template-columns:1fr 1fr; gap:.8rem; }
+  .count { font-size:2.1rem; font-variant-numeric:tabular-nums; font-weight:700; margin:0; }
+  .count span { display:block; font-size:.95rem; font-weight:500; color:var(--muted); }
+  .btns { display:grid; grid-template-columns:1fr 1fr; gap:.75rem; margin:.8rem 0; }
+  @media (max-width:620px) { .btns, .axes { grid-template-columns:1fr 1fr !important; } }
+  a.btn, button.btn { display:block; width:100%; text-align:center; font:inherit; font-size:1.1rem; font-weight:750; padding:1rem; border-radius:10px; border:0; cursor:pointer; text-decoration:none; }
+  a.btn.primary { background:var(--ink); color:var(--bg); }
+  button.btn.install, button.gold { background:var(--gold); color:#14110a; }
+  .meta, .iso, .kid, .note { color:var(--muted); font-size:.92rem; }
+  .meta a { color:#e6d08a; }
+  .axes { display:grid; grid-template-columns:repeat(4,1fr); gap:.55rem; }
+  .axis { border:1px solid var(--line); border-radius:10px; padding:.65rem; min-height:8rem; background:#100e0a; }
+  .axis h2 { margin:0 0 .45rem; color:var(--gold); font-size:.95rem; }
+  .tick { border:1px solid var(--line); border-radius:8px; padding:.4rem .45rem; margin:.3rem 0; font-size:.78rem; }
+  .tick code { color:var(--gold); }
+  label { display:block; color:var(--muted); font-size:.85rem; margin:.35rem 0 .15rem; }
+  input, select { width:100%; padding:.45rem .55rem; border:1px solid var(--gold); border-radius:8px; background:#0e0e0e; color:var(--ink); font:inherit; }
+  .inline { display:grid; grid-template-columns:1fr 1fr auto; gap:.45rem; align-items:end; }
+  @media (max-width:720px) { .inline { grid-template-columns:1fr; } }
+  pre { background:#0e0e0e; padding:.7rem .85rem; overflow:auto; border-radius:8px; font-size:.8rem; }
+  footer { color:var(--muted); font-size:.88rem; margin-top:1.5rem; }
+</style>
+</head>
+<body>
+  <header class="brandrow">
+    <img class="brandmark" src="/sigil.png" width="40" height="40" alt="Everblooming sigil — Aziel Eliab">
+    <div>
+      <p class="stamp">Everblooming sigil · Aziel Eliab</p>
+      <p class="tag">v0.1.0 · 4DM-WP-1.0 · Plain · Apache-2.0</p>
+    </div>
+  </header>
+  <h1>4DMap</h1>
+  <p class="byline">Aziel Eliab only</p>
+  <p class="motto">Four-axis inspection coordinate frame. T Clock · Δ Interval · Γ Trajectory · Π Pattern. Not a truth engine.</p>
+  <p class="banner" role="note">${escapeHtml(LIMITATION)}</p>
+  <p class="note">Pipeline strip — 4DMap sits at Domain Doors as a read-side frame, not a hop gate.</p>
+  <pre class="pipe" id="pipeline">${escapeHtml(PIPELINE)}
+
+${escapeHtml(PIPELINE_NOTE)}</pre>
+
+  <div id="meshStrip" aria-label="Suite Live Nodes">
+    <div class="live"><b id="meshLiveCount">0</b> Live Nodes</div>
+    <div id="meshLine">Suite mesh: off (default). QNM-BUILD-1.0. QNS-CD-1.0. Not an anonymity network.</div>
+    <div class="rollup">live <b id="qnmLive">0</b> · locked <b id="qnmLocked">0</b> · isolated <b id="qnmIsolated">0</b></div>
+    <div>No Node Gate · GET never enables · QNS-CD-1.0 cite · Plain (not Gate/Lock) · Aziel Eliab only</div>
+    <div>
+      <input id="meshBearer" type="text" maxlength="80" placeholder="bearer (required to enable)" aria-label="mesh bearer">
+      <button id="meshEnable" type="button" title="Enable suite mesh. Declared bearer required. Default off.">Enable</button>
+      <button id="meshDisable" type="button" title="Disable suite mesh (always allowed)">Disable</button>
+      <button id="meshJoin" type="button" title="Join as 4dmap. Refused while mesh is OFF.">Join</button>
+      <button id="meshLeave" type="button" title="Leave this node. No auto-heal.">Leave</button>
+    </div>
+    <p id="meshProducts">Catalog MCP mesh_* · FragGate slug=mesh · /v1/mesh/* PROXY · QNS-CD-1.0 cross-map · not AnonBroadcast · not a Node Gate · no public qnsd proxy · 4DMap photons are not on QNS/QNM</p>
+  </div>
+
+  <section class="card" id="install">
+    <div class="nums">
+      <p class="count">${v}<span>Views</span></p>
+      <p class="count">${n}<span>Downloads</span></p>
+    </div>
+    <p class="kid"><strong>Counted download.</strong> Download saves the gzip (the Downloads number goes up). One-click install copies a Terminal command. After it finishes: <code>4dmap ui</code> then open http://127.0.0.1:8844.</p>
+    <div class="btns">
+      <a class="btn primary" href="/download?asset=${assetName}">Download</a>
+      <button type="button" class="btn install" id="install-btn">One-click install</button>
+    </div>
+    <pre id="install-cmd">${INSTALL_LINE}</pre>
+    <p class="iso">Isolated counter: Worker <code>4dmap-download-tracker</code>, project <code>4dmap</code>, KV <code>4DMAP_DOWNLOADS</code>. <code>/v1</code> does not increment. Hosted never stores a map.</p>
+    <p class="meta">GitHub: stars ${escapeHtml(gh.stars || 0)} · forks ${escapeHtml(gh.forks || 0)} · watchers ${escapeHtml(gh.watchers || 0)} · release assets ${escapeHtml(gh.release_download_count || 0)}</p>
+    <p class="meta"><a href="${GITHUB_REPO}">GitHub</a> · <a href="/stats">JSON stats</a> · <a href="/openapi.json">OpenAPI</a> · <a href="/v1/mesh">/v1/mesh</a> · <a href="/v1/skill">Skill</a> · <a href="/ai">AI runtime</a> · <a href="${CATALOG}">Catalog</a></p>
+    <h2>Per repo / branch / fork</h2>
+    <ul>${rows}</ul>
+  </section>
+
+  <section class="card" id="board">
+    <h2>Four-axis board</h2>
+    <p class="note">Cards live in this browser. Hosted API is stateless. Fail-closed hashes. Forks kept. Π-EMPTY when the lens is silent.</p>
+    <div class="axes">
+      <div class="axis" id="col-T"><h2>T Clock</h2></div>
+      <div class="axis" id="col-DELTA"><h2>Δ Interval</h2></div>
+      <div class="axis" id="col-GAMMA"><h2>Γ Trajectory</h2></div>
+      <div class="axis" id="col-PI"><h2>Π Pattern</h2></div>
+    </div>
+
+    <form id="pin-form" autocomplete="off">
+      <label for="pin-t">Pin T — clock</label>
+      <div class="inline">
+        <input id="pin-t" placeholder="2026-09-10T00:00:00Z">
+        <input id="pin-src" placeholder="src (temporallock / operator)">
+        <button class="btn gold" type="submit">Pin</button>
+      </div>
+    </form>
+    <form id="span-form" autocomplete="off">
+      <label>Span Δ — from pin id → to pin id</label>
+      <div class="inline">
+        <input id="span-from" placeholder="from id">
+        <input id="span-to" placeholder="to id">
+        <button class="btn gold" type="submit">Span</button>
+      </div>
+    </form>
+    <form id="join-form" autocomplete="off">
+      <label>Typed join — T↔Δ, Δ↔Γ, Γ↔Π, T↔Π. Π→T backdate refuses.</label>
+      <div class="inline">
+        <input id="join-left" placeholder="left id">
+        <input id="join-right" placeholder="right id">
+        <select id="join-type">
+          <option value="T-DELTA">T↔Δ</option>
+          <option value="DELTA-GAMMA">Δ↔Γ</option>
+          <option value="GAMMA-PI">Γ↔Π</option>
+          <option value="T-PI">T↔Π</option>
+          <option value="PI-T">Π→T (refused)</option>
+        </select>
+      </div>
+      <p><button class="btn gold" type="submit">Join</button>
+      <button class="btn gold" type="button" id="fork-btn">Fork last</button>
+      <button class="btn gold" type="button" id="lens-btn">Silent lens</button>
+      <button class="btn gold" type="button" id="example-btn">Load example</button></p>
+    </form>
+    <h3>Card list</h3>
+    <ol id="card-list"></ol>
+    <p class="note" id="last-op">No op yet.</p>
+    <pre id="last-json" hidden></pre>
+    <p class="note">${escapeHtml(GUARDRAIL)}</p>
+  </section>
+
+  <section class="cite" id="cite">
+    <h2>How to cite</h2>
+    <p>Aziel Eliab. 4DMap. ${GITHUB_REPO}. ${HOST}.</p>
+    <p>Apache-2.0. Spec 4DM-WP-1.0. Do not invent a Zenodo identifier.</p>
+    <p><a href="${CATALOG}">Catalog</a> · <a href="${GITHUB_REPO}">GitHub</a> · <a href="${HOST}/download">Download</a> · <a href="${HOST}/cite.json">cite.json</a></p>
+  </section>
+  <footer>
+    <p><strong>Receipts are not truth.</strong> Inspection frame only.</p>
+    <p>Apache-2.0 · Aziel Eliab only · 2026 · Forks welcome and always allowed.</p>
+  </footer>
+  <script>
+    (function () {
+      var cmd = ${JSON.stringify(INSTALL_LINE)};
+      var btn = document.getElementById("install-btn");
+      var pre = document.getElementById("install-cmd");
+      if (btn) btn.addEventListener("click", function () {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(cmd).then(function () { btn.textContent = "Copied! Paste in Terminal, then run 4dmap ui"; }).catch(function () {});
+        } else if (pre && window.getSelection) {
+          var r = document.createRange(); r.selectNodeContents(pre); var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(r);
+        }
+      });
+    })();
+    (function () {
+      function $(id) { return document.getElementById(id); }
+      function meshNum() {
+        for (var i = 0; i < arguments.length; i++) {
+          var raw = arguments[i];
+          if (raw == null || raw === "") continue;
+          var n = typeof raw === "number" ? raw : Number(String(raw).replace(/,/g, ""));
+          if (Number.isFinite(n) && n >= 0) return Math.floor(n);
+        }
+        return 0;
+      }
+      function unwrapMesh(j) {
+        if (!j || typeof j !== "object") return {};
+        if (j.result && typeof j.result === "object") return Object.assign({}, j, j.result);
+        if (j.mesh && typeof j.mesh === "object") return Object.assign({}, j, j.mesh);
+        return j;
+      }
+      function paintMesh(raw) {
+        var j = unwrapMesh(raw);
+        var on = j.enabled === true || j.enabled === 1 || String(j.status || "").toLowerCase() === "on";
+        var r = (j.rollup && typeof j.rollup === "object") ? j.rollup : {};
+        var live = on ? meshNum(r.live, j.live_nodes, j.live) : 0;
+        var locked = on ? meshNum(r.locked, j.locked_nodes, j.locked) : 0;
+        var isolated = on ? meshNum(r.isolated, j.isolated_nodes, j.isolated) : 0;
+        $("meshLiveCount").textContent = String(live);
+        $("qnmLive").textContent = String(live);
+        $("qnmLocked").textContent = String(locked);
+        $("qnmIsolated").textContent = String(isolated);
+        var line = $("meshLine");
+        if (on) line.textContent = "Suite mesh: on · live " + live + " · locked " + locked + " · isolated " + isolated + ". Not an anonymity network.";
+        else if (j.status === "unavailable" || (j.ok === false && j.error)) line.textContent = "Suite mesh: off (unavailable). QNM-BUILD-1.0. QNS-CD-1.0. Not an anonymity network.";
+        else line.textContent = "Suite mesh: off (default). QNM-BUILD-1.0. QNS-CD-1.0. GET never enables.";
+      }
+      async function meshGet(path) {
+        var r = await fetch(path, { headers: { "user-agent": "Mozilla/5.0", accept: "application/json" } });
+        return r.json();
+      }
+      async function meshPost(path, payload) {
+        var r = await fetch(path, { method: "POST", headers: { "content-type": "application/json", "user-agent": "Mozilla/5.0" }, body: JSON.stringify(payload || {}) });
+        return r.json();
+      }
+      async function refreshMesh() {
+        try {
+          var status = await meshGet("/v1/mesh");
+          var merged = status;
+          var inner = unwrapMesh(status);
+          if (inner.enabled === true) {
+            try { merged = Object.assign({}, inner, unwrapMesh(await meshGet("/v1/mesh/nodes"))); } catch (e) {}
+          }
+          paintMesh(merged);
+          var nodeId = sessionStorage.getItem("fourdmap_mesh_node");
+          if (inner.enabled === true && nodeId) {
+            try { await meshPost("/v1/mesh/heartbeat", { node_id: nodeId }); } catch (e) {}
+          }
+        } catch (e) {
+          paintMesh({ ok: false, enabled: false, status: "unavailable", error: "mesh_unavailable" });
+        }
+      }
+      $("meshEnable").onclick = async function () {
+        var bearer = ($("meshBearer").value || "").trim();
+        paintMesh(await meshPost("/v1/mesh/enable", bearer ? { bearer: bearer } : {}));
+        refreshMesh();
+      };
+      $("meshDisable").onclick = async function () {
+        sessionStorage.removeItem("fourdmap_mesh_node");
+        paintMesh(await meshPost("/v1/mesh/disable", {}));
+        refreshMesh();
+      };
+      $("meshJoin").onclick = async function () {
+        var j = await meshPost("/v1/mesh/join", { product: "4dmap", label: "4DMap Worker" });
+        var inner = unwrapMesh(j);
+        var id = inner.node_id || inner.id;
+        if (id) sessionStorage.setItem("fourdmap_mesh_node", String(id));
+        paintMesh(j);
+        refreshMesh();
+      };
+      $("meshLeave").onclick = async function () {
+        var id = sessionStorage.getItem("fourdmap_mesh_node");
+        if (id) await meshPost("/v1/mesh/leave", { node_id: id });
+        sessionStorage.removeItem("fourdmap_mesh_node");
+        refreshMesh();
+      };
+      refreshMesh();
+      setInterval(refreshMesh, 30000);
+    })();
+    (function () {
+      var cards = [];
+      function $(id) { return document.getElementById(id); }
+      function axisOf(c) {
+        if (c.delta) return "DELTA";
+        if (c.gamma) return "GAMMA";
+        if (c.pi && c.pi !== "Π-EMPTY") return "PI";
+        return "T";
+      }
+      function paint() {
+        ["T","DELTA","GAMMA","PI"].forEach(function (a) {
+          var titles = { T:"T Clock", DELTA:"Δ Interval", GAMMA:"Γ Trajectory", PI:"Π Pattern" };
+          $( "col-"+a ).innerHTML = "<h2>"+titles[a]+"</h2>";
+        });
+        var list = $("card-list");
+        list.innerHTML = "";
+        cards.forEach(function (c) {
+          var col = $("col-"+axisOf(c));
+          var d = document.createElement("div");
+          d.className = "tick";
+          d.innerHTML = "<code>"+(c.id||"")+"</code><br>"+String(c.h||"").slice(0,16);
+          col.appendChild(d);
+          var li = document.createElement("li");
+          li.textContent = (c.id||"") + " · " + axisOf(c) + " · " + String(c.h||"").slice(0,16);
+          list.appendChild(li);
+        });
+      }
+      async function call(op, payload) {
+        var r = await fetch("/v1/"+op, { method:"POST", headers:{"content-type":"application/json","user-agent":"Mozilla/5.0"}, body: JSON.stringify(Object.assign({}, payload, { cards: cards })) });
+        var j = await r.json();
+        var inner = j.result || j;
+        $("last-op").textContent = op + (inner.refused ? " refused "+(inner.code||"") : " ok");
+        $("last-json").hidden = false;
+        $("last-json").textContent = JSON.stringify(j, null, 2);
+        if (inner.card) cards.push(inner.card);
+        paint();
+        return inner;
+      }
+      $("pin-form").onsubmit = function (e) {
+        e.preventDefault();
+        call("pin", { t: $("pin-t").value || new Date().toISOString(), src: $("pin-src").value || "operator", note: "T pin" });
+      };
+      $("span-form").onsubmit = function (e) {
+        e.preventDefault();
+        call("span", { from_id: $("span-from").value, to_id: $("span-to").value });
+      };
+      $("join-form").onsubmit = function (e) {
+        e.preventDefault();
+        call("join", { left: $("join-left").value, right: $("join-right").value, join_type: $("join-type").value });
+      };
+      $("fork-btn").onclick = function () {
+        if (!cards.length) return;
+        call("fork", { id: cards[cards.length-1].id });
+      };
+      $("lens-btn").onclick = function () { call("lens", { query: "" }); };
+      $("example-btn").onclick = async function () {
+        var r = await fetch("/v1/example", { headers: { "user-agent": "Mozilla/5.0" } });
+        var j = await r.json();
+        (j.cards || []).forEach(function (c) { cards.push(c); });
+        $("last-op").textContent = "example loaded (synthetic)";
+        paint();
+      };
+      paint();
+    })();
+  </script>
+</body>
+</html>`;
+}
