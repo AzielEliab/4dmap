@@ -61,7 +61,12 @@ def test_homepage_board_and_pipeline() -> None:
     assert "not a hop gate" in HOME
     assert "GET never enables" in HOME
     assert "Plain" in HOME
-    assert "Everblooming sigil" in HOME
+    assert 'class="brandmark"' in HOME
+    assert 'alt=""' in HOME
+    assert '<p class="stamp">Aziel Eliab</p>' in HOME
+    assert "Everblooming" not in HOME
+    assert "everblooming" not in HOME
+    assert "Aziel Eliab" in HOME
 
 
 def test_readme_cites_worker_download() -> None:

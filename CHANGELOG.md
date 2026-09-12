@@ -28,7 +28,7 @@ Refused: `truth_score`, `lumen_panel`, `invent_mark`, `backdate_class`, `wipe`, 
 
 ### Dual surface
 
-- Worker UI (black/gold, everblooming sigil): pin across axes, companion src select, walk/trace/verify, frame status, axis describe, JSON export/import.
+- Worker UI (black/gold): pin across axes, companion src select, walk/trace/verify, frame status, axis describe, JSON export/import.
 - OpenAPI, MCP, skill, `/llms.txt`, `cite.json` updated.
 - Counted tarball name: `4dmap-0.2.0.tar.gz`.
 - Hosted `workers/download-tracker/public/4dmap-0.2.0.tar.gz` as Worker `DEFAULT_ASSET` (rebuild: `tools/pack_counted_tarball.sh`). Nested `*.tar.gz` omitted. Fixes 404 `asset not hosted` when catalog/runtime ask for 0.2.0.

@@ -121,9 +121,9 @@ export function renderHomepage({ views, downloads, breakdown, github, asset }) {
 </head>
 <body>
   <header class="brandrow">
-    <img class="brandmark" src="/sigil.png" width="40" height="40" alt="Everblooming sigil — Aziel Eliab">
+    <img class="brandmark" src="/sigil.png" width="40" height="40" alt="">
     <div>
-      <p class="stamp">Everblooming sigil · Aziel Eliab</p>
+      <p class="stamp">Aziel Eliab</p>
       <p class="tag">v0.2.0 · 4DM-WP-1.0 · Plain · Apache-2.0 · inspection frame</p>
     </div>
   </header>
