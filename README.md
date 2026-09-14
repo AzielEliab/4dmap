@@ -5,7 +5,7 @@ Four-axis inspection coordinate frame (T Clock, Δ Interval, Γ Trajectory, Π P
 **Author:** Aziel Eliab
 **Date:** 10 September 2026
 **License:** [Apache-2.0](LICENSE)
-**Version:** 0.2.0
+**Version:** 0.3.0
 **Spec:** `4DM-WP-1.0`
 **Paper:** [docs/4DM-WP-1.0.md](docs/4DM-WP-1.0.md) · [PDF companion note](docs/PDF-COMPANION.md)
 **Softwares bucket:** **Plain** (name 4DMap — not Gate, not Lock)
@@ -51,7 +51,7 @@ The Worker serves the gzip itself (HTTP 200, no 302 to GitHub).
 # → [https://4dmap-download-tracker.vibelock.workers.dev/](https://4dmap-download-tracker.vibelock.workers.dev/) ←
 
 Direct tarball (also counted):
-[4dmap-0.2.0.tar.gz](https://4dmap-download-tracker.vibelock.workers.dev/download?asset=4dmap-0.2.0.tar.gz)
+[4dmap-0.3.0.tar.gz](https://4dmap-download-tracker.vibelock.workers.dev/download?asset=4dmap-0.3.0.tar.gz)
 
 - Live count JSON: [https://4dmap-download-tracker.vibelock.workers.dev/stats](https://4dmap-download-tracker.vibelock.workers.dev/stats)
 - OpenAPI: [https://4dmap-download-tracker.vibelock.workers.dev/openapi.json](https://4dmap-download-tracker.vibelock.workers.dev/openapi.json)
@@ -120,10 +120,13 @@ The Worker hosts a **stateless** JSON API. It does not increment DOWNLOADS. It n
 - `POST /v1/{card_new,card_pin,card_span,card_join,card_walk,card_list,verify_hash}`
 - `POST /v1/{card_export,card_import,frame_status,axis_describe,walk_trace,verify_chain}`
 - `POST /v1/{memory_cite,memory_observe}` — optional AKM-TRIAD-1.0 fabric cite/observe (not a Softwares slug; posterior ≠ truth; no history rewrite)
+- `POST /v1/{library_pin,plot,possibility,pattern_recall,lattice_tip,poison_refuse,neighbor_cite}` — library pin frames + hashchain lattice memory (Growth-ON)
 - OpenAPI: `/openapi.json`
 - MCP: this Worker `/mcp` and catalog `https://aziel-runtime.vibelock.workers.dev/mcp`
 
-FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call` (`card_new` / `card_pin` / `card_span` / `card_join` / `card_walk` / `card_list` / `verify_hash` plus `card_export` / `card_import` / `frame_status` / `axis_describe` / `walk_trace` / `verify_chain` / `memory_cite` / `memory_observe`). Softwares bucket **Plain**. Hubs list 4DMap. Agent path remains FragGate only. 4DMap is an inspection frame after AZPIPE, not an extra door (`domains_are_doors:false`). AKM-TRIAD-1.0 is LIVE fabric, not a Softwares-tab product.
+FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call` (`card_new` / `card_pin` / `card_span` / `card_join` / `card_walk` / `card_list` / `verify_hash` plus `card_export` / `card_import` / `frame_status` / `axis_describe` / `walk_trace` / `verify_chain` / `memory_cite` / `memory_observe` / `library_pin` / `plot` / `possibility` / `pattern_recall` / `lattice_tip` / `poison_refuse` / `neighbor_cite`). Softwares bucket **Plain**. Hubs list 4DMap. Agent path remains FragGate only. 4DMap is an inspection frame after AZPIPE, not an extra door (`domains_are_doors:false`). AKM-TRIAD-1.0 is LIVE fabric, not a Softwares-tab product. Pattern recollection is the hashchain lattice (tips / prev-hash / pin receipts), not a detached ML store.
+
+Library demo: ingest `{event, date, lat, lon, surface:MOCK|REAL}` → `POST /v1/library_pin`. Cite [Temporal Map](https://www.azielcorpuslibrary.net/map) and [`/v1/verify-geo`](https://www.azielcorpuslibrary.net/v1/verify-geo). Possibility and Bayesian stay labeled separately. Not courtroom proof. Not GIS.
 
 Always send `User-Agent: Mozilla/5.0`. Empty agents can 403.
 
@@ -156,7 +159,7 @@ curl -s -A 'Mozilla/5.0' -X POST https://4dmap-download-tracker.vibelock.workers
 python -m pytest -q
 ```
 
-Card hash, illegal join refuse, fork keep, Π-EMPTY, 0.2.0 export/import / walk_trace / verify_chain, and MASTER-33 inspection-frame (not door) framing are covered.
+Card hash, illegal join refuse, fork keep, Π-EMPTY, export/import / walk_trace / verify_chain, library pin / possibility / lattice recall, and MASTER-33 inspection-frame (not door) framing are covered.
 
 ## Use with AI clients
 

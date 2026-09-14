@@ -1,5 +1,38 @@
 # Changelog
 
+## 0.3.0 — library pin frames + hashchain lattice memory
+
+Author: Aziel Eliab. Spec: 4DM-WP-1.0. Softwares bucket: Plain. Growth-ON.
+
+### Aziel Digital Library pairing
+
+- Accept/emit **4DM-PIN-FRAME** from library ingest: paper `date` × `event` × `lat`/`lon` or opaque `gazetteer_id`.
+- Never uses upload time. Incomplete place+date refuses (`ANCHOR_INCOMPLETE`).
+- Malformed / poison anchors refuse. Gazetteer ids are not DNS; no fake ICANN.
+- Each pin is **REAL** or **MOCK**. Scores are not courtroom proof. Not GIS.
+
+### Possibility vs Bayesian (labeled)
+
+- `possibility` = time×geo plausibility. `bayesian` = cited belief input.
+- Never collapsed into one unlabeled number (`SCORE_COLLAPSE`).
+- Hooks write lattice-linked receipts (`prev` = pin hash). NO-REWRITE.
+
+### Adaptive pattern memory = hashchain lattice
+
+- `pattern_recall` walks tips / prev-hash / pin receipts. Not a detached ML store.
+- Recurring event patterns are feature hashes only.
+- `poison_refuse` appends a refuse-set card (feature hash only).
+- `lattice_tip` lists append-only tips. `plot` draws pins + trajectories (inspection, not GIS).
+- `neighbor_cite` cites Aziel Digital Library + inspection companions on a declared card.
+
+### Dual surface + discovery
+
+- Worker UI + local `4dmap ui`: library ingest form, REAL/MOCK plot, labeled scores.
+- OpenAPI / MCP / skill list the new ops. Growth-ON because Worker discovery changed.
+- Counted tarball: `4dmap-0.3.0.tar.gz`.
+
+Demo path: library ingest JSON → `POST /v1/library_pin` → 4DM-PIN-FRAME on T. Cite https://www.azielcorpuslibrary.net/map and `/v1/verify-geo`.
+
 ## 0.2.0 — inspection-frame capability pack
 
 Author: Aziel Eliab. Spec: 4DM-WP-1.0. Softwares bucket: Plain.

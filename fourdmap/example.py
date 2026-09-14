@@ -3,7 +3,8 @@
 from __future__ import annotations
 
 from .card import make_card
-from .scope import GENESIS_PREV, PI_EMPTY
+from .lattice import feature_hash
+from .scope import GENESIS_PREV, PI_EMPTY, PIN_FRAME_KIND
 
 EXAMPLE_PIN = make_card(
     id="4dm-example-pin",
@@ -23,4 +24,25 @@ EXAMPLE_SPAN = make_card(
     pi=PI_EMPTY,
 )
 
-EXAMPLE_CARDS = [EXAMPLE_PIN, EXAMPLE_SPAN]
+_EXAMPLE_LIB_EVENT = "synthetic paper event — not a real case"
+_EXAMPLE_LIB_CLOCK = "1912-04-15T00:00:00Z"
+EXAMPLE_LIBRARY_PIN = make_card(
+    id="4dm-example-library-pin",
+    t={
+        "kind": PIN_FRAME_KIND,
+        "clock": _EXAMPLE_LIB_CLOCK,
+        "event": _EXAMPLE_LIB_EVENT,
+        "lat": 41.726,
+        "lon": -49.947,
+        "gazetteer_id": None,
+        "doc_id": "AZDOC-MOCK",
+        "surface": "MOCK",
+        "feature_h": feature_hash(_EXAMPLE_LIB_EVENT, _EXAMPLE_LIB_CLOCK, 41.726, -49.947, None),
+    },
+    src="synthetic",
+    note="MOCK library pin — not a real case. Paper date × event × geo.",
+    prev=EXAMPLE_SPAN["h"],
+    pi=PI_EMPTY,
+)
+
+EXAMPLE_CARDS = [EXAMPLE_PIN, EXAMPLE_SPAN, EXAMPLE_LIBRARY_PIN]

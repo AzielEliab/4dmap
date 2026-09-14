@@ -67,6 +67,10 @@ def test_homepage_board_and_pipeline() -> None:
     assert "Everblooming" not in HOME
     assert "everblooming" not in HOME
     assert "Aziel Eliab" in HOME
+    assert "Library upload → 4DMap pin" in HOME
+    assert "Growth-ON" in HOME
+    assert "possibility" in HOME
+    assert "hashchain lattice" in HOME
 
 
 def test_readme_cites_worker_download() -> None:

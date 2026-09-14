@@ -4,7 +4,7 @@
  */
 export const PRODUCT = "4dmap";
 export const PRODUCT_NAME = "4DMap";
-export const VERSION = "0.2.0";
+export const VERSION = "0.3.0";
 export const SPEC = "4DM-WP-1.0";
 export const SCHEMA = "4DM-CARD";
 export const AUTHOR = "Aziel Eliab";
@@ -35,7 +35,9 @@ export const PIPELINE_NOTE =
 
 export const ALLOWED_JOINS = new Set(["T-DELTA", "DELTA-T", "DELTA-GAMMA", "GAMMA-DELTA", "GAMMA-PI", "PI-GAMMA", "T-PI"]);
 export const ILLEGAL_JOINS = new Set(["PI-T"]);
-export const TARBALL = "4dmap-0.2.0.tar.gz";
+export const TARBALL = "4dmap-0.3.0.tar.gz";
+export const PIN_FRAME_KIND = "4DM-PIN-FRAME";
+export const GROWTH = "ON";
 
 export const COMPANIONS = {
   temporallock: { software: "TemporalLock", slug: "temporallock", axes: ["T", "DELTA"], role: "inspection_input", cite_only: true, door: false, merged: false },
@@ -46,10 +48,32 @@ export const COMPANIONS = {
 };
 
 export const AXIS_FRAME = {
-  T: { glyph: "T", name: "Clock", meaning: "time / when a pin sits", companions: ["temporallock", "staticclock", "chronolock"], ops: ["pin", "card_pin", "span", "card_span", "walk", "walk_trace"] },
+  T: { glyph: "T", name: "Clock", meaning: "time / when a pin sits", companions: ["temporallock", "staticclock", "chronolock"], ops: ["pin", "card_pin", "library_pin", "span", "card_span", "walk", "walk_trace", "plot"] },
   DELTA: { glyph: "Δ", name: "Interval", meaning: "delta / change / span or gap between pins", companions: ["temporallock", "chronolock"], ops: ["span", "card_span", "gap", "walk", "walk_trace"] },
-  GAMMA: { glyph: "Γ", name: "Trajectory", meaning: "pattern / geometry / stacked or walked motion of pins", companions: ["trajectorylock"], ops: ["stack", "walk", "walk_trace", "pin", "card_pin"] },
-  PI: { glyph: "Π", name: "Pattern", meaning: "provenance / path / class / cohort / absence / silence", companions: ["spectrallock"], ops: ["lens", "class", "cohort", "absence", "pin", "card_pin"] },
+  GAMMA: { glyph: "Γ", name: "Trajectory", meaning: "pattern / geometry / stacked or walked motion of pins", companions: ["trajectorylock"], ops: ["stack", "walk", "walk_trace", "pin", "card_pin", "plot"] },
+  PI: { glyph: "Π", name: "Pattern", meaning: "provenance / path / class / cohort / absence / silence", companions: ["spectrallock"], ops: ["lens", "class", "cohort", "absence", "pin", "card_pin", "pattern_recall", "poison_refuse", "possibility"] },
+};
+
+export const LIBRARY = {
+  software: "Aziel Digital Library",
+  slug: "aziel-corpus",
+  role: "inspection_input",
+  cite_only: true,
+  door: false,
+  merged: false,
+  map: "https://www.azielcorpuslibrary.net/map",
+  verify_geo: "https://www.azielcorpuslibrary.net/v1/verify-geo",
+  note: "Library Temporal Map pins are paper date × event × geolocation. Never upload time. Docs without resolvable place+date stay unpinned. 4DMap accepts/emits 4DM-PIN-FRAME receipts on the hashchain lattice.",
+  author: AUTHOR,
+};
+
+export const DISCOVERY = {
+  growth: GROWTH,
+  skill: true,
+  openapi: true,
+  mcp: true,
+  worker_ui: true,
+  reason: "library pin + lattice memory LIVE_OPS",
 };
 
 export const AXIS_GLYPH = { T: "T", DELTA: "Δ", GAMMA: "Γ", PI: "Π" };
@@ -99,6 +123,12 @@ export const OP_ALIASES = {
   card_join: "join",
   card_walk: "walk",
   card_list: "list",
+  ingest_pin: "library_pin",
+  plot_pins: "plot",
+  score_hooks: "possibility",
+  possibility_cite: "possibility",
+  lattice_tips: "lattice_tip",
+  neighbor: "neighbor_cite",
 };
 
 export const REFUSE_OPS = {
@@ -115,6 +145,8 @@ export const REFUSE_OPS = {
   akm_triad: { code: "AKM_SOFTWARE", message: "AKM-TRIAD-1.0 is LIVE fabric, not a Softwares-tab slug" },
   memory_rewrite: { code: "AKM_REWRITE", message: "AKM-TRIAD-1.0 does not rewrite history" },
   posterior_truth: { code: "AKM_TRUTH", message: "posterior ≠ truth; 4DMap receipts are not truth" },
+  ml_store: { code: "LATTICE_ONLY", message: "adaptive pattern memory is the hashchain lattice, not a detached ML store" },
+  detach_memory: { code: "LATTICE_ONLY", message: "recollection stays on tips/prev-hash/pin receipts" },
 };
 
 const FORBIDDEN_KEYS = new Set([
@@ -392,6 +424,21 @@ function observationFromCard(card, payload) {
   };
 }
 
+function wantsLibraryPin(payload) {
+  if (!payload || typeof payload !== "object") return false;
+  if (payload.ingest || payload.pin_frame || payload.descriptor) return true;
+  if (payload.event || payload.gazetteer_id || payload.gazetteer) return true;
+  if (payload.lat != null || payload.lon != null) return true;
+  if (payload.date || payload.paper_date || payload.doc_id) return true;
+  return false;
+}
+
+let latticeMod = null;
+async function lattice() {
+  if (!latticeMod) latticeMod = await import("./lattice.js");
+  return latticeMod;
+}
+
 function cardFromPayload(payload, store) {
   if (payload.card && typeof payload.card === "object") return payload.card;
   const id = String(payload.id || payload.tip || "");
@@ -509,6 +556,37 @@ export async function runOp(op, payload = {}, cards = []) {
     throw new CardError(refused.code, refused.message);
   }
   const store = [...cards];
+  const pushCard = (card) => {
+    store.push(card);
+  };
+  if (resolved === "library_pin" || (resolved === "pin" && wantsLibraryPin(payload) && normalizeAxis(payload.axis || "T") === "T")) {
+    const L = await lattice();
+    return withReceipt(await L.runLibraryPin(payload, store));
+  }
+  if (resolved === "plot") {
+    const L = await lattice();
+    return L.runPlot(store);
+  }
+  if (resolved === "possibility") {
+    const L = await lattice();
+    return withReceipt(await L.runPossibility(payload, store, pushCard));
+  }
+  if (resolved === "pattern_recall") {
+    const L = await lattice();
+    return withReceipt(await L.runPatternRecall(payload, store, pushCard));
+  }
+  if (resolved === "lattice_tip") {
+    const L = await lattice();
+    return L.runLatticeTip(store);
+  }
+  if (resolved === "poison_refuse") {
+    const L = await lattice();
+    return withReceipt(await L.runPoisonRefuse(payload, store, pushCard));
+  }
+  if (resolved === "neighbor_cite") {
+    const L = await lattice();
+    return L.runNeighborCite(payload, store);
+  }
   if (resolved === "pin") {
     const axis = normalizeAxis(payload.axis || "T");
     const src = payload.src || "operator";
@@ -766,6 +844,9 @@ export async function runOp(op, payload = {}, cards = []) {
       refuse_ops: Object.keys(REFUSE_OPS),
       companions,
       mesh: { default_off: true, get_enables: false, node_gate: false },
+      library: LIBRARY,
+      growth: DISCOVERY.growth,
+      discovery: DISCOVERY,
       akm: AKM,
       limitation: LIMITATION,
       guardrail: GUARDRAIL,
@@ -876,7 +957,7 @@ export async function runOp(op, payload = {}, cards = []) {
 
 export function displayEnvelope(op, result) {
   const fields = [];
-  for (const key of ["ok", "code", "id", "h", "join", "pi", "score", "capped", "forks_kept", "axis", "glyph", "n", "verified", "format", "role"]) {
+  for (const key of ["ok", "code", "id", "h", "join", "pi", "score", "capped", "forks_kept", "axis", "glyph", "n", "verified", "format", "role", "surface", "feature_h", "lattice", "collapsed"]) {
     if (result && result[key] !== undefined) fields.push({ label: key, value: String(result[key]) });
   }
   return {
@@ -922,4 +1003,11 @@ export const LIVE_OPS = [
   "verify_chain",
   "memory_cite",
   "memory_observe",
+  "library_pin",
+  "plot",
+  "possibility",
+  "pattern_recall",
+  "lattice_tip",
+  "poison_refuse",
+  "neighbor_cite",
 ];

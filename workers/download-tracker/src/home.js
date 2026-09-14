@@ -12,7 +12,7 @@ export const PAGE_TITLE = "4DMap — Aziel Eliab";
 export const SEO_DESCRIPTION =
   "4DMap by Aziel Eliab: four-axis inspection coordinate frame (T clock, Δ interval, Γ trajectory, Π pattern). Not a truth engine, not Lumen, not GIS, not a Node Gate.";
 export const INSTALL_LINE = "curl -fsSL https://4dmap-download-tracker.vibelock.workers.dev/install.sh | bash";
-export const DEFAULT_ASSET = "4dmap-0.2.0.tar.gz";
+export const DEFAULT_ASSET = "4dmap-0.3.0.tar.gz";
 
 export function escapeHtml(value) {
   return String(value ?? "")
@@ -27,7 +27,7 @@ export function jsonLdDocument() {
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     name: "4DMap",
-    softwareVersion: "0.2.0",
+    softwareVersion: "0.3.0",
     applicationCategory: "DeveloperApplication",
     operatingSystem: "Cloudflare Workers",
     author: { "@type": "Person", name: "Aziel Eliab", url: "https://github.com/AzielEliab" },
@@ -116,6 +116,12 @@ export function renderHomepage({ views, downloads, breakdown, github, asset }) {
   .receipt { border:1px solid var(--line); border-radius:8px; padding:.45rem .55rem; margin:.35rem 0; font-size:.78rem; }
   .receipt b { color:var(--gold); }
   pre { background:#0e0e0e; padding:.7rem .85rem; overflow:auto; border-radius:8px; font-size:.8rem; }
+  .plot { width:100%; height:220px; border:1px solid var(--line); border-radius:10px; background:#100e0a; }
+  .scores { display:grid; grid-template-columns:1fr 1fr; gap:.55rem; margin:.6rem 0; }
+  .scorebox { border:1px solid var(--line); border-radius:8px; padding:.55rem .65rem; font-size:.82rem; }
+  .scorebox b { color:var(--gold); }
+  .mock { color:#9a917f; }
+  .real { color:var(--ok); }
   footer { color:var(--muted); font-size:.88rem; margin-top:1.5rem; }
 </style>
 </head>
@@ -124,7 +130,7 @@ export function renderHomepage({ views, downloads, breakdown, github, asset }) {
     <img class="brandmark" src="/sigil.png" width="40" height="40" alt="">
     <div>
       <p class="stamp">Aziel Eliab</p>
-      <p class="tag">v0.2.0 · 4DM-WP-1.0 · Plain · Apache-2.0 · inspection frame</p>
+      <p class="tag">v0.3.0 · 4DM-WP-1.0 · Plain · Apache-2.0 · inspection frame · Growth-ON</p>
     </div>
   </header>
   <h1>4DMap</h1>
@@ -171,7 +177,7 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
 
   <section class="card" id="board">
     <h2>Four-axis board</h2>
-    <p class="note">Cards live in this browser. Hosted API is stateless. Fail-closed hashes. Forks kept. Π-EMPTY when the lens is silent. Companion src values cite TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock as inspection inputs only — products are not merged.</p>
+    <p class="note">Cards live in this browser. Hosted API is stateless. Fail-closed hashes. Forks kept. Π-EMPTY when the lens is silent. Companion src values cite TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock as inspection inputs only — products are not merged. Library pins use paper date × event × geo. Pattern memory is the hashchain lattice (tips / prev-hash), not a detached ML store.</p>
     <div class="axes">
       <div class="axis" id="col-T"><h2>T Clock</h2></div>
       <div class="axis" id="col-DELTA"><h2>Δ Interval</h2></div>
@@ -197,10 +203,36 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
           <option value="trajectorylock">TrajectoryLock (cite)</option>
           <option value="spectrallock">SpectralLock (cite)</option>
           <option value="synthetic">synthetic</option>
+          <option value="aziel-corpus">Aziel Digital Library (cite)</option>
         </select>
         <button class="btn gold" type="submit">Pin</button>
       </div>
     </form>
+    <form id="library-form" autocomplete="off">
+      <label>Library upload → 4DMap pin — paper date × event × lat/lon or gazetteer. Never upload time. REAL vs MOCK labeled.</label>
+      <div class="inline4">
+        <input id="lib-event" placeholder="event (paper)">
+        <input id="lib-date" placeholder="1912-04-15 paper date">
+        <select id="lib-surface" aria-label="REAL or MOCK">
+          <option value="MOCK">MOCK</option>
+          <option value="REAL">REAL</option>
+        </select>
+        <button class="btn gold" type="submit">Library pin</button>
+      </div>
+      <div class="inline4">
+        <input id="lib-lat" placeholder="lat">
+        <input id="lib-lon" placeholder="lon">
+        <input id="lib-gaz" placeholder="gazetteer id (opaque)">
+        <input id="lib-doc" placeholder="doc id (optional)">
+      </div>
+      <p class="note">Sister path: Aziel Digital Library Temporal Map <a href="https://www.azielcorpuslibrary.net/map">/map</a> · <a href="https://www.azielcorpuslibrary.net/v1/verify-geo">/v1/verify-geo</a>. Not GIS. Scores are not courtroom proof.</p>
+    </form>
+    <div class="scores">
+      <div class="scorebox" id="score-possibility"><b>possibility</b> (time×geo) — no score yet</div>
+      <div class="scorebox" id="score-bayesian"><b>bayesian</b> (cited) — none</div>
+    </div>
+    <svg class="plot" id="pin-plot" viewBox="0 0 560 220" role="img" aria-label="Inspection pin plot, not GIS"></svg>
+    <p class="note" id="plot-note">Inspection plot. Not GIS 4D. Pins labeled REAL or MOCK.</p>
     <form id="span-form" autocomplete="off">
       <label>Span Δ — from card id → to card id (any axis pair)</label>
       <div class="inline">
@@ -242,6 +274,13 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
       <button class="btn gold" type="button" id="export-btn">Export JSON</button>
       <button class="btn gold" type="button" id="memory-cite-btn" title="Optional AKM-TRIAD-1.0 fabric cite. Not a Softwares slug.">Cite memory</button>
       <button class="btn gold" type="button" id="memory-observe-btn" title="Build FragGate memory_observe packet. Posterior ≠ truth.">Observe card</button>
+      <button class="btn gold" type="button" id="plot-btn">Plot</button>
+      <button class="btn gold" type="button" id="possibility-btn">Possibility hooks</button>
+      <button class="btn gold" type="button" id="recall-btn">Pattern recall</button>
+      <button class="btn gold" type="button" id="tip-btn">Lattice tip</button>
+      <button class="btn gold" type="button" id="poison-btn">Poison refuse</button>
+      <button class="btn gold" type="button" id="neighbor-btn">Neighbor cite</button>
+      <button class="btn gold" type="button" id="lib-demo-btn">MOCK library demo</button>
     </p>
     <p class="note">AKM-TRIAD-1.0 is LIVE fabric behind FragGate — not a Softwares-tab product, not a second door. Cite/observe leaves the 4DM-CARD unchanged. Posterior ≠ truth. No history rewrite.</p>
     <form id="import-form" autocomplete="off">
@@ -399,6 +438,60 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
         }
         if (cards.length && !$("walk-tip").value) $("walk-tip").value = cards[cards.length - 1].id;
       }
+      function paintScores(inner) {
+        var hooks = (inner && inner.hooks) || {};
+        var pos = hooks.possibility || (inner && inner.possibility);
+        var bay = hooks.bayesian || (inner && inner.bayesian);
+        var pbox = $("score-possibility");
+        var bbox = $("score-bayesian");
+        if (pbox) {
+          pbox.innerHTML = pos
+            ? "<b>possibility</b> (time×geo) = " + pos.value + " · label " + pos.label + " · truth " + String(pos.truth)
+            : "<b>possibility</b> (time×geo) — no score yet";
+        }
+        if (bbox) {
+          bbox.innerHTML = bay
+            ? "<b>bayesian</b> (cited) = " + bay.value + " · label " + bay.label + " · cite " + (bay.cite || "—") + " · truth false"
+            : "<b>bayesian</b> (cited) — none. Not collapsed into possibility.";
+        }
+      }
+      function paintPlot(pins) {
+        var svg = $("pin-plot");
+        if (!svg) return;
+        while (svg.firstChild) svg.removeChild(svg.firstChild);
+        var list = pins || [];
+        var geo = list.filter(function (p) { return p.lat != null && p.lon != null; });
+        if (!geo.length) {
+          var empty = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          empty.setAttribute("x", "16"); empty.setAttribute("y", "28"); empty.setAttribute("fill", "#9a917f");
+          empty.textContent = "No lat/lon pins yet. Library pin or MOCK demo.";
+          svg.appendChild(empty);
+          return;
+        }
+        geo.forEach(function (p, i) {
+          var x = 20 + ((Number(p.lon) + 180) / 360) * 520;
+          var y = 20 + ((90 - Number(p.lat)) / 180) * 180;
+          var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+          c.setAttribute("cx", String(x)); c.setAttribute("cy", String(y)); c.setAttribute("r", "5");
+          c.setAttribute("fill", p.surface === "REAL" ? "#7dcf9a" : "#c9a227");
+          svg.appendChild(c);
+          var t = document.createElementNS("http://www.w3.org/2000/svg", "text");
+          t.setAttribute("x", String(x + 7)); t.setAttribute("y", String(y + 3)); t.setAttribute("fill", "#e8e0d0");
+          t.setAttribute("font-size", "10");
+          t.textContent = (p.surface || "MOCK") + " " + String(p.event || p.id || "").slice(0, 22);
+          svg.appendChild(t);
+          if (i > 0) {
+            var prev = geo[i - 1];
+            var x0 = 20 + ((Number(prev.lon) + 180) / 360) * 520;
+            var y0 = 20 + ((90 - Number(prev.lat)) / 180) * 180;
+            var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+            line.setAttribute("x1", String(x0)); line.setAttribute("y1", String(y0));
+            line.setAttribute("x2", String(x)); line.setAttribute("y2", String(y));
+            line.setAttribute("stroke", "#3d3420");
+            svg.appendChild(line);
+          }
+        });
+      }
       function showReceipt(inner) {
         var box = $("receipt-box");
         var rec = inner && inner.receipt;
@@ -423,9 +516,30 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
           });
         }
         showReceipt(inner);
+        paintScores(inner);
+        if (inner && Array.isArray(inner.pins)) paintPlot(inner.pins);
+        else {
+          var frames = cards.map(function (c) { return c.t && typeof c.t === "object" ? Object.assign({ id: c.id, src: c.src }, c.t) : null; }).filter(Boolean);
+          paintPlot(frames);
+        }
         paint();
         return inner;
       }
+      $("library-form").onsubmit = function (e) {
+        e.preventDefault();
+        var prev = cards.length ? cards[cards.length - 1].h : undefined;
+        call("library_pin", {
+          event: $("lib-event").value,
+          date: $("lib-date").value,
+          lat: $("lib-lat").value || undefined,
+          lon: $("lib-lon").value || undefined,
+          gazetteer_id: $("lib-gaz").value || undefined,
+          doc_id: $("lib-doc").value || undefined,
+          surface: $("lib-surface").value || "MOCK",
+          src: "aziel-corpus",
+          prev: prev
+        });
+      };
       $("pin-form").onsubmit = function (e) {
         e.preventDefault();
         var axis = $("pin-axis").value || "T";
@@ -464,6 +578,43 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
         call("fork", { id: cards[cards.length-1].id });
       };
       $("lens-btn").onclick = function () { call("lens", { query: "" }); };
+      $("plot-btn").onclick = function () { call("plot", {}); };
+      $("possibility-btn").onclick = function () {
+        if (!cards.length) return;
+        call("possibility", { id: cards[cards.length - 1].id });
+      };
+      $("recall-btn").onclick = function () { call("pattern_recall", {}); };
+      $("tip-btn").onclick = function () { call("lattice_tip", {}); };
+      $("poison-btn").onclick = function () {
+        var feat = $("lib-event").value;
+        if (!feat && cards.length && cards[cards.length - 1].t && cards[cards.length - 1].t.feature_h) {
+          call("poison_refuse", { feature_h: cards[cards.length - 1].t.feature_h });
+          return;
+        }
+        call("poison_refuse", { event: feat || "operator-marked", date: $("lib-date").value || "1970-01-01", lat: $("lib-lat").value || undefined, lon: $("lib-lon").value || undefined, gazetteer_id: $("lib-gaz").value || undefined });
+      };
+      $("neighbor-btn").onclick = function () {
+        if (!cards.length) return;
+        call("neighbor_cite", { id: cards[cards.length - 1].id });
+      };
+      $("lib-demo-btn").onclick = function () {
+        $("lib-event").value = "synthetic paper event";
+        $("lib-date").value = "1912-04-15";
+        $("lib-lat").value = "41.726";
+        $("lib-lon").value = "-49.947";
+        $("lib-surface").value = "MOCK";
+        $("lib-doc").value = "AZDOC-MOCK";
+        call("library_pin", {
+          event: "synthetic paper event",
+          date: "1912-04-15",
+          lat: 41.726,
+          lon: -49.947,
+          surface: "MOCK",
+          src: "synthetic",
+          note: "MOCK library demo — not a real case",
+          prev: cards.length ? cards[cards.length - 1].h : undefined
+        });
+      };
       $("example-btn").onclick = async function () {
         var r = await fetch("/v1/example", { headers: { "user-agent": "Mozilla/5.0" } });
         var j = await r.json();

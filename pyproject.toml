@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "fourdmap"
-version = "0.2.0"
+version = "0.3.0"
 description = "4DMap: four-axis inspection coordinate frame (4DM-WP-1.0). Not a truth engine. Author Aziel Eliab."
 readme = "README.md"
 license = {file = "LICENSE"}
@@ -39,7 +39,7 @@ fourdmap = "fourdmap.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/AzielEliab/4dmap"
-Download = "https://4dmap-download-tracker.vibelock.workers.dev/download?asset=4dmap-0.2.0.tar.gz"
+Download = "https://4dmap-download-tracker.vibelock.workers.dev/download?asset=4dmap-0.3.0.tar.gz"
 Issues = "https://github.com/AzielEliab/4dmap/issues"
 Counted-downloads = "https://4dmap-download-tracker.vibelock.workers.dev/"
 Paper = "https://github.com/AzielEliab/4dmap/blob/main/docs/4DM-WP-1.0.md"

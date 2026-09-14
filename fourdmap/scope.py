@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-__version__ = "0.2.0"
+__version__ = "0.3.0"
 SPEC = "4DM-WP-1.0"
 SCHEMA = "4DM-CARD"
 PRODUCT = "4dmap"
@@ -17,7 +17,9 @@ LOOPBACK = "127.0.0.1"
 ZION_CAP = 0.75
 PI_EMPTY = "Π-EMPTY"
 GENESIS_PREV = "0" * 64
-TARBALL = "4dmap-0.2.0.tar.gz"
+TARBALL = "4dmap-0.3.0.tar.gz"
+PIN_FRAME_KIND = "4DM-PIN-FRAME"
+GROWTH = "ON"
 
 AXES = ("T", "DELTA", "GAMMA", "PI")
 AXIS_GLYPH = {"T": "T", "DELTA": "Δ", "GAMMA": "Γ", "PI": "Π"}
@@ -72,13 +74,41 @@ COMPANIONS = {
     },
 }
 
+# Aziel Digital Library is a Research-domain sibling. Cite / pin-frame pairing only.
+# Not a 4DMap companion lock. Not a second door. Not GIS.
+LIBRARY = {
+    "software": "Aziel Digital Library",
+    "slug": "aziel-corpus",
+    "role": "inspection_input",
+    "cite_only": True,
+    "door": False,
+    "merged": False,
+    "map": "https://www.azielcorpuslibrary.net/map",
+    "verify_geo": "https://www.azielcorpuslibrary.net/v1/verify-geo",
+    "note": (
+        "Library Temporal Map pins are paper date × event × geolocation. "
+        "Never upload time. Docs without resolvable place+date stay unpinned. "
+        "4DMap accepts/emits 4DM-PIN-FRAME receipts on the hashchain lattice."
+    ),
+    "author": AUTHOR,
+}
+
+DISCOVERY = {
+    "growth": GROWTH,
+    "skill": True,
+    "openapi": True,
+    "mcp": True,
+    "worker_ui": True,
+    "reason": "library pin + lattice memory LIVE_OPS",
+}
+
 AXIS_FRAME = {
     "T": {
         "glyph": "T",
         "name": "Clock",
         "meaning": "time / when a pin sits",
         "companions": ("temporallock", "staticclock", "chronolock"),
-        "ops": ("pin", "card_pin", "span", "card_span", "walk", "walk_trace"),
+        "ops": ("pin", "card_pin", "library_pin", "span", "card_span", "walk", "walk_trace", "plot"),
     },
     "DELTA": {
         "glyph": "Δ",
@@ -92,14 +122,14 @@ AXIS_FRAME = {
         "name": "Trajectory",
         "meaning": "pattern / geometry / stacked or walked motion of pins",
         "companions": ("trajectorylock",),
-        "ops": ("stack", "walk", "walk_trace", "pin", "card_pin"),
+        "ops": ("stack", "walk", "walk_trace", "pin", "card_pin", "plot"),
     },
     "PI": {
         "glyph": "Π",
         "name": "Pattern",
         "meaning": "provenance / path / class / cohort / absence / silence",
         "companions": ("spectrallock",),
-        "ops": ("lens", "class", "cohort", "absence", "pin", "card_pin"),
+        "ops": ("lens", "class", "cohort", "absence", "pin", "card_pin", "pattern_recall", "poison_refuse", "possibility"),
     },
 }
 
@@ -190,6 +220,13 @@ LIVE_OPS = (
     "verify_chain",
     "memory_cite",
     "memory_observe",
+    "library_pin",
+    "plot",
+    "possibility",
+    "pattern_recall",
+    "lattice_tip",
+    "poison_refuse",
+    "neighbor_cite",
 )
 
 OP_ALIASES = {
@@ -198,6 +235,12 @@ OP_ALIASES = {
     "card_join": "join",
     "card_walk": "walk",
     "card_list": "list",
+    "ingest_pin": "library_pin",
+    "plot_pins": "plot",
+    "score_hooks": "possibility",
+    "possibility_cite": "possibility",
+    "lattice_tips": "lattice_tip",
+    "neighbor": "neighbor_cite",
 }
 
 REFUSE_OPS = {
@@ -214,6 +257,8 @@ REFUSE_OPS = {
     "akm_triad": ("AKM_SOFTWARE", "AKM-TRIAD-1.0 is LIVE fabric, not a Softwares-tab slug"),
     "memory_rewrite": ("AKM_REWRITE", "AKM-TRIAD-1.0 does not rewrite history"),
     "posterior_truth": ("AKM_TRUTH", "posterior ≠ truth; 4DMap receipts are not truth"),
+    "ml_store": ("LATTICE_ONLY", "adaptive pattern memory is the hashchain lattice, not a detached ML store"),
+    "detach_memory": ("LATTICE_ONLY", "recollection stays on tips/prev-hash/pin receipts"),
 }
 
 ALLOWED_JOINS = frozenset(
@@ -241,6 +286,8 @@ ALLOWED_SRC = frozenset(
         "operator",
         "4dmap",
         "synthetic",
+        "aziel-corpus",
+        "library",
     }
 )
 

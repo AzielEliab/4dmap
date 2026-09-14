@@ -1,4 +1,4 @@
-"""4DMap ops: pin/span/walk across T/Δ/Γ/Π plus FragGate-safe 0.2.0 ops.
+"""4DMap ops: pin/span/walk across T/Δ/Γ/Π plus lattice library pins.
 
 Author: Aziel Eliab only.
 """
@@ -18,6 +18,15 @@ from .card import (
     verify_card,
 )
 from .joins import join_cards
+from .lattice import (
+    lattice_tip,
+    library_pin,
+    neighbor_cite,
+    pattern_recall,
+    plot_model,
+    poison_refuse,
+    score_on_lattice,
+)
 from .memory import cite_card, observe_card
 from .scope import (
     AXIS_FRAME,
@@ -26,6 +35,8 @@ from .scope import (
     AUTHOR,
     BUCKET,
     COMPANIONS,
+    DISCOVERY,
+    LIBRARY,
     GUARDRAIL,
     LIMITATION,
     LIVE_OPS,
@@ -65,6 +76,10 @@ def envelope(op: str, result: dict[str, Any]) -> dict[str, Any]:
         "verified",
         "format",
         "role",
+        "surface",
+        "feature_h",
+        "lattice",
+        "collapsed",
     ):
         if key in result:
             fields.append({"label": key, "value": str(result[key])})
@@ -88,7 +103,25 @@ def _with_receipt(result: dict[str, Any]) -> dict[str, Any]:
     return result
 
 
+def _wants_library_pin(payload: dict[str, Any]) -> bool:
+    if payload.get("ingest") or payload.get("pin_frame") or payload.get("descriptor"):
+        return True
+    if payload.get("event") or payload.get("gazetteer_id") or payload.get("gazetteer"):
+        return True
+    if payload.get("lat") is not None or payload.get("lon") is not None:
+        return True
+    if payload.get("date") or payload.get("paper_date") or payload.get("doc_id"):
+        return True
+    return False
+
+
 def pin(payload: dict[str, Any], store: MapStore | None = None) -> dict[str, Any]:
+    if _wants_library_pin(payload) and normalize_axis(payload.get("axis") or "T") == "T":
+        cards = store.as_list() if store is not None else []
+        out = library_pin(payload, cards)
+        if store is not None:
+            store.add(out["card"])
+        return _with_receipt(out)
     axis = normalize_axis(payload.get("axis") or "T")
     src = str(payload.get("src") or "operator")
     note = str(payload.get("note") or f"{AXIS_GLYPH[axis]} pin")
@@ -461,6 +494,9 @@ def frame_status(payload: dict[str, Any] | None = None, store: MapStore | None =
         "refuse_ops": list(REFUSE_OPS),
         "companions": companions,
         "mesh": {"default_off": True, "get_enables": False, "node_gate": False},
+        "library": LIBRARY,
+        "growth": DISCOVERY["growth"],
+        "discovery": DISCOVERY,
         "akm": AKM,
         "limitation": LIMITATION,
         "guardrail": GUARDRAIL,
@@ -558,6 +594,38 @@ def memory_observe(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
     return observe_card(_card_from_payload(payload, store), payload)
 
 
+def _library_pin(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    out = library_pin(payload, store.as_list())
+    store.add(out["card"])
+    return _with_receipt(out)
+
+
+def _plot(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    _ = payload
+    return plot_model(store.as_list())
+
+
+def _possibility(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    return _with_receipt(score_on_lattice(payload, store.as_list(), store.add))
+
+
+def _pattern_recall(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    return _with_receipt(pattern_recall(payload, store.as_list(), store.add))
+
+
+def _lattice_tip(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    _ = payload
+    return lattice_tip(store.as_list())
+
+
+def _poison_refuse(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    return _with_receipt(poison_refuse(payload, store.as_list(), store.add))
+
+
+def _neighbor_cite(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    return neighbor_cite(payload, store.as_list())
+
+
 OPS = {
     "pin": pin,
     "span": span,
@@ -581,6 +649,13 @@ OPS = {
     "verify_chain": verify_chain,
     "memory_cite": memory_cite,
     "memory_observe": memory_observe,
+    "library_pin": _library_pin,
+    "plot": _plot,
+    "possibility": _possibility,
+    "pattern_recall": _pattern_recall,
+    "lattice_tip": _lattice_tip,
+    "poison_refuse": _poison_refuse,
+    "neighbor_cite": _neighbor_cite,
 }
 
 

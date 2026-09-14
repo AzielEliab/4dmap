@@ -12,6 +12,7 @@ from .ops import cap, dispatch, lens
 from .scope import (
     AKM,
     AUTHOR,
+    DISCOVERY,
     GUARDRAIL,
     LIMITATION,
     LIVE_OPS,
@@ -35,7 +36,7 @@ def _fail(name: str, detail: str) -> Check:
 
 
 def _check_version() -> Check:
-    if __version__ == "0.2.0" and SPEC == "4DM-WP-1.0":
+    if __version__ == "0.3.0" and SPEC == "4DM-WP-1.0":
         return _ok("version", f"{__version__} {SPEC}")
     return _fail("version", f"{__version__} {SPEC}")
 
@@ -139,7 +140,23 @@ def _check_frame() -> Check:
         return _fail("frame", str(MASTER33))
     if MASTER33.get("software_door") is not False:
         return _fail("frame", "4DMap must not be a Softwares door")
-    needed = ("card_export", "card_import", "frame_status", "axis_describe", "walk_trace", "verify_chain", "memory_cite", "memory_observe")
+    needed = (
+        "card_export",
+        "card_import",
+        "frame_status",
+        "axis_describe",
+        "walk_trace",
+        "verify_chain",
+        "memory_cite",
+        "memory_observe",
+        "library_pin",
+        "plot",
+        "possibility",
+        "pattern_recall",
+        "lattice_tip",
+        "poison_refuse",
+        "neighbor_cite",
+    )
     missing = [op for op in needed if op not in LIVE_OPS]
     if missing:
         return _fail("frame", f"missing LIVE_OPS {missing}")
@@ -163,7 +180,47 @@ def _check_frame() -> Check:
         return _fail("frame", "AKM must not appear as a companion software")
     if AKM.get("software_tab") is not False:
         return _fail("frame", "AKM constant leaked onto Softwares tab")
+    if status.get("growth") != "ON" or DISCOVERY.get("growth") != "ON":
+        return _fail("frame", "Worker discovery Growth-ON missing")
     return _ok("frame", "MASTER-33 inspection frame; FragGate single door")
+
+
+def _check_lattice() -> Check:
+    mock = {
+        "event": "synthetic paper event",
+        "date": "1912-04-15",
+        "lat": 41.726,
+        "lon": -49.947,
+        "surface": "MOCK",
+        "src": "aziel-corpus",
+        "note": "doctor MOCK library pin",
+    }
+    pinned = dispatch("library_pin", mock)
+    if pinned.get("surface") != "MOCK" or pinned.get("ml_store") is True:
+        return _fail("lattice", "library pin must be lattice-linked MOCK/REAL, not ML")
+    if pinned.get("hooks", {}).get("possibility", {}).get("label") != "possibility":
+        return _fail("lattice", "possibility hook unlabeled")
+    if pinned.get("collapsed") is not False:
+        return _fail("lattice", "scores collapsed")
+    try:
+        dispatch("library_pin", {"event": "x", "date": "1912-04-15", "lat": 200, "lon": 0, "surface": "MOCK"})
+        return _fail("lattice", "malformed lat accepted")
+    except CardError as err:
+        if err.code != "ANCHOR_REFUSE":
+            return _fail("lattice", err.code)
+    try:
+        dispatch("possibility", {"id": pinned["id"], "score": 0.9}, [pinned["card"]])
+        return _fail("lattice", "unlabeled score accepted")
+    except CardError as err:
+        if err.code != "SCORE_COLLAPSE":
+            return _fail("lattice", err.code)
+    try:
+        dispatch("ml_store", {})
+        return _fail("lattice", "detached ML store accepted")
+    except CardError as err:
+        if err.code != "LATTICE_ONLY":
+            return _fail("lattice", err.code)
+    return _ok("lattice", "library pin + labeled scores + hashchain refuse")
 
 
 CHECKS: tuple[Callable[[], Check], ...] = (
@@ -176,6 +233,7 @@ CHECKS: tuple[Callable[[], Check], ...] = (
     _check_cap,
     _check_limitation,
     _check_frame,
+    _check_lattice,
 )
 
 

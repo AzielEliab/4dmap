@@ -21,7 +21,7 @@
 </style>
 <body>
   <h1>4DMap</h1>
-  <p>Inspection coordinate frame v0.2.0. Loopback only. Author Aziel Eliab.</p>
+  <p>Inspection coordinate frame v0.3.0. Loopback only. Author Aziel Eliab. Growth-ON.</p>
   <p class="banner">Receipts are not truth. Not Lumen. Not certified forensics. Not GIS 4D. Not a Node Gate. Not a Softwares door. FragGate is THE single door.</p>
   <p class="pipe">PUBLIC/AGENTS/UI → FragGate → SweepGate → ChainLock-IN → DecisionGATE → AZPIPE
   → Internal Domain Layer (domains_are_doors:false)  ←──  4DMap cards sit HERE (inspection frame, not a hop gate)
@@ -51,10 +51,25 @@
         <option value="trajectorylock">TrajectoryLock</option>
         <option value="spectrallock">SpectralLock</option>
         <option value="synthetic">synthetic</option>
+        <option value="aziel-corpus">Aziel Digital Library</option>
       </select>
     </label>
     <button type="submit">Pin</button>
   </form>
+  <form id="library-form">
+    <label>Library pin — event <input id="lib-event" placeholder="paper event"></label>
+    <label>Paper date <input id="lib-date" placeholder="1912-04-15"></label>
+    <label>lat <input id="lib-lat" placeholder="41.726"></label>
+    <label>lon <input id="lib-lon" placeholder="-49.947"></label>
+    <label>gazetteer id <input id="lib-gaz"></label>
+    <label>surface
+      <select id="lib-surface"><option>MOCK</option><option>REAL</option></select>
+    </label>
+    <button type="submit">Library pin</button>
+    <button type="button" id="lib-demo-btn">MOCK demo</button>
+  </form>
+  <p class="note" id="score-box">possibility (time×geo) and bayesian (cited) stay labeled separately. Not courtroom proof. Not GIS.</p>
+  <svg id="pin-plot" viewBox="0 0 520 180" width="100%" height="180" style="background:#0e0e0e;border:1px solid #3d3420;border-radius:8px"></svg>
   <form id="span-form">
     <label>From id <input id="span-from"></label>
     <label>To id <input id="span-to"></label>
@@ -83,6 +98,10 @@
     <button type="button" id="export-btn">Export</button>
     <button type="button" id="memory-cite-btn">Cite memory</button>
     <button type="button" id="memory-observe-btn">Observe card</button>
+    <button type="button" id="plot-btn">Plot</button>
+    <button type="button" id="possibility-btn">Possibility</button>
+    <button type="button" id="recall-btn">Pattern recall</button>
+    <button type="button" id="tip-btn">Lattice tip</button>
   </form>
   <form id="import-form">
     <label>Import JSON <textarea id="import-json" placeholder='{"cards":[]}'></textarea></label>
@@ -116,9 +135,41 @@
       if (op === "card_import" && Array.isArray(j.cards)) {
         j.cards.forEach((c) => { if (!cards.some((x) => x.h === c.h)) cards.push(c); });
       }
+      if (j.hooks || j.possibility) {
+        var pos = (j.hooks && j.hooks.possibility) || j.possibility;
+        var bay = (j.hooks && j.hooks.bayesian) || j.bayesian;
+        document.getElementById("score-box").textContent =
+          "possibility=" + (pos ? pos.value + " (" + pos.label + ")" : "none") +
+          " · bayesian=" + (bay ? bay.value + " (" + bay.label + ")" : "none") +
+          " · collapsed=false · not courtroom proof";
+      }
       paint();
       return j;
     }
+    document.getElementById("library-form").onsubmit = (e) => {
+      e.preventDefault();
+      call("library_pin", {
+        event: document.getElementById("lib-event").value,
+        date: document.getElementById("lib-date").value,
+        lat: document.getElementById("lib-lat").value || undefined,
+        lon: document.getElementById("lib-lon").value || undefined,
+        gazetteer_id: document.getElementById("lib-gaz").value || undefined,
+        surface: document.getElementById("lib-surface").value,
+        src: "aziel-corpus",
+        prev: cards.length ? cards[cards.length-1].h : undefined
+      });
+    };
+    document.getElementById("lib-demo-btn").onclick = () => {
+      document.getElementById("lib-event").value = "synthetic paper event";
+      document.getElementById("lib-date").value = "1912-04-15";
+      document.getElementById("lib-lat").value = "41.726";
+      document.getElementById("lib-lon").value = "-49.947";
+      call("library_pin", { event: "synthetic paper event", date: "1912-04-15", lat: 41.726, lon: -49.947, surface: "MOCK", src: "synthetic", note: "MOCK library demo — not a real case" });
+    };
+    document.getElementById("plot-btn").onclick = () => call("plot", {});
+    document.getElementById("possibility-btn").onclick = () => { if (cards.length) call("possibility", { id: cards[cards.length-1].id }); };
+    document.getElementById("recall-btn").onclick = () => call("pattern_recall", {});
+    document.getElementById("tip-btn").onclick = () => call("lattice_tip", {});
     document.getElementById("pin-form").onsubmit = (e) => {
       e.preventDefault();
       const axis = document.getElementById("pin-axis").value;

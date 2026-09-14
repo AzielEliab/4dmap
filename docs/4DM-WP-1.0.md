@@ -105,12 +105,21 @@ No legal name, home, or county may appear on a card.
 | `axis_describe` | describe T/Δ/Γ/Π and cite-only companions |
 | `memory_cite` | optional AKM-TRIAD-1.0 fabric cite; card unchanged |
 | `memory_observe` | build a FragGate `memory_observe` packet from a 4DM-CARD |
+| `library_pin` | accept a library ingest (paper date × event × lat/lon or gazetteer) as a 4DM-PIN-FRAME on T |
+| `plot` | inspection plot of lattice pins + trajectories (not GIS) |
+| `possibility` | labeled time×geo possibility hook beside any Bayesian cite; writes a lattice receipt |
+| `pattern_recall` | walk tips / prev-hash / pin receipts; append a Π memory card. Not a detached ML store |
+| `lattice_tip` | list append-only tips |
+| `poison_refuse` | append a poison feature hash to the refuse set (hash only; NO-REWRITE) |
+| `neighbor_cite` | cite Aziel Digital Library + inspection companions on a declared card |
 
-Refused (not LIVE): `truth_score`, `lumen_panel`, `invent_mark`, `backdate_class`, `wipe`, `purge`, `delete_all`, `merge_products`, `enable_door`, `akm`, `akm_triad`, `memory_rewrite`, `posterior_truth`.
+Refused (not LIVE): `truth_score`, `lumen_panel`, `invent_mark`, `backdate_class`, `wipe`, `purge`, `delete_all`, `merge_products`, `enable_door`, `akm`, `akm_triad`, `memory_rewrite`, `posterior_truth`, `ml_store`, `detach_memory`.
 
 Companion cites (inspection inputs only): TemporalLock, StaticClock, ChronoLock, TrajectoryLock, SpectralLock. Functional pairing / cite. Do not merge products. Do not invent a second door. FragGate remains THE single door.
 
 AKM-TRIAD-1.0 (Adaptive Knowledge Memory) is **LIVE fabric** on aziel-runtime — not a Softwares-tab product, not a 4DMap companion slug, not a second door. Optional cite/observe of inspection cards only. Bayesian 3-of-4 triad E/C/P/B. Posterior ≠ truth. No history rewrite. Agent writes stay on FragGate `memory_*` / `POST /v1/memory/observe|resolve|calibrate|recall`.
+
+Aziel Digital Library (Research-domain neighbor, cite/pin-frame only) may emit a 4DM-PIN-FRAME: paper date × event × lat/lon or gazetteer id. Never upload time. 4DMap accepts and emits that frame on the hashchain lattice. **Possibility** (time×geo plausibility) and **Bayesian** (cited belief) stay labeled separately. They are not one number and not courtroom proof. Adaptive pattern memory / recollection / reasoning uses the lattice (tips, prev-hash, pin receipts) — not a detached ML store. Poison features append a refuse-set hash. NO-REWRITE. Not GIS. REAL vs MOCK must be labeled.
 
 ---
 
