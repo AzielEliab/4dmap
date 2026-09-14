@@ -4,7 +4,7 @@
 set -euo pipefail
 
 HOST="${FOURDMAP_HOST:-https://4dmap-download-tracker.vibelock.workers.dev}"
-ASSET="${FOURDMAP_ASSET:-4dmap-0.2.0.tar.gz}"
+ASSET="${FOURDMAP_ASSET:-4dmap-0.3.0.tar.gz}"
 WORKDIR="${FOURDMAP_HOME:-$HOME/4dmap}"
 
 mkdir -p "$WORKDIR"

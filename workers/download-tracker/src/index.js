@@ -377,7 +377,7 @@ export default {
         author: "Aziel Eliab",
         title: "4DMap",
         spec: "4DM-WP-1.0",
-        version: "0.2.0",
+        version: "0.3.0",
         github: GITHUB_REPO,
         download: HOST + "/download",
         doi: null,

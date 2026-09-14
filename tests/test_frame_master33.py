@@ -77,10 +77,10 @@ def test_repo_docs_keep_inspection_framing() -> None:
         assert "Aziel Eliab" in blob
         assert "GodLock.AZ" not in blob
         assert "domains_are_doors" in blob or "not a hop gate" in blob.lower() or "not an extra door" in blob.lower() or "not a Softwares door" in blob
-    assert "0.2.0" in readme
+    assert "0.3.0" in readme
     assert "card_export" in LIVE_OPS
-    assert 'VERSION = "0.2.0"' in engine
-    assert "4dmap-0.2.0.tar.gz" in home
+    assert 'VERSION = "0.3.0"' in engine
+    assert "4dmap-0.3.0.tar.gz" in home
     assert "GET never enables" in readme
     for blob in (readme, skill, paper, home, engine):
         assert "Domain Door" not in blob

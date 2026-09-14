@@ -8,6 +8,7 @@ import {
   AUTHOR,
   BUCKET,
   CATALOG,
+  DISCOVERY,
   GUARDRAIL,
   HOST,
   LIMITATION,
@@ -35,7 +36,7 @@ description: Use this when inspecting time as four axes (T clock, Δ interval, �
 
 Four-axis temporal mapping and pattern mapping (4DM-WP-1.0). Author: **Aziel Eliab**.
 
-**THIS IS:** an inspection coordinate frame (0.2.0). 4DM-CARD receipts (id, t, delta, gamma, pi, prev, src, h, note) plus axis receipts. Ops pin / span / stack / gap / fork / walk / lens / class / cohort / absence / cap / join plus card_new / card_export / card_import / frame_status / axis_describe / walk_trace / verify_chain / verify_hash / memory_cite / memory_observe. Typed joins T↔Δ, Δ↔Γ, Γ↔Π, T↔Π cite TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock as inspection inputs only. Optional AKM-TRIAD-1.0 fabric cite/observe (not a Softwares-tab product; posterior ≠ truth). Fail-closed SHA-256. Forks kept. ZionPattern cap 75%. Π-EMPTY when the lens is silent. Not a Softwares door (\`domains_are_doors:false\`). FragGate is THE single door.
+**THIS IS:** an inspection coordinate frame (0.3.0). 4DM-CARD receipts (id, t, delta, gamma, pi, prev, src, h, note) plus axis receipts. Ops pin / span / stack / gap / fork / walk / lens / class / cohort / absence / cap / join plus card_new / card_export / card_import / frame_status / axis_describe / walk_trace / verify_chain / verify_hash / memory_cite / memory_observe / library_pin / plot / possibility / pattern_recall / lattice_tip / poison_refuse / neighbor_cite. Library ingest is paper date × event × lat/lon or gazetteer. Possibility and Bayesian stay labeled separately. Adaptive pattern memory walks the hashchain lattice — not a detached ML store. Typed joins T↔Δ, Δ↔Γ, Γ↔Π, T↔Π cite TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock as inspection inputs only. Optional AKM-TRIAD-1.0 fabric cite/observe (not a Softwares-tab product; posterior ≠ truth). Fail-closed SHA-256. Forks kept. ZionPattern cap 75%. Π-EMPTY when the lens is silent. Not a Softwares door (\`domains_are_doors:false\`). FragGate is THE single door. Growth-ON.
 
 **THIS IS NOT:** a truth engine; Lumen; GIS 4D; a Node Gate; certified forensics; an identity store. Receipts are not truth. No legal name, home, or county on cards. Π→T backdate, intent, and identity leak refuse.
 
@@ -67,6 +68,7 @@ Host: \`https://4dmap-download-tracker.vibelock.workers.dev\`
 | POST | \`/v1/{card_new,card_pin,card_span,card_join,card_walk,card_list,verify_hash}\` | FragGate aliases. |
 | POST | \`/v1/{card_export,card_import,frame_status,axis_describe,walk_trace,verify_chain}\` | 0.2.0 read/write ops. |
 | POST | \`/v1/{memory_cite,memory_observe}\` | Optional AKM-TRIAD-1.0 fabric cite/observe. Not a Softwares slug. |
+| POST | \`/v1/{library_pin,plot,possibility,pattern_recall,lattice_tip,poison_refuse,neighbor_cite}\` | Library pin frames + lattice memory. Growth-ON. |
 
 OpenAPI: \`https://4dmap-download-tracker.vibelock.workers.dev/openapi.json\`
 
@@ -75,7 +77,9 @@ Catalog OpenAPI: \`https://aziel-runtime.vibelock.workers.dev/openapi.json\`
 MCP: \`POST https://4dmap-download-tracker.vibelock.workers.dev/mcp\`
 also \`POST https://aziel-runtime.vibelock.workers.dev/mcp\`
 
-FragGate is LIVE on aziel-runtime: \`fraggate_list\` → \`fraggate_describe slug=4dmap\` → \`fraggate_call\` (\`card_new\` / \`card_pin\` / \`card_span\` / \`card_join\` / \`card_walk\` / \`card_list\` / \`verify_hash\` plus \`card_export\` / \`card_import\` / \`frame_status\` / \`axis_describe\` / \`walk_trace\` / \`verify_chain\` / \`memory_cite\` / \`memory_observe\`). Softwares bucket **Plain**. Hubs list 4DMap. Agent path remains FragGate only. 4DMap is not an extra door. AKM-TRIAD-1.0 is LIVE fabric (not a Softwares-tab product): optional card cite/observe only; posterior ≠ truth; no history rewrite.
+FragGate is LIVE on aziel-runtime: \`fraggate_list\` → \`fraggate_describe slug=4dmap\` → \`fraggate_call\` (\`card_new\` / \`card_pin\` / \`card_span\` / \`card_join\` / \`card_walk\` / \`card_list\` / \`verify_hash\` plus \`card_export\` / \`card_import\` / \`frame_status\` / \`axis_describe\` / \`walk_trace\` / \`verify_chain\` / \`memory_cite\` / \`memory_observe\` / \`library_pin\` / \`plot\` / \`possibility\` / \`pattern_recall\` / \`lattice_tip\` / \`poison_refuse\` / \`neighbor_cite\`). Softwares bucket **Plain**. Hubs list 4DMap. Agent path remains FragGate only. 4DMap is not an extra door. AKM-TRIAD-1.0 is LIVE fabric (not a Softwares-tab product): optional card cite/observe only; posterior ≠ truth; no history rewrite. Pattern recollection stays on the hashchain lattice.
+
+Demo path (library upload → 4DMap pin): ingest \`{event, date, lat, lon|gazetteer_id, surface:REAL|MOCK}\` → \`POST /v1/library_pin\` → 4DM-PIN-FRAME on T. Cite https://www.azielcorpuslibrary.net/map and \`/v1/verify-geo\`. Scores are not courtroom proof.
 
 ## How to call (Mozilla/5.0)
 
@@ -191,6 +195,13 @@ function openapiSpec(origin) {
       "/v1/verify_chain": opDoc("verify_chain", "Verify a prev-hash chain fail-closed"),
       "/v1/memory_cite": opDoc("memory_cite", "Optional AKM-TRIAD-1.0 fabric cite. Not a Softwares slug. Card unchanged."),
       "/v1/memory_observe": opDoc("memory_observe", "Build a FragGate memory_observe packet from a 4DM-CARD. Posterior ≠ truth."),
+      "/v1/library_pin": opDoc("library_pin", "Pin a library ingest (paper date × event × lat/lon or gazetteer). REAL vs MOCK labeled."),
+      "/v1/plot": opDoc("plot", "Plot lattice pins and trajectories. Not GIS."),
+      "/v1/possibility": opDoc("possibility", "Labeled possibility + Bayesian hooks. Never collapsed. Lattice-linked receipt."),
+      "/v1/pattern_recall": opDoc("pattern_recall", "Recall recurring patterns from the hashchain lattice. Not a detached ML store."),
+      "/v1/lattice_tip": opDoc("lattice_tip", "List append-only lattice tips (prev-hash)."),
+      "/v1/poison_refuse": opDoc("poison_refuse", "Append a poison feature hash to the refuse set. Hash only. NO-REWRITE."),
+      "/v1/neighbor_cite": opDoc("neighbor_cite", "Cite Aziel Digital Library + inspection companions on a declared card."),
       "/llms.txt": { get: { operationId: "fourdmap_llms", summary: "Agent-oriented skill text.", responses: { "200": { description: "text" } } } },
       ...meshOpenApiPaths(),
     },
@@ -327,6 +338,8 @@ export async function handleRuntimeApi(request, url) {
       mesh: meshPointer(),
       ops: LIVE_OPS,
       frame: MASTER33,
+      growth: DISCOVERY.growth,
+      discovery: DISCOVERY,
     });
   }
   if (path === "/v1/skill" && request.method === "GET") {

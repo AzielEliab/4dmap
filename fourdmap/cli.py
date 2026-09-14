@@ -107,6 +107,45 @@ def _build_parser() -> argparse.ArgumentParser:
     p_mo = sub.add_parser("memory-observe", help="Build FragGate memory_observe packet from a card")
     p_mo.add_argument("--id", required=True)
     add_cards(p_mo)
+
+    p_lib = sub.add_parser("library-pin", help="Pin a library ingest (event, paper date, lat/lon or gazetteer)")
+    p_lib.add_argument("--event", required=True)
+    p_lib.add_argument("--date", required=True)
+    p_lib.add_argument("--lat", default=None)
+    p_lib.add_argument("--lon", default=None)
+    p_lib.add_argument("--gazetteer-id", dest="gazetteer_id", default=None)
+    p_lib.add_argument("--doc-id", dest="doc_id", default=None)
+    p_lib.add_argument("--surface", default="MOCK", choices=("REAL", "MOCK"))
+    p_lib.add_argument("--src", default="aziel-corpus")
+    p_lib.add_argument("--note", default=None)
+    add_cards(p_lib)
+
+    p_plot = sub.add_parser("plot", help="Plot lattice pins + trajectories (not GIS)")
+    add_cards(p_plot)
+
+    p_pos = sub.add_parser("possibility", help="Labeled possibility + bayesian hooks on the lattice")
+    p_pos.add_argument("--id", default=None)
+    p_pos.add_argument("--bayesian", type=float, default=None)
+    add_cards(p_pos)
+
+    p_pr = sub.add_parser("pattern-recall", help="Recall recurring patterns from the hashchain lattice")
+    add_cards(p_pr)
+
+    p_tip = sub.add_parser("lattice-tip", help="List lattice tips (append-only)")
+    add_cards(p_tip)
+
+    p_poi = sub.add_parser("poison-refuse", help="Append a poison feature hash to the refuse set")
+    p_poi.add_argument("--feature-h", dest="feature_h", default=None)
+    p_poi.add_argument("--event", default=None)
+    p_poi.add_argument("--date", default=None)
+    p_poi.add_argument("--lat", default=None)
+    p_poi.add_argument("--lon", default=None)
+    p_poi.add_argument("--gazetteer-id", dest="gazetteer_id", default=None)
+    add_cards(p_poi)
+
+    p_nb = sub.add_parser("neighbor-cite", help="Cite Aziel Digital Library + companions on a card")
+    p_nb.add_argument("--id", required=True)
+    add_cards(p_nb)
     return parser
 
 
@@ -157,6 +196,13 @@ def main(argv: Sequence[str] | None = None) -> int:
             "verify-hash": "verify_hash",
             "memory-cite": "memory_cite",
             "memory-observe": "memory_observe",
+            "library-pin": "library_pin",
+            "plot": "plot",
+            "possibility": "possibility",
+            "pattern-recall": "pattern_recall",
+            "lattice-tip": "lattice_tip",
+            "poison-refuse": "poison_refuse",
+            "neighbor-cite": "neighbor_cite",
         }
         op = op_map.get(args.command, args.command)
         cards = _load_cards(getattr(args, "cards", None))
@@ -165,6 +211,8 @@ def main(argv: Sequence[str] | None = None) -> int:
             payload["bundle"] = _load_cards(args.bundle)
             if isinstance(payload["bundle"], list):
                 payload = {"cards": payload["bundle"]}
+        if args.command == "possibility" and payload.get("bayesian") is not None:
+            payload["bayesian"] = {"label": "bayesian", "value": payload["bayesian"], "cite": "cli"}
         result = dispatch(op, payload, cards)
         result["cards_out"] = cards
         if "card" in result:

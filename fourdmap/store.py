@@ -71,5 +71,10 @@ class MapStore:
         chain.reverse()
         return chain
 
+    def tips(self) -> list[dict[str, Any]]:
+        from .lattice import tips_of
+
+        return tips_of(self.cards)
+
     def as_list(self) -> list[dict[str, Any]]:
         return list(self.cards)

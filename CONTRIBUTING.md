@@ -50,7 +50,7 @@ Python 3.10+. pytest is the dev extra. No network.
 - Flutter: `mobile/`
 - Isolated counter: `workers/download-tracker/`
 - Suite mesh: `workers/download-tracker/src/mesh.js`
-- Counted tarball: `workers/download-tracker/public/4dmap-0.2.0.tar.gz` (`DEFAULT_ASSET`). Rebuild with `tools/pack_counted_tarball.sh` after a version bump. Do not nest `*.tar.gz` inside the archive. Mesh remain-OFF. Dual-surface Worker stays.
+- Counted tarball: `workers/download-tracker/public/4dmap-0.3.0.tar.gz` (`DEFAULT_ASSET`). Rebuild with `tools/pack_counted_tarball.sh` after a version bump. Do not nest `*.tar.gz` inside the archive. Mesh remain-OFF. Dual-surface Worker stays. Growth-ON when Worker discovery (skill / OpenAPI / LIVE_OPS) changes.
 
 ## License of contributions
 

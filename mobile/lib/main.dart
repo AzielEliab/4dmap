@@ -48,7 +48,7 @@ class _BoardPageState extends State<BoardPage> {
         children: [
           Text(limitation, style: Theme.of(context).textTheme.bodyMedium),
           const SizedBox(height: 12),
-          const Text('v0.2.0 · truth engine: False · author: Aziel Eliab · bucket: Plain · not a door'),
+          const Text('v0.3.0 · truth engine: False · author: Aziel Eliab · bucket: Plain · not a door'),
           const SizedBox(height: 16),
           const Text('T Clock · Δ Interval · Γ Trajectory · Π Pattern'),
           const SizedBox(height: 12),

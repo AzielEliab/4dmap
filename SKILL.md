@@ -5,9 +5,9 @@ description: Use this when inspecting time as four axes (T clock, Δ interval, �
 
 # 4DMap
 
-Four-axis temporal mapping and pattern mapping (4DM-WP-1.0). Version **0.2.0**. Author: **Aziel Eliab**.
+Four-axis temporal mapping and pattern mapping (4DM-WP-1.0). Version **0.3.0**. Author: **Aziel Eliab**.
 
-**THIS IS:** an inspection coordinate frame. 4DM-CARD receipts (id, t, delta, gamma, pi, prev, src, h, note) plus axis receipts. Ops pin / span / stack / gap / fork / walk / lens / class / cohort / absence / cap / join plus card_new / card_export / card_import / frame_status / axis_describe / walk_trace / verify_chain / verify_hash. Typed joins T↔Δ, Δ↔Γ, Γ↔Π, T↔Π cite TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock as inspection inputs only. Fail-closed SHA-256. Forks kept. ZionPattern cap 75%. Π-EMPTY when the lens is silent. Not a Softwares door (`domains_are_doors:false`). FragGate is THE single door.
+**THIS IS:** an inspection coordinate frame. 4DM-CARD receipts (id, t, delta, gamma, pi, prev, src, h, note) plus axis receipts. Ops pin / span / stack / gap / fork / walk / lens / class / cohort / absence / cap / join plus card_new / card_export / card_import / frame_status / axis_describe / walk_trace / verify_chain / verify_hash / library_pin / plot / possibility / pattern_recall / lattice_tip / poison_refuse / neighbor_cite. Library ingest is paper date × event × lat/lon or gazetteer id. Possibility and Bayesian stay labeled separately. Adaptive pattern memory walks the hashchain lattice (tips, prev-hash, pin receipts) — not a detached ML store. Typed joins T↔Δ, Δ↔Γ, Γ↔Π, T↔Π cite TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock as inspection inputs only. Aziel Digital Library is a Research-domain neighbor (cite/pin-frame). Fail-closed SHA-256. Forks kept. ZionPattern cap 75%. Π-EMPTY when the lens is silent. Not a Softwares door (`domains_are_doors:false`). FragGate is THE single door. Growth-ON (Worker discovery).
 
 **THIS IS NOT:** a truth engine; Lumen; GIS 4D; a Node Gate; certified forensics; an identity store. Receipts are not truth. No legal name, home, or county on cards. Π→T backdate, intent, and identity leak refuse.
 
@@ -39,6 +39,7 @@ Host: `https://4dmap-download-tracker.vibelock.workers.dev`
 | POST | `/v1/{card_new,card_pin,card_span,card_join,card_walk,card_list,verify_hash}` | FragGate aliases. |
 | POST | `/v1/{card_export,card_import,frame_status,axis_describe,walk_trace,verify_chain}` | 0.2.0 read/write ops. |
 | POST | `/v1/{memory_cite,memory_observe}` | Optional AKM-TRIAD-1.0 fabric cite/observe. Not a Softwares slug. |
+| POST | `/v1/{library_pin,plot,possibility,pattern_recall,lattice_tip,poison_refuse,neighbor_cite}` | Library pin frames + lattice memory. Growth-ON. |
 
 OpenAPI: `https://4dmap-download-tracker.vibelock.workers.dev/openapi.json`
 
@@ -47,7 +48,9 @@ Catalog OpenAPI: `https://aziel-runtime.vibelock.workers.dev/openapi.json`
 MCP: `POST https://4dmap-download-tracker.vibelock.workers.dev/mcp`
 also `POST https://aziel-runtime.vibelock.workers.dev/mcp`
 
-FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call` (`card_new` / `card_pin` / `card_span` / `card_join` / `card_walk` / `card_list` / `verify_hash` plus `card_export` / `card_import` / `frame_status` / `axis_describe` / `walk_trace` / `verify_chain` / `memory_cite` / `memory_observe`). Softwares bucket **Plain**. Hubs list 4DMap. Agent path remains FragGate only. 4DMap is not an extra door. AKM-TRIAD-1.0 is LIVE fabric (not a Softwares-tab product): optional card cite/observe only; posterior ≠ truth; no history rewrite. Memory writes stay on FragGate `memory_*` / `POST /v1/memory/*`.
+FragGate is LIVE on aziel-runtime: `fraggate_list` → `fraggate_describe slug=4dmap` → `fraggate_call` (`card_new` / `card_pin` / `card_span` / `card_join` / `card_walk` / `card_list` / `verify_hash` plus `card_export` / `card_import` / `frame_status` / `axis_describe` / `walk_trace` / `verify_chain` / `memory_cite` / `memory_observe` / `library_pin` / `plot` / `possibility` / `pattern_recall` / `lattice_tip` / `poison_refuse` / `neighbor_cite`). Softwares bucket **Plain**. Hubs list 4DMap. Agent path remains FragGate only. 4DMap is not an extra door. AKM-TRIAD-1.0 is LIVE fabric (not a Softwares-tab product): optional card cite/observe only; posterior ≠ truth; no history rewrite. Memory writes stay on FragGate `memory_*` / `POST /v1/memory/*`. Pattern recollection stays on the 4DM hashchain lattice.
+
+Demo path (library upload → 4DMap pin): library ingest `{event, date, lat, lon|gazetteer_id, surface:REAL|MOCK}` → `POST /v1/library_pin` → 4DM-PIN-FRAME on T. Cite https://www.azielcorpuslibrary.net/map and `/v1/verify-geo`. Scores are not courtroom proof.
 
 ## How to call (Mozilla/5.0)
 
