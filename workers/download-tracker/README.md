@@ -31,3 +31,15 @@ Prior `4dmap-0.2.0.tar.gz` / `4dmap-0.1.0.tar.gz` stay for old links.
 Mesh remain-OFF. 4DMap remains an inspection frame, not a door.
 
 Paper: [docs/4DM-WP-1.0.md](../../docs/4DM-WP-1.0.md)
+
+## Human / bot schema (`/stats` and `/count`)
+
+Additive dual-count (Whitestone canary). Classification lives in `src/classify.js`
+and response shaping in `src/stats-shape.js`.
+
+Invariant: `views === views_human + views_bot` and
+`downloads === downloads_human + downloads_bot`.
+
+Legacy strategy (b): existing KV totals are never reset. Pre-split remainder
+is shown as bot on read (`views_bot = views - views_human`). Author: Aziel Eliab only.
+
