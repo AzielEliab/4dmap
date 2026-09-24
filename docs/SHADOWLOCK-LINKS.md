@@ -2,7 +2,9 @@
 
 Author: Aziel Eliab.
 
-4DMap reads ShadowLock’s local link record so a person can see linked Softwares and their inputs in time order. ShadowLock’s repository does not publish this file yet. Both programs use this path and shape.
+**ShadowLock is a separate Softwares.** It has its own repository, download, and desk. ShadowLock writes the link record. 4DMap only reads it and shows the linked Softwares and inputs in time order. 4DMap does not edit links and does not include ShadowLock’s desk.
+
+ShadowLock’s repository does not publish this path yet. The shared file is below.
 
 ## Path
 

@@ -308,8 +308,8 @@ def _build_parser() -> MapParser:
     p_shadow = sub.add_parser(
         "shadow",
         parents=[json_flags],
-        help="Show ShadowLock links from this computer",
-        description="Read ~/.shadowlock/links.json and list linked Softwares in time order.",
+        help="Show links written by ShadowLock, a separate Softwares",
+        description="Read ~/.shadowlock/links.json. ShadowLock is a separate Softwares. 4DMap only reads the file.",
         epilog="Example: 4dmap shadow --links examples/shadowlock-links.json",
     )
     p_shadow.add_argument(

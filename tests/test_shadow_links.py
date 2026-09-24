@@ -89,7 +89,9 @@ def test_cli_empty(capsys, tmp_path) -> None:
     assert main(["shadow", "--links", str(tmp_path / "missing.json")]) == 0
     out = capsys.readouterr().out
     assert "No ShadowLock links yet." in out
-    assert "Next:" in out
+    assert "separate Softwares" in out
+    assert "Open ShadowLock" in out
+    assert "ShadowLock inside 4DMap" not in out
 
 
 def test_cli_human_and_json(capsys, tmp_path) -> None:
@@ -97,6 +99,8 @@ def test_cli_human_and_json(capsys, tmp_path) -> None:
     path.write_text(json.dumps(SAMPLE), encoding="utf-8")
     assert main(["shadow", "--links", str(path)]) == 0
     human = capsys.readouterr().out
+    assert "separate Softwares" in human
+    assert "read-only" in human
     assert "azmail" in human
     assert "Morning intake" in human
     assert "inbox/sample" in human
@@ -123,6 +127,11 @@ def test_page_has_shadow_layer() -> None:
     html = (ROOT / "fourdmap" / "static" / "index.html").read_text(encoding="utf-8")
     assert "Softwares · Shadow" in html
     assert "No ShadowLock links yet." in html
+    assert "separate Softwares" in html
+    assert "Open ShadowLock" in html
+    assert "ShadowLock inside 4DMap" not in html
+    assert "draggable" not in html
+    assert "ondrop" not in html
     assert "/v1/shadow_links" in html
     assert 'id="pin-form"' in html
     assert html.find('id="shadow"') < html.find('id="advanced"')
@@ -132,6 +141,10 @@ def test_readme_documents_path() -> None:
     readme = (ROOT / "README.md").read_text(encoding="utf-8")
     doc = (ROOT / "docs" / "SHADOWLOCK-LINKS.md").read_text(encoding="utf-8")
     assert "~/.shadowlock/links.json" in readme
+    assert "separate Softwares" in readme
+    assert "separate Softwares" in doc
+    assert "ShadowLock inside 4DMap" not in readme
+    assert "ShadowLock inside 4DMap" not in doc
     assert FORMAT in doc
     assert "slug" in doc
     assert "linked_at" in doc

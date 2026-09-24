@@ -26,6 +26,8 @@ Receipts are not a truth engine, Lumen, GIS 4D, a Node Gate, or certified forens
 
 Author: **Aziel Eliab**.
 
+**ShadowLock is a separate Softwares.** It has its own download and desk. 4DMap does not install it and does not edit its links.
+
 ## Pipeline placement
 
 4DMap is **not** another sequential gate. It is an **inspection frame** in the Internal Domain Layer (`domains_are_doors:false`):
@@ -92,7 +94,7 @@ A person gets a short summary. `--json` prints the machine object. `-o` still wr
 
 The first screen is **Pin**. Span, join, walk, library pins, import, and the other board actions sit under **Advanced**. **Notes** holds the inspection scope. The page follows the system light or dark theme.
 
-**Softwares · Shadow** lists linked Softwares and their inputs in time order. The link file is `~/.shadowlock/links.json`, or the path in `SHADOWLOCK_LINKS`. The shape is [docs/SHADOWLOCK-LINKS.md](docs/SHADOWLOCK-LINKS.md). An empty file says “No ShadowLock links yet.”
+**Softwares · Shadow** is a read-only list of links ShadowLock already wrote. The file is `~/.shadowlock/links.json`, or the path in `SHADOWLOCK_LINKS`. The shape is [docs/SHADOWLOCK-LINKS.md](docs/SHADOWLOCK-LINKS.md). When the file is empty, the page says “No ShadowLock links yet” and points to the ShadowLock package.
 
 ## iPhone & Android
 

@@ -1,6 +1,6 @@
-"""Read the ShadowLock link file. Author: Aziel Eliab only.
+"""Read the link file written by ShadowLock. Author: Aziel Eliab only.
 
-ShadowLock does not publish this path yet. 4DMap and ShadowLock share
+ShadowLock is a separate Softwares. 4DMap only reads
 ``~/.shadowlock/links.json`` (format ``shadowlock-links-1``). See
 ``docs/SHADOWLOCK-LINKS.md``.
 """
@@ -129,10 +129,14 @@ def shadow_text(result: dict[str, Any]) -> str:
     if not links:
         return (
             "No ShadowLock links yet.\n"
-            f"Link records are read from {path}.\n"
-            "Next: add links to that file, then run 4dmap shadow\n"
+            "ShadowLock is a separate Softwares. Open ShadowLock to link a software.\n"
+            f"4DMap only reads {path}.\n"
+            "Next: open ShadowLock, then run 4dmap shadow\n"
         )
-    lines = [f"ShadowLock links ({len(links)})"]
+    lines = [
+        f"ShadowLock links ({len(links)})",
+        "ShadowLock is a separate Softwares. This list is read-only.",
+    ]
     for link in links:
         when = link.get("linked_at") or "time not recorded"
         lines.append(f"  {when}")

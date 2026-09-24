@@ -257,9 +257,9 @@
       <h2 id="shadow-title">Softwares · Shadow</h2>
       <button class="ghost" type="button" id="shadow-refresh">Refresh</button>
     </div>
-    <p class="hint">Linked Softwares and their inputs, in time order, from the ShadowLock link file on this computer.</p>
+    <p class="hint">Read-only. ShadowLock is a separate Softwares. 4DMap shows the links that file already holds, in time order.</p>
     <div id="shadow-body">
-      <p class="empty" id="shadow-empty">No ShadowLock links yet.</p>
+      <p class="empty" id="shadow-empty">No ShadowLock links yet. ShadowLock is a separate Softwares. Open ShadowLock to link a software.</p>
     </div>
   </section>
 
@@ -352,6 +352,7 @@
     <summary>Notes</summary>
     <div class="body">
       <p>4DMap stamps inspection coordinates on cards with SHA-256 hashes. Forks are kept. A silent lens returns Π-EMPTY. The ZionPattern cap is 0.75.</p>
+      <p>ShadowLock is a separate Softwares, with its own download and desk. Softwares · Shadow only reads the link file ShadowLock writes.</p>
       <p>Receipts are not a truth engine, Lumen, GIS 4D, a Node Gate, or certified forensics. Cards do not store a legal name, home, or county. Author: Aziel Eliab.</p>
       <p>The inspection frame sits in the Internal Domain Layer after AZPIPE (<code>domains_are_doors:false</code>). It is not a hop gate. FragGate is the single door.</p>
       <pre class="pipe">PUBLIC/AGENTS/UI → FragGate → SweepGate → ChainLock-IN → DecisionGATE → AZPIPE
@@ -645,7 +646,7 @@
         note.className = "empty";
         note.id = "shadow-empty";
         const where = body.path || "~/.shadowlock/links.json";
-        note.textContent = "No ShadowLock links yet. Link records are read from " + where + ". Refresh after that file has links.";
+        note.textContent = "No ShadowLock links yet. ShadowLock is a separate Softwares. Open ShadowLock to link a software. 4DMap only reads " + where + ".";
         host.appendChild(note);
         return;
       }
