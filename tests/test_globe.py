@@ -42,6 +42,14 @@ def test_page_is_a_globe() -> None:
     assert (ROOT / "fourdmap" / "static" / "geo" / "land.geojson").is_file()
     assert (ROOT / "fourdmap" / "static" / "geo" / "era-1914.geojson").is_file()
     assert (ROOT / "fourdmap" / "static" / "geo" / "era-2010.geojson").is_file()
+    assert "LineSegments" in script
+    assert "ShaderMaterial" in script
+    assert "nearest bundled era to this pin" in script
+    assert 'classList.add("gone")' in script
+    assert 'id="hash-copy"' in html
+    assert 'id="why-details"' in html
+    assert "system-ui" in html
+    assert 'id="labels"' in html
 
 
 def test_sun_is_high_at_the_equator_on_the_equinox() -> None:
