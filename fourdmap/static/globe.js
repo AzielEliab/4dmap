@@ -7,7 +7,10 @@ const X_AXIS = new THREE.Vector3(1, 0, 0);
 
 const $ = (id) => document.getElementById(id);
 
-const view = { lon: 10, lat: 18, dist: 3.15 };
+const DIST_MIN = 1.55;
+const DIST_MAX = 14;
+const view = { lon: 10, lat: 18, dist: 4.6 };
+let userMoved = false;
 const layers = { land: true, borders: true, satellite: false, street: false, lidar: false, shadow: false };
 let spin = true;
 let pins = [];
@@ -120,8 +123,8 @@ function palette() {
       oceanEq: "#1a5270",
       land: "#24362e",
       landEdge: "#315246",
-      border: "#e4d3a2",
-      coast: "#8fb8a4",
+      border: "#f3e6c0",
+      coast: "#d7efe4",
       grid: "#8aa4b4",
       glow: "#7eb6d6",
       specular: "#1a3344",
@@ -132,13 +135,13 @@ function palette() {
     oceanTop: "#6f97a8",
     oceanMid: "#9ec4d2",
     oceanEq: "#c5dde6",
-    land: "#e4efe2",
-    landEdge: "#d5e4d4",
-    border: "#2a3b34",
-    coast: "#3e5c52",
+      land: "#d7e6d4",
+      landEdge: "#c9dcc8",
+      border: "#1d332c",
+      coast: "#2f4f46",
     grid: "#6d8b99",
     glow: "#8eb4cc",
-    specular: "#d5e4ea",
+      specular: "#7f9eab",
   };
 }
 
@@ -160,12 +163,23 @@ function applyView() {
   camera.lookAt(0, 0, 0);
 }
 
+function fitDistance() {
+  const w = canvas.clientWidth || innerWidth;
+  const h = canvas.clientHeight || innerHeight;
+  const aspect = w / Math.max(h, 1);
+  const vHalf = THREE.MathUtils.degToRad(16);
+  const hHalf = Math.atan(Math.tan(vHalf) * aspect);
+  const limb = Math.min(vHalf, hHalf) * 0.7;
+  return THREE.MathUtils.clamp(1 / Math.sin(limb), DIST_MIN, DIST_MAX);
+}
+
 function resize() {
   const w = canvas.clientWidth || innerWidth;
   const h = canvas.clientHeight || innerHeight;
   renderer.setSize(w, h, false);
   camera.aspect = w / Math.max(h, 1);
   camera.updateProjectionMatrix();
+  if (!userMoved) view.dist = fitDistance();
 }
 
 function nearestEra(year) {
@@ -261,32 +275,6 @@ function lineGeometry(key, collection, radius, stride) {
   return geometry;
 }
 
-function graticuleGeometry(step) {
-  const id = `grat:${step}`;
-  if (geoCache.has(id)) return geoCache.get(id);
-  const positions = [];
-  const radius = 1.0015;
-  for (let lon = -180; lon < 180; lon += step) {
-    for (let lat = -80; lat < 80; lat += 4) {
-      const a = latLonToVector3(lat, lon, radius);
-      const b = latLonToVector3(lat + 4, lon, radius);
-      positions.push(a.x, a.y, a.z, b.x, b.y, b.z);
-    }
-  }
-  for (let lat = -60; lat <= 60; lat += step) {
-    for (let lon = -180; lon < 180; lon += 4) {
-      const a = latLonToVector3(lat, lon, radius);
-      const nextLon = Math.min(180, lon + 4);
-      const b = latLonToVector3(lat, nextLon, radius);
-      positions.push(a.x, a.y, a.z, b.x, b.y, b.z);
-    }
-  }
-  const geometry = new THREE.BufferGeometry();
-  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
-  geoCache.set(id, geometry);
-  return geometry;
-}
-
 function addLines(geometry, color, opacity) {
   const material = new THREE.LineBasicMaterial({
     color,
@@ -302,8 +290,7 @@ function addLines(geometry, color, opacity) {
 function rebuildLines() {
   const colors = palette();
   const year = nearestEra(eraYear);
-  const close = view.dist < 2.4;
-  const key = `${year}|${close}|${dark()}|${layers.land}|${layers.borders}|${Boolean(layers.satellite && satelliteImage)}`;
+  const key = `${year}|${dark()}|${layers.land}|${layers.borders}|${Boolean(layers.satellite && satelliteImage)}`;
   if (key === lineKey) return;
   lineKey = key;
   while (lineGroup.children.length) {
@@ -311,12 +298,11 @@ function rebuildLines() {
     lineGroup.remove(child);
     if (child.material) child.material.dispose();
   }
-  addLines(graticuleGeometry(close ? 15 : 30), colors.grid, dark() ? 0.16 : 0.22);
   if (layers.land && land && !(layers.satellite && satelliteImage)) {
-    addLines(lineGeometry("coast", land, 1.004, 1), colors.coast, 0.95);
+    addLines(lineGeometry("coast", land, 1.004, 1), colors.coast, 1);
   }
   if (layers.borders && borders[year]) {
-    addLines(lineGeometry(`era-${year}`, borders[year], 1.007, 1), colors.border, 0.92);
+    addLines(lineGeometry(`era-${year}`, borders[year], 1.007, 1), colors.border, 1);
   }
 }
 
@@ -343,6 +329,18 @@ function minLabelPriority() {
   if (view.dist > 2.7) return 70;
   if (view.dist > 2.3) return 22;
   return 6;
+}
+
+function overlapsChrome(box) {
+  const nodes = [document.querySelector("header"), $("hint"), $("pin-form"), $("legend"), $("layers"), $("pin-card")];
+  for (const node of nodes) {
+    if (!node || node.hidden) continue;
+    const style = getComputedStyle(node);
+    if (style.display === "none" || style.visibility === "hidden" || Number(style.opacity) === 0) continue;
+    const rect = node.getBoundingClientRect();
+    if (box.x < rect.right && box.x + box.w > rect.left && box.y < rect.bottom && box.y + box.h > rect.top) return true;
+  }
+  return false;
 }
 
 function globeScreenRadius() {
@@ -384,7 +382,8 @@ function placeLabels() {
       [box.x, box.y + box.h],
       [box.x + box.w, box.y + box.h],
     ];
-    if (corners.some(([px, py]) => Math.hypot(px - cx, py - cy) > radius * 0.96)) continue;
+    if (corners.some(([px, py]) => Math.hypot(px - cx, py - cy) > radius * 0.9)) continue;
+    if (overlapsChrome(box)) continue;
     if (placed.some((other) => box.x < other.x + other.w && box.x + box.w > other.x && box.y < other.y + other.h && box.y + box.h > other.y)) {
       continue;
     }
@@ -444,11 +443,11 @@ function paintEarth() {
   const colors = palette();
   const night = dark();
   renderer.setClearColor(colors.bg, 1);
-  ambient.intensity = night ? 0.88 : 0.72;
-  sun.intensity = night ? 0.95 : 1.2;
+  ambient.intensity = night ? 0.55 : 0.48;
+  sun.intensity = night ? 0.72 : 0.82;
   sun.color.set(night ? 0xd7e6f2 : 0xfff6e8);
   earth.material.specular.set(colors.specular);
-  earth.material.shininess = night ? 14 : 22;
+  earth.material.shininess = night ? 18 : 28;
   atmosphere.material.uniforms.glowColor.value.set(colors.glow);
   atmosphere.material.uniforms.strength.value = night ? 0.95 : 0.42;
   const blend = night ? THREE.AdditiveBlending : THREE.NormalBlending;
@@ -529,34 +528,38 @@ function rebuildPins() {
     const core = new THREE.Mesh(
       PIN_CORE,
       new THREE.MeshBasicMaterial({
-        color: fresh ? 0xc9a227 : new THREE.Color().setHSL(0.12, 0.55, 0.28 + score * 0.2),
+        color: fresh ? 0xf0d060 : 0xc9a227,
         depthTest: false,
+        depthWrite: false,
+        transparent: true,
+        opacity: 1,
       })
     );
     core.userData.pin = pin;
-    core.renderOrder = 4;
+    core.renderOrder = 5;
     group.add(core);
     const ring = new THREE.Mesh(
       PIN_RING,
       new THREE.MeshBasicMaterial({
-        color: fresh ? 0xc9a227 : 0xf4efe6,
+        color: fresh ? 0xc9a227 : (dark() ? 0xfff6d8 : 0x1c1914),
         side: THREE.DoubleSide,
         transparent: true,
-        opacity: fresh ? 0.95 : 0.8,
+        opacity: 0.95,
         depthTest: false,
+        depthWrite: false,
       })
     );
     ring.userData.pin = pin;
-    ring.renderOrder = 4;
+    ring.renderOrder = 5;
     orientOutward(ring, position);
     group.add(ring);
     if (pin.bayesian && typeof pin.bayesian.value === "number") {
       const bayes = new THREE.Mesh(
         BAYES_RING,
-        new THREE.MeshBasicMaterial({ color: 0x3d6f8a, side: THREE.DoubleSide, depthTest: false })
+        new THREE.MeshBasicMaterial({ color: 0x3d6f8a, side: THREE.DoubleSide, depthTest: false, depthWrite: false, transparent: true, opacity: 0.95 })
       );
       bayes.userData.pin = pin;
-      bayes.renderOrder = 4;
+      bayes.renderOrder = 5;
       orientOutward(bayes, position);
       group.add(bayes);
     }
@@ -603,8 +606,8 @@ function drawArea(ring) {
   areaRing = null;
   if (!ring || ring.length < 3) return;
   const center = ringCenter(ring);
-  const bands = [0.0, 0.62, 0.86, 1];
-  const alphas = [0.24, 0.12, 0.045, 0];
+  const bands = [0.0, 0.55, 0.82, 1];
+  const alphas = [0.42, 0.2, 0.07, 0];
   const positions = [];
   const alpha = [];
   const samples = bands.map((t, index) => ring.map((point) => {
@@ -642,9 +645,9 @@ function drawArea(ring) {
   lineGeo.setAttribute("position", new THREE.Float32BufferAttribute(outlinePts, 3));
   const outline = new THREE.Line(
     lineGeo,
-    new THREE.LineBasicMaterial({ color: 0x8a6a10, transparent: true, opacity: 0.9, depthWrite: false })
+    new THREE.LineBasicMaterial({ color: 0x8a6a10, transparent: true, opacity: 0.95, depthWrite: false })
   );
-  outline.renderOrder = 2;
+  outline.renderOrder = 3;
   areaGroup.add(outline);
   areaRing = mesh;
 }
@@ -747,7 +750,8 @@ async function openPin(id) {
   spin = false;
   view.lon = pin.lon;
   view.lat = Math.max(-70, Math.min(70, pin.lat));
-  view.dist = 2.15;
+  view.dist = 1.85;
+  userMoved = true;
   applyView();
   showEraForPin(pinYear(pin));
   let area = null;
@@ -770,6 +774,7 @@ async function openPin(id) {
 
 function flyTo(pin) {
   spin = false;
+  userMoved = true;
   const startLon = view.lon;
   let delta = pin.lon - startLon;
   if (delta > 180) delta -= 360;
@@ -782,7 +787,7 @@ function flyTo(pin) {
     const ease = 1 - (1 - t) ** 3;
     view.lon = startLon + delta * ease;
     view.lat = startLat + (Math.max(-70, Math.min(70, pin.lat)) - startLat) * ease;
-    view.dist = startDist + (2.15 - startDist) * ease;
+    view.dist = startDist + (1.85 - startDist) * ease;
     applyView();
     if (t < 1) requestAnimationFrame(step);
   }
@@ -882,6 +887,7 @@ async function onPin(event) {
       spin = false;
       view.lon = created.lon;
       view.lat = Math.max(-70, Math.min(70, created.lat));
+      userMoved = true;
       applyView();
     }
     $("receipt").textContent = result.h ? `hash ${result.h}` : "";
@@ -985,13 +991,14 @@ canvas.addEventListener("pointermove", (event) => {
   const dy = event.clientY - start.y;
   if (Math.hypot(dx, dy) > 3) {
     start.moved = true;
+    userMoved = true;
     $("hint").classList.add("gone");
   }
   if (pointers.size === 2) {
     const pts = [...pointers.values()];
     const dist = Math.hypot(pts[0].x - pts[1].x, pts[0].y - pts[1].y);
     if (start.lastPinch) {
-      view.dist = Math.min(5.6, Math.max(1.65, view.dist * (start.lastPinch / Math.max(dist, 1))));
+      view.dist = Math.min(DIST_MAX, Math.max(DIST_MIN, view.dist * (start.lastPinch / Math.max(dist, 1))));
     }
     start.lastPinch = dist;
   } else {
@@ -1021,8 +1028,9 @@ canvas.addEventListener("pointercancel", (event) => pointers.delete(event.pointe
 canvas.addEventListener("wheel", (event) => {
   event.preventDefault();
   spin = false;
+  userMoved = true;
   $("hint").classList.add("gone");
-  view.dist = Math.min(5.6, Math.max(1.65, view.dist + Math.sign(event.deltaY) * 0.18));
+  view.dist = Math.min(DIST_MAX, Math.max(DIST_MIN, view.dist + Math.sign(event.deltaY) * 0.18));
   applyView();
 }, { passive: false });
 
@@ -1033,10 +1041,11 @@ addEventListener("keydown", (event) => {
   else if (event.key === "ArrowRight") view.lon += 8;
   else if (event.key === "ArrowUp") view.lat = Math.min(80, view.lat + 6);
   else if (event.key === "ArrowDown") view.lat = Math.max(-80, view.lat - 6);
-  else if (event.key === "+" || event.key === "=") view.dist = Math.max(1.65, view.dist - 0.2);
-  else if (event.key === "-" || event.key === "_") view.dist = Math.min(5.6, view.dist + 0.2);
+  else if (event.key === "+" || event.key === "=") view.dist = Math.max(DIST_MIN, view.dist - 0.2);
+  else if (event.key === "-" || event.key === "_") view.dist = Math.min(DIST_MAX, view.dist + 0.2);
   else return;
   spin = false;
+  userMoved = true;
   applyView();
 });
 
