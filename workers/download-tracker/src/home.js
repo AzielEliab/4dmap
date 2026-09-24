@@ -176,104 +176,276 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
   </section>
 
   <section class="card" id="board">
+    <style>
+      html { overflow-x: clip; }
+      #board {
+        color-scheme: dark;
+        --app-bg: #141414;
+        --app-ink: #f4efe4;
+        --app-muted: #d4cbb8;
+        --app-line: #8a8172;
+        --app-gold: #e0b53a;
+        --app-ok: #b7ebc8;
+        --app-err: #ffc9c9;
+        --app-surface: #1c1c1c;
+        --app-input: #101010;
+        --app-on-gold: #1a1408;
+      }
+      @media (prefers-color-scheme: light) {
+        #board {
+          color-scheme: light;
+          --app-bg: #fffcf7;
+          --app-ink: #1c1914;
+          --app-muted: #3f3a32;
+          --app-line: #5c564c;
+          --app-gold: #6d5200;
+          --app-ok: #0d6b32;
+          --app-err: #8f1d1d;
+          --app-surface: #f6f3ec;
+          --app-input: #ffffff;
+          --app-on-gold: #fffdf8;
+          background: var(--app-bg);
+          color: var(--app-ink);
+        }
+      }
+      #board :focus-visible {
+        outline: 2px solid var(--app-gold);
+        outline-offset: 2px;
+      }
+      #board #pin-form button[type="submit"]:focus-visible {
+        outline: 2px solid #fffdf8;
+        outline-offset: 2px;
+        box-shadow: 0 0 0 4px var(--app-gold);
+      }
+      @media (prefers-color-scheme: light) {
+        :root { color-scheme: light; }
+        body { background: #f6f3ec; color: #1c1914; }
+        .card, #meshStrip { background: #fffcf7; color: #1c1914; }
+        .stamp, .byline, h1 { color: #6d5200; }
+        .note, .meta, .iso, .kid, .motto, .tag, footer, .pipe, #meshStrip { color: #3f3a32; }
+        .banner { background: #fff6df; color: #1c1914; border-color: #6d5200; }
+        input, select, textarea, pre, .pipe, #meshStrip input { background: #ffffff; color: #1c1914; border-color: #5c564c; }
+        a.btn.primary { background: #1c1914; color: #f6f3ec; }
+        button.btn.install, button.gold { background: #6d5200; color: #fffdf8; }
+        .count, #meshStrip .live b, #meshStrip .rollup b { color: #1c1914; }
+        #meshStrip .live b, #meshStrip .rollup b { color: #6d5200; }
+      }
+      #board h2, #board h3 { color: var(--app-gold); }
+      #board .note, #board .empty, #board .axis .empty { color: var(--app-muted); }
+      #board .axes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .55rem; }
+      #board .axis { min-width: 0; background: var(--app-surface); color: var(--app-ink); overflow-wrap: anywhere; }
+      #board .primary-pin {
+        border: 1px solid var(--app-gold);
+        border-radius: 12px;
+        padding: .9rem 1rem 1rem;
+        margin: .9rem 0 1rem;
+        background: var(--app-surface);
+      }
+      #board .primary-pin h3 { margin: 0 0 .35rem; font-size: 1.15rem; }
+      #board label { color: var(--app-muted); }
+      #board input, #board select, #board textarea {
+        background: var(--app-input);
+        color: var(--app-ink);
+        border: 1px solid var(--app-line);
+        min-height: 44px;
+        max-width: 100%;
+      }
+      #board textarea { min-height: 6rem; }
+      #board .stack > * { min-width: 0; }
+      #board button.btn.gold, #board button.quiet {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: auto;
+        max-width: 100%;
+        min-height: 44px;
+        margin: 0;
+        padding: .5rem .85rem;
+        border-radius: 10px;
+        font-size: 1rem;
+        font-weight: 650;
+        background: transparent;
+        color: var(--app-ink);
+        border: 1px solid var(--app-line);
+        cursor: pointer;
+      }
+      #board #pin-form button[type="submit"] {
+        display: flex;
+        width: 100%;
+        min-height: 48px;
+        margin-top: .75rem;
+        background: var(--app-gold);
+        color: var(--app-on-gold);
+        border: 1px solid transparent;
+        font-size: 1.15rem;
+        font-weight: 750;
+      }
+      #board button.quiet {
+        border: 0;
+        text-decoration: underline;
+        padding-left: 0;
+        padding-right: 0;
+        margin-top: .35rem;
+      }
+      #board .toolrow { display: flex; flex-wrap: wrap; gap: .45rem; margin: .55rem 0 0; }
+      #board details.fold {
+        border: 1px solid var(--app-line);
+        border-radius: 10px;
+        padding: .2rem .85rem .75rem;
+        margin: .55rem 0;
+        background: var(--app-surface);
+        min-width: 0;
+      }
+      #board details.fold > summary {
+        cursor: pointer;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        font-weight: 650;
+        color: var(--app-ink);
+      }
+      #board .inline, #board .inline4 { display: grid; grid-template-columns: 1fr !important; gap: .45rem; }
+      #board .inline > *, #board .inline4 > * { min-width: 0; }
+      @media (min-width: 720px) {
+        #board .inline { grid-template-columns: 1fr 1fr auto !important; }
+        #board .scores { grid-template-columns: 1fr 1fr; }
+      }
+      @media (max-width: 720px) {
+        #board .axes { grid-template-columns: 1fr 1fr !important; }
+        #board .scores { grid-template-columns: 1fr; }
+      }
+      #board .scores { display: grid; gap: .55rem; }
+      #board .scorebox { border: 1px solid var(--app-line); border-radius: 8px; padding: .55rem .65rem; color: var(--app-ink); overflow-wrap: anywhere; }
+      #board .plot { width: 100%; height: auto; max-width: 100%; background: var(--app-input); display: block; }
+      #board .status { color: var(--app-ink); font-size: 1rem; margin: .8rem 0 .35rem; }
+      #board .status.ok { color: var(--app-ok); }
+      #board .status.err { color: var(--app-err); }
+      #board .receipt { color: var(--app-ink); overflow-wrap: anywhere; }
+      #board pre { max-width: 100%; overflow: auto; white-space: pre-wrap; word-break: break-word; background: var(--app-input); color: var(--app-ink); }
+      #board ol { padding-left: 1.2rem; overflow-wrap: anywhere; }
+    </style>
     <h2>Four-axis board</h2>
-    <p class="note">Cards live in this browser. Hosted API is stateless. Fail-closed hashes. Forks kept. Π-EMPTY when the lens is silent. Companion src values cite TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock as inspection inputs only — products are not merged. Library pins use paper date × event × geo. Pattern memory is the hashchain lattice (tips / prev-hash), not a detached ML store.</p>
+    <p class="note">Cards stay in this browser for this visit. The hosted API keeps no map. Hashes fail closed. Forks are kept. A silent lens returns Π-EMPTY. Companion sources cite TemporalLock, StaticClock, ChronoLock, TrajectoryLock, and SpectralLock as inspection inputs. Library pins use a paper date, an event, and a place. Pattern memory is the hashchain lattice (tips and the previous hash).</p>
     <div class="axes">
-      <div class="axis" id="col-T"><h2>T Clock</h2></div>
-      <div class="axis" id="col-DELTA"><h2>Δ Interval</h2></div>
-      <div class="axis" id="col-GAMMA"><h2>Γ Trajectory</h2></div>
-      <div class="axis" id="col-PI"><h2>Π Pattern</h2></div>
+      <div class="axis" id="col-T"><h3>T Clock</h3><p class="empty">Nothing here yet.</p></div>
+      <div class="axis" id="col-DELTA"><h3>Δ Interval</h3><p class="empty">Nothing here yet.</p></div>
+      <div class="axis" id="col-GAMMA"><h3>Γ Trajectory</h3><p class="empty">Nothing here yet.</p></div>
+      <div class="axis" id="col-PI"><h3>Π Pattern</h3><p class="empty">Nothing here yet.</p></div>
     </div>
+    <p class="empty" id="board-empty">No cards on this visit.</p>
 
-    <form id="pin-form" autocomplete="off">
-      <label for="pin-t">Pin — T time / Δ change / Γ geometry / Π path</label>
-      <div class="inline4">
-        <input id="pin-t" placeholder="2026-09-10T00:00:00Z or value">
-        <select id="pin-axis" aria-label="pin axis">
-          <option value="T">T Clock</option>
-          <option value="DELTA">Δ Interval</option>
-          <option value="GAMMA">Γ Trajectory</option>
-          <option value="PI">Π Pattern</option>
-        </select>
-        <select id="pin-src" aria-label="pin src cite">
-          <option value="operator">operator</option>
-          <option value="temporallock">TemporalLock (cite)</option>
-          <option value="staticclock">StaticClock (cite)</option>
-          <option value="chronolock">ChronoLock (cite)</option>
-          <option value="trajectorylock">TrajectoryLock (cite)</option>
-          <option value="spectrallock">SpectralLock (cite)</option>
-          <option value="synthetic">synthetic</option>
-          <option value="aziel-corpus">Aziel Digital Library (cite)</option>
-        </select>
-        <button class="btn gold" type="submit">Pin</button>
-      </div>
+    <form id="pin-form" class="primary-pin" autocomplete="off">
+      <h3>Pin a card</h3>
+      <p class="note">One step. Choose an axis, enter a value, then pin. An empty value uses the current UTC time, and the field shows that time.</p>
+      <label for="pin-axis">Axis</label>
+      <select id="pin-axis">
+        <option value="T">T Clock</option>
+        <option value="DELTA">Δ Interval</option>
+        <option value="GAMMA">Γ Trajectory</option>
+        <option value="PI">Π Pattern</option>
+      </select>
+      <label for="pin-t">Value</label>
+      <input id="pin-t" placeholder="2026-09-10T00:00:00Z">
+      <label for="pin-src">Source</label>
+      <select id="pin-src" aria-label="pin src cite">
+        <option value="operator">Operator</option>
+        <option value="temporallock">TemporalLock (cite)</option>
+        <option value="staticclock">StaticClock (cite)</option>
+        <option value="chronolock">ChronoLock (cite)</option>
+        <option value="trajectorylock">TrajectoryLock (cite)</option>
+        <option value="spectrallock">SpectralLock (cite)</option>
+        <option value="synthetic">Synthetic</option>
+        <option value="aziel-corpus">Aziel Digital Library (cite)</option>
+      </select>
+      <button class="btn gold" type="submit">Pin</button>
+      <button class="quiet" type="button" id="load-example">Load synthetic example</button>
     </form>
-    <form id="library-form" autocomplete="off">
-      <label>Library upload → 4DMap pin — paper date × event × lat/lon or gazetteer. Never upload time. REAL vs MOCK labeled.</label>
-      <div class="inline4">
-        <input id="lib-event" placeholder="event (paper)">
-        <input id="lib-date" placeholder="1912-04-15 paper date">
+
+    <details class="fold" id="library-fold">
+      <summary>Library upload → 4DMap pin</summary>
+      <form id="library-form" autocomplete="off">
+        <p class="note">Paper date, event, and place. REAL and MOCK stay labeled. Upload time is not a field.</p>
+        <label for="lib-event">Event</label>
+        <input id="lib-event" placeholder="event on the paper">
+        <label for="lib-date">Paper date</label>
+        <input id="lib-date" placeholder="1912-04-15">
+        <label for="lib-surface">Label</label>
         <select id="lib-surface" aria-label="REAL or MOCK">
           <option value="MOCK">MOCK</option>
           <option value="REAL">REAL</option>
         </select>
-        <button class="btn gold" type="submit">Library pin</button>
+        <label for="lib-lat">Latitude</label>
+        <input id="lib-lat" placeholder="lat" inputmode="decimal">
+        <label for="lib-lon">Longitude</label>
+        <input id="lib-lon" placeholder="lon" inputmode="decimal">
+        <label for="lib-gaz">Gazetteer id</label>
+        <input id="lib-gaz" placeholder="opaque id">
+        <label for="lib-doc">Document id</label>
+        <input id="lib-doc" placeholder="optional">
+        <p class="note">Sister pages: Aziel Digital Library Temporal Map <a href="https://www.azielcorpuslibrary.net/map">/map</a> and <a href="https://www.azielcorpuslibrary.net/v1/verify-geo">/v1/verify-geo</a>. Possibility and bayesian stay separate labels.</p>
+        <div class="toolrow"><button class="btn gold" type="submit">Library pin</button></div>
+      </form>
+      <div class="scores">
+        <div class="scorebox" id="score-possibility">possibility (time × place) — none yet</div>
+        <div class="scorebox" id="score-bayesian">bayesian (cited) — none yet</div>
       </div>
-      <div class="inline4">
-        <input id="lib-lat" placeholder="lat">
-        <input id="lib-lon" placeholder="lon">
-        <input id="lib-gaz" placeholder="gazetteer id (opaque)">
-        <input id="lib-doc" placeholder="doc id (optional)">
-      </div>
-      <p class="note">Sister path: Aziel Digital Library Temporal Map <a href="https://www.azielcorpuslibrary.net/map">/map</a> · <a href="https://www.azielcorpuslibrary.net/v1/verify-geo">/v1/verify-geo</a>. Not GIS. Scores are not courtroom proof.</p>
-    </form>
-    <div class="scores">
-      <div class="scorebox" id="score-possibility"><b>possibility</b> (time×geo) — no score yet</div>
-      <div class="scorebox" id="score-bayesian"><b>bayesian</b> (cited) — none</div>
-    </div>
-    <svg class="plot" id="pin-plot" viewBox="0 0 560 220" role="img" aria-label="Inspection pin plot, not GIS"></svg>
-    <p class="note" id="plot-note">Inspection plot. Not GIS 4D. Pins labeled REAL or MOCK.</p>
-    <form id="span-form" autocomplete="off">
-      <label>Span Δ — from card id → to card id (any axis pair)</label>
-      <div class="inline">
+      <svg class="plot" id="pin-plot" viewBox="0 0 560 220" role="img" aria-label="Inspection pin plot"></svg>
+      <p class="note" id="plot-note">Inspection plot. Each pin is labeled REAL or MOCK.</p>
+    </details>
+
+    <details class="fold" id="relate-fold">
+      <summary>Span and join</summary>
+      <form id="span-form" autocomplete="off">
+        <p class="note">Span records the interval between two cards already on this page.</p>
+        <label for="span-from">From card</label>
         <input id="span-from" placeholder="from id">
+        <label for="span-to">To card</label>
         <input id="span-to" placeholder="to id">
-        <button class="btn gold" type="submit">Span</button>
-      </div>
-    </form>
-    <form id="join-form" autocomplete="off">
-      <label>Typed join — T↔Δ, Δ↔Γ, Γ↔Π, T↔Π. Π→T backdate refuses. Companions cited, not merged.</label>
-      <div class="inline">
+        <div class="toolrow"><button class="btn gold" type="submit">Span</button></div>
+      </form>
+      <form id="join-form" autocomplete="off">
+        <p class="note">Join two cards. Pattern to clock (Π→T) is refused, because a pattern cannot rewrite the clock.</p>
+        <label for="join-left">Left card</label>
         <input id="join-left" placeholder="left id">
+        <label for="join-right">Right card</label>
         <input id="join-right" placeholder="right id">
+        <label for="join-type">Join</label>
         <select id="join-type">
-          <option value="T-DELTA">T↔Δ</option>
-          <option value="DELTA-GAMMA">Δ↔Γ</option>
-          <option value="GAMMA-PI">Γ↔Π</option>
-          <option value="T-PI">T↔Π</option>
-          <option value="PI-T">Π→T (refused)</option>
+          <option value="T-DELTA">T↔Δ Clock and interval</option>
+          <option value="DELTA-GAMMA">Δ↔Γ Interval and trajectory</option>
+          <option value="GAMMA-PI">Γ↔Π Trajectory and pattern</option>
+          <option value="T-PI">T↔Π Clock and pattern</option>
+          <option value="PI-T">Π→T Pattern to clock (refused)</option>
         </select>
-      </div>
-      <p><button class="btn gold" type="submit">Join</button>
+      <div class="toolrow"><button class="btn gold" type="submit">Join</button>
       <button class="btn gold" type="button" id="fork-btn">Fork last</button>
       <button class="btn gold" type="button" id="lens-btn">Silent lens</button>
-      <button class="btn gold" type="button" id="example-btn">Load example</button></p>
-    </form>
-    <form id="walk-form" autocomplete="off">
-      <label>Walk / trace / verify chain — tip card id</label>
-      <div class="inline4">
+      <button class="btn gold" type="button" id="example-btn">Load example</button></div>
+      </form>
+    </details>
+
+    <details class="fold">
+      <summary>Walk and check</summary>
+      <form id="walk-form" autocomplete="off">
+        <label for="walk-tip">Tip card</label>
         <input id="walk-tip" placeholder="tip id">
-        <button class="btn gold" type="submit">Walk</button>
-        <button class="btn gold" type="button" id="trace-btn">Walk trace</button>
-        <button class="btn gold" type="button" id="chain-btn">Verify chain</button>
-      </div>
-    </form>
-    <p>
+        <div class="toolrow">
+          <button class="btn gold" type="submit">Walk</button>
+          <button class="btn gold" type="button" id="trace-btn">Walk trace</button>
+          <button class="btn gold" type="button" id="chain-btn">Verify chain</button>
+        </div>
+      </form>
+    </details>
+
+    <details class="fold">
+      <summary>Frame, memory, and lattice</summary>
+      <p class="note">These read the cards on this page. Cite and observe leave the 4DM-CARD unchanged. AKM-TRIAD-1.0 is fabric behind FragGate. A posterior is a belief. The hashchain lattice keeps tips and the previous hash.</p>
+    <div class="toolrow">
       <button class="btn gold" type="button" id="frame-btn">Frame status</button>
       <button class="btn gold" type="button" id="axis-btn">Axis describe</button>
       <button class="btn gold" type="button" id="export-btn">Export JSON</button>
-      <button class="btn gold" type="button" id="memory-cite-btn" title="Optional AKM-TRIAD-1.0 fabric cite. Not a Softwares slug.">Cite memory</button>
-      <button class="btn gold" type="button" id="memory-observe-btn" title="Build FragGate memory_observe packet. Posterior ≠ truth.">Observe card</button>
+      <button class="btn gold" type="button" id="memory-cite-btn" title="AKM-TRIAD-1.0 fabric cite. The 4DM-CARD stays unchanged.">Cite memory</button>
+      <button class="btn gold" type="button" id="memory-observe-btn" title="FragGate memory_observe packet. A posterior is a belief.">Observe card</button>
       <button class="btn gold" type="button" id="plot-btn">Plot</button>
       <button class="btn gold" type="button" id="possibility-btn">Possibility hooks</button>
       <button class="btn gold" type="button" id="recall-btn">Pattern recall</button>
@@ -281,18 +453,28 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
       <button class="btn gold" type="button" id="poison-btn">Poison refuse</button>
       <button class="btn gold" type="button" id="neighbor-btn">Neighbor cite</button>
       <button class="btn gold" type="button" id="lib-demo-btn">MOCK library demo</button>
-    </p>
-    <p class="note">AKM-TRIAD-1.0 is LIVE fabric behind FragGate — not a Softwares-tab product, not a second door. Cite/observe leaves the 4DM-CARD unchanged. Posterior ≠ truth. No history rewrite.</p>
-    <form id="import-form" autocomplete="off">
-      <label for="import-json">Import 4DM-CARD JSON (fail-closed hashes)</label>
-      <textarea id="import-json" placeholder='{"cards":[...]}'></textarea>
-      <p><button class="btn gold" type="submit">Import</button></p>
-    </form>
-    <h3>Card list · 4DM-CARD receipts</h3>
+    </div>
+    </details>
+
+    <details class="fold" id="import-fold">
+      <summary>Import cards</summary>
+      <form id="import-form" autocomplete="off">
+        <label for="import-json">4DM-CARD JSON</label>
+        <textarea id="import-json" placeholder='{"cards":[...]}'></textarea>
+        <p class="note">Hashes fail closed. A card that does not hash is refused.</p>
+        <div class="toolrow"><button class="btn gold" type="submit">Import</button></div>
+      </form>
+    </details>
+
+    <h3>Cards on this visit</h3>
+    <p class="empty" id="list-empty">No cards yet.</p>
     <ol id="card-list"></ol>
     <div id="receipt-box" class="receipt" hidden></div>
-    <p class="note" id="last-op">No op yet.</p>
-    <pre id="last-json" hidden></pre>
+    <p class="status" id="last-op" role="status" aria-live="polite">No action yet.</p>
+    <details class="fold" id="record-fold">
+      <summary>Response record</summary>
+      <pre id="last-json">No response yet.</pre>
+    </details>
     <p class="note">${escapeHtml(GUARDRAIL)}</p>
   </section>
 
@@ -413,25 +595,60 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
         if (c.pi && c.pi !== "Π-EMPTY") return "PI";
         return "T";
       }
+      function cssVar(name, fallback) {
+        var board = $("board");
+        if (!board) return fallback;
+        var v = getComputedStyle(board).getPropertyValue(name).trim();
+        return v || fallback;
+      }
+      function setStatus(text, kind) {
+        var el = $("last-op");
+        if (!el) return;
+        el.textContent = text;
+        el.className = kind ? "status " + kind : "status";
+      }
       function paint() {
+        var titles = { T:"T Clock", DELTA:"Δ Interval", GAMMA:"Γ Trajectory", PI:"Π Pattern" };
         ["T","DELTA","GAMMA","PI"].forEach(function (a) {
-          var titles = { T:"T Clock", DELTA:"Δ Interval", GAMMA:"Γ Trajectory", PI:"Π Pattern" };
-          $( "col-"+a ).innerHTML = "<h2>"+titles[a]+"</h2>";
+          var col = $("col-"+a);
+          col.textContent = "";
+          var h = document.createElement("h3");
+          h.textContent = titles[a];
+          col.appendChild(h);
         });
         var list = $("card-list");
-        list.innerHTML = "";
+        list.textContent = "";
         var pinIds = [];
+        var counts = { T:0, DELTA:0, GAMMA:0, PI:0 };
         cards.forEach(function (c) {
-          var col = $("col-"+axisOf(c));
+          var axis = axisOf(c);
+          counts[axis] = (counts[axis] || 0) + 1;
+          var col = $("col-"+axis);
           var d = document.createElement("div");
           d.className = "tick";
-          d.innerHTML = "<code>"+(c.id||"")+"</code><br>"+String(c.src||"")+" · "+String(c.h||"").slice(0,16);
+          var code = document.createElement("code");
+          code.textContent = c.id || "";
+          d.appendChild(code);
+          d.appendChild(document.createElement("br"));
+          d.appendChild(document.createTextNode(String(c.src || "") + " · " + String(c.h || "").slice(0, 16)));
           col.appendChild(d);
           var li = document.createElement("li");
-          li.textContent = (c.id||"") + " · " + axisOf(c) + " · " + (c.src||"") + " · " + String(c.h||"").slice(0,16);
+          li.textContent = (c.id || "") + " · " + axis + " · " + (c.src || "") + " · " + String(c.h || "").slice(0, 16);
           list.appendChild(li);
-          if (axisOf(c) === "T") pinIds.push(c.id);
+          if (axis === "T") pinIds.push(c.id);
         });
+        ["T","DELTA","GAMMA","PI"].forEach(function (a) {
+          if (!counts[a]) {
+            var empty = document.createElement("p");
+            empty.className = "empty";
+            empty.textContent = "Nothing here yet.";
+            $("col-"+a).appendChild(empty);
+          }
+        });
+        var boardEmpty = $("board-empty");
+        if (boardEmpty) boardEmpty.hidden = cards.length > 0;
+        var listEmpty = $("list-empty");
+        if (listEmpty) listEmpty.hidden = cards.length > 0;
         if (pinIds.length >= 2) {
           if (!$("span-from").value) $("span-from").value = pinIds[pinIds.length - 2];
           if (!$("span-to").value) $("span-to").value = pinIds[pinIds.length - 1];
@@ -445,14 +662,14 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
         var pbox = $("score-possibility");
         var bbox = $("score-bayesian");
         if (pbox) {
-          pbox.innerHTML = pos
-            ? "<b>possibility</b> (time×geo) = " + pos.value + " · label " + pos.label + " · truth " + String(pos.truth)
-            : "<b>possibility</b> (time×geo) — no score yet";
+          pbox.textContent = pos
+            ? "possibility (time × place) " + pos.value + " · label " + (pos.label || "possibility")
+            : "possibility (time × place) — none yet";
         }
         if (bbox) {
-          bbox.innerHTML = bay
-            ? "<b>bayesian</b> (cited) = " + bay.value + " · label " + bay.label + " · cite " + (bay.cite || "—") + " · truth false"
-            : "<b>bayesian</b> (cited) — none. Not collapsed into possibility.";
+          bbox.textContent = bay
+            ? "bayesian (cited) " + bay.value + " · label " + (bay.label || "bayesian") + (bay.cite ? " · cite " + bay.cite : "")
+            : "bayesian (cited) — none yet. Kept separate from possibility.";
         }
       }
       function paintPlot(pins) {
@@ -461,10 +678,15 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
         while (svg.firstChild) svg.removeChild(svg.firstChild);
         var list = pins || [];
         var geo = list.filter(function (p) { return p.lat != null && p.lon != null; });
+        var muted = cssVar("--app-muted", "#d4cbb8");
+        var ink = cssVar("--app-ink", "#f4efe4");
+        var gold = cssVar("--app-gold", "#e0b53a");
+        var ok = cssVar("--app-ok", "#b7ebc8");
+        var lineColor = cssVar("--app-line", "#8a8172");
         if (!geo.length) {
           var empty = document.createElementNS("http://www.w3.org/2000/svg", "text");
-          empty.setAttribute("x", "16"); empty.setAttribute("y", "28"); empty.setAttribute("fill", "#9a917f");
-          empty.textContent = "No lat/lon pins yet. Library pin or MOCK demo.";
+          empty.setAttribute("x", "16"); empty.setAttribute("y", "28"); empty.setAttribute("fill", muted);
+          empty.textContent = "No place pins yet. Use a library pin or the MOCK library demo.";
           svg.appendChild(empty);
           return;
         }
@@ -473,10 +695,10 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
           var y = 20 + ((90 - Number(p.lat)) / 180) * 180;
           var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
           c.setAttribute("cx", String(x)); c.setAttribute("cy", String(y)); c.setAttribute("r", "5");
-          c.setAttribute("fill", p.surface === "REAL" ? "#7dcf9a" : "#c9a227");
+          c.setAttribute("fill", p.surface === "REAL" ? ok : gold);
           svg.appendChild(c);
           var t = document.createElementNS("http://www.w3.org/2000/svg", "text");
-          t.setAttribute("x", String(x + 7)); t.setAttribute("y", String(y + 3)); t.setAttribute("fill", "#e8e0d0");
+          t.setAttribute("x", String(x + 7)); t.setAttribute("y", String(y + 3)); t.setAttribute("fill", ink);
           t.setAttribute("font-size", "10");
           t.textContent = (p.surface || "MOCK") + " " + String(p.event || p.id || "").slice(0, 22);
           svg.appendChild(t);
@@ -487,30 +709,76 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
             var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
             line.setAttribute("x1", String(x0)); line.setAttribute("y1", String(y0));
             line.setAttribute("x2", String(x)); line.setAttribute("y2", String(y));
-            line.setAttribute("stroke", "#3d3420");
+            line.setAttribute("stroke", lineColor);
             svg.appendChild(line);
           }
         });
       }
       function showReceipt(inner) {
         var box = $("receipt-box");
+        if (!box) return;
         var rec = inner && inner.receipt;
-        if (!rec) { box.hidden = true; return; }
+        if (!rec) { box.hidden = true; box.textContent = ""; return; }
         box.hidden = false;
-        box.innerHTML = "<b>4DM-CARD</b> " + (rec.glyph||"") + " " + (rec.name||"") + " · " + (rec.id||"") +
-          "<br>h " + String(rec.h||"").slice(0,16) + " · src " + (rec.src||"") +
-          (rec.companion ? " · cite " + rec.companion.software + " (inspection input, not a door)" : "") +
-          "<br>role " + (rec.role||"inspection") + " · door " + String(rec.door) + " · truth " + String(rec.truth);
+        box.textContent = "";
+        var title = document.createElement("strong");
+        title.textContent = "4DM-CARD " + (rec.glyph || "") + " " + (rec.id || "");
+        box.appendChild(title);
+        var bits = ["source " + (rec.src || ""), "hash " + String(rec.h || "").slice(0, 16), "role " + (rec.role || "inspection")];
+        if (rec.companion && rec.companion.software) bits.push("cites " + rec.companion.software);
+        box.appendChild(document.createElement("br"));
+        box.appendChild(document.createTextNode(bits.join(" · ")));
+      }
+      function plainStatus(op, j, inner) {
+        inner = inner || {};
+        var display = (j && j.display) || {};
+        var message = String(inner.message || inner.note || display.summary || "");
+        var refused = inner.refused === true || inner.ok === false;
+        if (refused) {
+          var why = message && message !== "refused" && message !== "ok" ? message : "The operation was refused.";
+          return "Refused" + (inner.code ? " (" + inner.code + ")" : "") + ". " + why;
+        }
+        if (message && message !== "ok") return message;
+        if (inner.verified === true) return "Chain verified.";
+        if (inner.verified === false) return "Chain did not verify.";
+        if (inner.id) return "Recorded " + inner.id + " on this page.";
+        if (op === "card_export") return "Export is in the import box. Open Import cards to copy it.";
+        if (op === "card_import") return "Import finished.";
+        if (op === "frame_status") return "Frame status is in the response record.";
+        if (op === "axis_describe") return "Axis description is in the response record.";
+        if (op === "walk" || op === "walk_trace") return "Walk finished.";
+        if (op === "plot") return "Plot updated from the cards on this page.";
+        if (op === "possibility") return "Possibility and bayesian are labeled separately.";
+        if (op === "pattern_recall") return "Pattern recall finished on the hashchain lattice.";
+        if (op === "lattice_tip") return "Lattice tip is ready.";
+        if (op === "memory_cite" || op === "memory_observe") return "Packet ready. The card on this page was not rewritten.";
+        if (op === "neighbor_cite") return "Neighbor cite is ready.";
+        if (op === "poison_refuse") return "Poison mark refused.";
+        return "Done.";
+      }
+      function writeRecord(j) {
+        var pre = $("last-json");
+        if (!pre) return;
+        pre.hidden = false;
+        try { pre.textContent = JSON.stringify(j, null, 2); }
+        catch (err) { pre.textContent = "The response could not be shown."; }
       }
       async function call(op, payload) {
-        var r = await fetch("/v1/"+op, { method:"POST", headers:{"content-type":"application/json","user-agent":"Mozilla/5.0"}, body: JSON.stringify(Object.assign({}, payload, { cards: cards })) });
-        var j = await r.json();
-        var inner = j.result || j;
-        $("last-op").textContent = op + (inner.refused ? " refused "+(inner.code||"") : " ok");
-        $("last-json").hidden = false;
-        $("last-json").textContent = JSON.stringify(j, null, 2);
-        if (inner.card) cards.push(inner.card);
-        if (op === "card_import" && Array.isArray(inner.cards)) {
+        var r;
+        var j;
+        try {
+          r = await fetch("/v1/" + op, { method:"POST", headers:{"content-type":"application/json","user-agent":"Mozilla/5.0"}, body: JSON.stringify(Object.assign({}, payload, { cards: cards })) });
+          j = await r.json();
+        } catch (err) {
+          setStatus("The request did not complete. The cards on this page were not changed.", "err");
+          return null;
+        }
+        var inner = (j && j.result) || j || {};
+        var refused = inner.refused === true || inner.ok === false || !r.ok;
+        setStatus(plainStatus(op, j, inner), refused ? "err" : "ok");
+        writeRecord(j);
+        if (!refused && inner.card) cards.push(inner.card);
+        if (!refused && op === "card_import" && Array.isArray(inner.cards)) {
           inner.cards.forEach(function (c) {
             if (!cards.some(function (x) { return x.h === c.h; })) cards.push(c);
           });
@@ -523,14 +791,38 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
           paintPlot(frames);
         }
         paint();
-        return inner;
+        return refused ? inner : inner;
+      }
+      function needCards(message) {
+        if (cards.length) return false;
+        setStatus(message, "err");
+        return true;
+      }
+      function loadExample() {
+        fetch("/v1/example", { method: "POST", headers: { "content-type": "application/json", "user-agent": "Mozilla/5.0" }, body: "{}" }).then(function (r) {
+          return r.json();
+        }).then(function (j) {
+          var added = j.cards || (j.result && j.result.cards) || [];
+          added.forEach(function (c) { cards.push(c); });
+          setStatus(added.length ? "Loaded the synthetic example (" + added.length + " cards). These cards are not a case finding." : "The example returned no cards.", added.length ? "ok" : "err");
+          writeRecord(j);
+          paint();
+        }).catch(function () {
+          setStatus("The example did not load. The cards on this page were not changed.", "err");
+        });
       }
       $("library-form").onsubmit = function (e) {
         e.preventDefault();
+        var eventName = ($("lib-event").value || "").trim();
+        var date = ($("lib-date").value || "").trim();
+        if (!eventName || !date) {
+          setStatus("Enter an event and a paper date. Nothing was pinned.", "err");
+          return;
+        }
         var prev = cards.length ? cards[cards.length - 1].h : undefined;
         call("library_pin", {
-          event: $("lib-event").value,
-          date: $("lib-date").value,
+          event: eventName,
+          date: date,
           lat: $("lib-lat").value || undefined,
           lon: $("lib-lon").value || undefined,
           gazetteer_id: $("lib-gaz").value || undefined,
@@ -543,44 +835,76 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
       $("pin-form").onsubmit = function (e) {
         e.preventDefault();
         var axis = $("pin-axis").value || "T";
-        call("pin", { t: $("pin-t").value || new Date().toISOString(), axis: axis, src: $("pin-src").value || "operator", note: axis + " pin", value: $("pin-t").value });
+        var value = ($("pin-t").value || "").trim();
+        if (!value) {
+          value = new Date().toISOString();
+          $("pin-t").value = value;
+        }
+        call("pin", { t: value, axis: axis, src: $("pin-src").value || "operator", note: axis + " pin", value: value });
       };
       $("span-form").onsubmit = function (e) {
         e.preventDefault();
-        call("span", { from_id: $("span-from").value, to_id: $("span-to").value });
+        if (!($("span-from").value || "").trim() || !($("span-to").value || "").trim()) {
+          setStatus("Enter a from card and a to card. Nothing was spanned.", "err");
+          return;
+        }
+        call("span", { from_id: $("span-from").value.trim(), to_id: $("span-to").value.trim() });
       };
       $("join-form").onsubmit = function (e) {
         e.preventDefault();
-        call("join", { left: $("join-left").value, right: $("join-right").value, join_type: $("join-type").value });
+        if (!($("join-left").value || "").trim() || !($("join-right").value || "").trim()) {
+          setStatus("Enter a left card and a right card. Nothing was joined.", "err");
+          return;
+        }
+        call("join", { left: $("join-left").value.trim(), right: $("join-right").value.trim(), join_type: $("join-type").value });
       };
       $("walk-form").onsubmit = function (e) {
         e.preventDefault();
-        call("walk", { tip: $("walk-tip").value });
+        if (!($("walk-tip").value || "").trim()) {
+          setStatus("Enter a tip card. Nothing was walked.", "err");
+          return;
+        }
+        call("walk", { tip: $("walk-tip").value.trim() });
       };
-      $("trace-btn").onclick = function () { call("walk_trace", { tip: $("walk-tip").value }); };
-      $("chain-btn").onclick = function () { call("verify_chain", { tip: $("walk-tip").value }); };
+      $("trace-btn").onclick = function () {
+        if (!($("walk-tip").value || "").trim()) { setStatus("Enter a tip card. No trace was requested.", "err"); return; }
+        call("walk_trace", { tip: $("walk-tip").value.trim() });
+      };
+      $("chain-btn").onclick = function () {
+        if (!($("walk-tip").value || "").trim()) { setStatus("Enter a tip card. The chain was not checked.", "err"); return; }
+        call("verify_chain", { tip: $("walk-tip").value.trim() });
+      };
       $("frame-btn").onclick = function () { call("frame_status", {}); };
       $("axis-btn").onclick = function () { call("axis_describe", {}); };
       $("memory-cite-btn").onclick = function () { call("memory_cite", { id: $("walk-tip").value }); };
       $("memory-observe-btn").onclick = function () { call("memory_observe", { id: $("walk-tip").value }); };
       $("export-btn").onclick = async function () {
         var inner = await call("card_export", {});
-        if (inner && inner.bundle) $("import-json").value = JSON.stringify(inner.bundle, null, 2);
+        if (inner && inner.bundle) {
+          $("import-json").value = JSON.stringify(inner.bundle, null, 2);
+          var fold = $("import-fold");
+          if (fold) fold.open = true;
+          setStatus("Export is in the import box.", "ok");
+        }
       };
       $("import-form").onsubmit = function (e) {
         e.preventDefault();
-        var raw = $("import-json").value || "{}";
+        var raw = $("import-json").value || "";
+        if (!raw.trim()) {
+          setStatus("Paste 4DM-CARD JSON. Nothing was imported.", "err");
+          return;
+        }
         try { call("card_import", { bundle: JSON.parse(raw) }); }
-        catch (err) { $("last-op").textContent = "import refused (JSON)"; }
+        catch (err) { setStatus("That text is not JSON. Nothing was imported.", "err"); }
       };
       $("fork-btn").onclick = function () {
-        if (!cards.length) return;
-        call("fork", { id: cards[cards.length-1].id });
+        if (needCards("Pin a card before forking. Nothing was forked.")) return;
+        call("fork", { id: cards[cards.length - 1].id });
       };
       $("lens-btn").onclick = function () { call("lens", { query: "" }); };
       $("plot-btn").onclick = function () { call("plot", {}); };
       $("possibility-btn").onclick = function () {
-        if (!cards.length) return;
+        if (needCards("Pin a card before possibility hooks.")) return;
         call("possibility", { id: cards[cards.length - 1].id });
       };
       $("recall-btn").onclick = function () { call("pattern_recall", {}); };
@@ -594,10 +918,12 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
         call("poison_refuse", { event: feat || "operator-marked", date: $("lib-date").value || "1970-01-01", lat: $("lib-lat").value || undefined, lon: $("lib-lon").value || undefined, gazetteer_id: $("lib-gaz").value || undefined });
       };
       $("neighbor-btn").onclick = function () {
-        if (!cards.length) return;
+        if (needCards("Pin a card before a neighbor cite.")) return;
         call("neighbor_cite", { id: cards[cards.length - 1].id });
       };
       $("lib-demo-btn").onclick = function () {
+        var fold = $("library-fold");
+        if (fold) fold.open = true;
         $("lib-event").value = "synthetic paper event";
         $("lib-date").value = "1912-04-15";
         $("lib-lat").value = "41.726";
@@ -615,14 +941,10 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
           prev: cards.length ? cards[cards.length - 1].h : undefined
         });
       };
-      $("example-btn").onclick = async function () {
-        var r = await fetch("/v1/example", { headers: { "user-agent": "Mozilla/5.0" } });
-        var j = await r.json();
-        (j.cards || []).forEach(function (c) { cards.push(c); });
-        $("last-op").textContent = "example loaded (synthetic)";
-        paint();
-      };
+      $("example-btn").onclick = loadExample;
+      if ($("load-example")) $("load-example").onclick = loadExample;
       paint();
+      paintPlot([]);
     })();
   </script>
 </body>
