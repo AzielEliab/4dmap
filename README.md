@@ -1,6 +1,6 @@
 # 4DMap
 
-Four-axis inspection coordinate frame (T Clock, Δ Interval, Γ Trajectory, Π Pattern). Receipts are not truth. Not Lumen. Not certified forensics. Not GIS 4D. Not a Node Gate.
+Place inspection cards on four axes: T Clock, Δ Interval, Γ Trajectory, and Π Pattern.
 
 **Author:** Aziel Eliab
 **Date:** 10 September 2026
@@ -8,7 +8,7 @@ Four-axis inspection coordinate frame (T Clock, Δ Interval, Γ Trajectory, Π P
 **Version:** 0.3.0
 **Spec:** `4DM-WP-1.0`
 **Paper:** [docs/4DM-WP-1.0.md](docs/4DM-WP-1.0.md) · [PDF companion note](docs/PDF-COMPANION.md)
-**Softwares bucket:** **Plain** (name 4DMap — not Gate, not Lock)
+**Softwares bucket:** **Plain**
 
 **Forks are welcome and always allowed.**
 
@@ -16,17 +16,15 @@ Four-axis inspection coordinate frame (T Clock, Δ Interval, Γ Trajectory, Π P
 
 1. Install: `curl -fsSL https://4dmap-download-tracker.vibelock.workers.dev/install.sh | bash`
 2. Run `4dmap ui` and open http://127.0.0.1:8844 (this computer only).
-3. Pin a clock, span an interval, or join two cards. Read the board. **Doctor** if you want a self-check.
+3. Press **Pin**. Run `4dmap doctor` for a self-check.
 
-Those cards are inspection coordinates. They do not certify facts, name people, or backdate a clock from a pattern.
+## Notes
 
-## Honest scope
+4DMap is an inspection coordinate frame over TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock evidence. Cards are 4DM-CARD receipts with fail-closed SHA-256. Forks are kept. The ZionPattern cap is 75%. A silent lens returns Π-EMPTY.
 
-**THIS IS:** an inspection coordinate frame over TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock evidence. 4DM-CARD receipts. Fail-closed SHA-256. Forks kept. ZionPattern cap 75%. Π-EMPTY when the lens is silent.
+Receipts are not a truth engine, Lumen, GIS 4D, a Node Gate, or certified forensics. Cards do not store a legal name, home, or county, and they do not certify facts, name people, or backdate a clock from a pattern.
 
-**THIS IS NOT:** a truth engine; Lumen; GIS 4D; a Node Gate; certified forensics; an identity store. No legal name, home, or county on cards. QNS/QNM do not carry 4DMap photons.
-
-Public identity **Aziel Eliab** only. GodLock is a sibling product name elsewhere. Never attach a GodLock-plus-AZ identity label.
+Author: **Aziel Eliab**.
 
 ## Pipeline placement
 
@@ -78,17 +76,20 @@ Open http://127.0.0.1:8844. No CDN, no telemetry.
 ## CLI
 
 ```bash
-python3 4dmap.py pin --t 2026-09-10T00:00:00Z --src synthetic
-python3 4dmap.py demo -o result.json
+4dmap
 4dmap ui
+4dmap pin --t 2026-09-10T00:00:00Z --src synthetic
+4dmap pin --json --t 2026-09-10T00:00:00Z --src synthetic
 4dmap doctor
 ```
 
+A person gets a short summary. `--json` prints the machine object. `-o` still writes that object to a file. Advanced commands stay available; `4dmap --help` lists them after the common ones.
+
 ## Local UI
 
-`4dmap ui` serves a loopback board at http://127.0.0.1:8844
+`4dmap ui` prints `Open http://127.0.0.1:8844/` and serves the workbench on this computer only.
 
-Four axes, a card list, pin / span / join / walk_trace / export. Binds `127.0.0.1` only.
+The first screen is **Pin**. Span, join, walk, library pins, import, and the other board actions sit under **Advanced**. **Notes** holds the inspection scope. The page follows the system light or dark theme.
 
 ## iPhone & Android
 

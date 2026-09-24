@@ -28,5 +28,5 @@ python -m pip install -e .
 echo
 echo "Installed 4DMap."
 echo "Run: 4dmap ui"
-echo "Then open http://127.0.0.1:8844 (loopback only)"
-echo "Inspection frame. Not a truth engine. Author: Aziel Eliab."
+echo "Then open http://127.0.0.1:8844"
+echo "Author: Aziel Eliab."

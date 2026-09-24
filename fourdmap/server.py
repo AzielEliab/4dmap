@@ -9,7 +9,7 @@ from urllib.parse import urlparse
 
 from .card import CardError
 from .ops import dispatch
-from .scope import AUTHOR, DEFAULT_PORT, LIMITATION, LIVE_OPS, LOOPBACK, PRODUCT_NAME, __version__
+from .scope import AUTHOR, DEFAULT_PORT, LIVE_OPS, LOOPBACK, __version__
 
 STATIC = Path(__file__).resolve().parent / "static"
 
@@ -77,9 +77,7 @@ def make_server(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> ThreadingHTTP
 
 def serve(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> None:
     httpd = make_server(host=host, port=port)
-    print(f"{PRODUCT_NAME} ui http://{host}:{port} (loopback only)")
-    print(LIMITATION)
-    print(f"Author: {AUTHOR}")
+    print(f"Open http://{host}:{port}/")
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

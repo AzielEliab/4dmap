@@ -1,205 +1,613 @@
 <!doctype html>
 <html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>4DMap — local workbench</title>
 <style>
-  :root { color-scheme: dark; --bg:#0b0b0b; --gold:#c9a227; --ink:#e8e0d0; --muted:#9a917f; --line:#3d3420; --surface:#141414; }
-  body { margin:0 auto; max-width:52rem; padding:1.5rem 1rem 3rem; background:var(--bg); color:var(--ink); font:16px/1.45 system-ui,sans-serif; }
-  h1 { color:var(--gold); margin:0 0 .3rem; }
-  .banner { border:1px solid var(--gold); background:#241c0d; color:#f0d78c; padding:.8rem 1rem; border-radius:8px; font-size:.92rem; }
-  .axes { display:grid; grid-template-columns:repeat(4,1fr); gap:.6rem; margin:1rem 0; }
-  .axis { border:1px solid var(--line); border-radius:10px; padding:.7rem; background:var(--surface); min-height:6rem; }
-  .axis h2 { margin:0 0 .4rem; color:var(--gold); font-size:1rem; }
-  .card { border:1px solid var(--line); padding:.45rem .55rem; margin:.35rem 0; border-radius:8px; font-size:.82rem; }
-  label, .note { color:var(--muted); font-size:.88rem; }
-  input, select, textarea { width:100%; box-sizing:border-box; margin:.25rem 0 .6rem; padding:.45rem .55rem; background:#0e0e0e; color:var(--ink); border:1px solid var(--gold); border-radius:8px; }
-  textarea { min-height:5rem; font:12px/1.4 ui-monospace,monospace; }
-  button { background:var(--gold); color:#14110a; border:0; border-radius:8px; font-weight:700; padding:.55rem .9rem; cursor:pointer; margin:.15rem .15rem .15rem 0; }
-  pre { background:#0e0e0e; padding:.7rem; overflow:auto; border-radius:8px; }
-  .pipe { white-space:pre-wrap; font:12px/1.4 ui-monospace,monospace; color:var(--muted); border:1px dashed var(--line); padding:.7rem; border-radius:8px; }
+  :root {
+    color-scheme: light dark;
+    --bg: #f4f1ea;
+    --surface: #fffcf7;
+    --ink: #1c1915;
+    --muted: #5c564c;
+    --line: #e3dacb;
+    --gold: #c9a227;
+    --gold-ink: #1a1408;
+    --shadow: 0 1px 0 rgba(28, 25, 21, 0.04);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #12110e;
+      --surface: #1c1914;
+      --ink: #f3efe6;
+      --muted: #c2b7a4;
+      --line: #3a3428;
+      --gold: #c9a227;
+      --gold-ink: #1a1408;
+      --shadow: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { background: var(--bg); }
+  body {
+    margin: 0 auto;
+    max-width: 52rem;
+    padding: 1.25rem 1rem 3rem;
+    background: var(--bg);
+    color: var(--ink);
+    font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 1rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 3px solid var(--gold);
+    margin-bottom: 1.25rem;
+  }
+  .brand { margin: 0; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em; }
+  .sub, .author, .lead, .hint, .quiet { color: var(--muted); }
+  .sub, .author { margin: 0.1rem 0 0; font-size: 0.92rem; }
+  h1 { margin: 0 0 0.35rem; font-size: 1.75rem; letter-spacing: -0.03em; line-height: 1.2; }
+  h2 { margin: 0 0 0.35rem; font-size: 0.95rem; }
+  .lead { margin: 0 0 1rem; max-width: 40rem; }
+  .board {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 0 0 1rem;
+  }
+  .axis {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 0.75rem;
+    min-height: 4.75rem;
+    box-shadow: var(--shadow);
+  }
+  .axis h2 { color: var(--ink); }
+  .card {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    padding: 0.4rem 0.5rem;
+    margin: 0.4rem 0 0;
+    font-size: 0.82rem;
+    overflow-wrap: anywhere;
+  }
+  .empty {
+    margin: 0 0 1rem;
+    padding: 0.85rem 1rem;
+    background: var(--surface);
+    border: 1px dashed var(--line);
+    border-radius: 12px;
+  }
+  .panel, .fold {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+  }
+  .panel { padding: 1rem; margin-bottom: 0.75rem; }
+  .fields {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr) minmax(0, 1fr);
+    gap: 0.75rem;
+  }
+  label { display: block; font-size: 0.88rem; font-weight: 600; }
+  .hint { display: block; font-weight: 400; margin-top: 0.15rem; }
+  input, select, textarea {
+    width: 100%;
+    margin-top: 0.35rem;
+    padding: 0.55rem 0.65rem;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--bg);
+    color: var(--ink);
+    font: inherit;
+  }
+  textarea { min-height: 6.5rem; font: 13px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+  button {
+    min-height: 44px;
+    padding: 0.55rem 1rem;
+    border-radius: 8px;
+    font: inherit;
+    font-weight: 650;
+    cursor: pointer;
+  }
+  button.primary {
+    margin-top: 0.9rem;
+    background: var(--gold);
+    color: var(--gold-ink);
+    border: 1px solid var(--gold);
+  }
+  button.ghost {
+    background: transparent;
+    color: var(--ink);
+    border: 1px solid var(--line);
+  }
+  :focus { outline: none; }
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 2px;
+  }
+  .fold { margin: 0.75rem 0; }
+  .fold > summary {
+    cursor: pointer;
+    padding: 0.85rem 1rem;
+    font-weight: 700;
+    min-height: 44px;
+    list-style: none;
+  }
+  .fold > summary::-webkit-details-marker { display: none; }
+  .fold > summary::before { content: "▸ "; color: var(--gold); }
+  .fold[open] > summary::before { content: "▾ "; }
+  .body { padding: 0 1rem 1rem; }
+  .group { margin: 0 0 1.1rem; }
+  .group h2 { margin-bottom: 0.55rem; }
+  .stack { display: grid; gap: 0.65rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.65rem; }
+  .actions button { flex: 1 1 9.5rem; }
+  #status {
+    margin: 1rem 0 0.5rem;
+    padding: 0.85rem 1rem;
+    background: var(--surface);
+    border-radius: 12px;
+    border: 1px solid var(--line);
+  }
+  pre {
+    margin: 0.5rem 0 0;
+    padding: 0.75rem;
+    overflow: auto;
+    max-width: 100%;
+    border-radius: 8px;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .pipe { white-space: pre-wrap; }
+  a { color: var(--ink); }
+  @media (max-width: 800px) {
+    .board { grid-template-columns: 1fr 1fr; }
+    .fields { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 520px) {
+    body { padding: 1rem 0.85rem 2.5rem; }
+    .top { align-items: flex-start; flex-direction: column; gap: 0.2rem; }
+    .board { grid-template-columns: 1fr; }
+    button.primary, .actions button { width: 100%; }
+  }
 </style>
+</head>
 <body>
-  <h1>4DMap</h1>
-  <p>Inspection coordinate frame v0.3.0. Loopback only. Author Aziel Eliab. Growth-ON.</p>
-  <p class="banner">Receipts are not truth. Not Lumen. Not certified forensics. Not GIS 4D. Not a Node Gate. Not a Softwares door. FragGate is THE single door.</p>
-  <p class="pipe">PUBLIC/AGENTS/UI → FragGate → SweepGate → ChainLock-IN → DecisionGATE → AZPIPE
-  → Internal Domain Layer (domains_are_doors:false)  ←──  4DMap cards sit HERE (inspection frame, not a hop gate)
-  → TemporalLock → StaticClock → ChainLock-OUT → RESPONSE/RECEIPT</p>
-  <div class="axes">
-    <div class="axis" id="col-T"><h2>T Clock</h2></div>
-    <div class="axis" id="col-DELTA"><h2>Δ Interval</h2></div>
-    <div class="axis" id="col-GAMMA"><h2>Γ Trajectory</h2></div>
-    <div class="axis" id="col-PI"><h2>Π Pattern</h2></div>
+  <header class="top">
+    <div>
+      <p class="brand">4DMap</p>
+      <p class="sub" id="subline">Local workbench</p>
+    </div>
+    <p class="author">Aziel Eliab</p>
+  </header>
+
+  <h1>Pin a card</h1>
+  <p class="lead">Place a clock, an interval, a trajectory, or a pattern. Cards stay in this browser.</p>
+
+  <p class="empty" id="empty">No cards yet. Choose an axis, enter a value, and press Pin.</p>
+
+  <form class="panel" id="pin-form">
+    <div class="fields">
+      <label>Axis
+        <select id="pin-axis">
+          <option value="T">T Clock</option>
+          <option value="DELTA">Δ Interval</option>
+          <option value="GAMMA">Γ Trajectory</option>
+          <option value="PI">Π Pattern</option>
+        </select>
+      </label>
+      <label>Value
+        <input id="pin-t" placeholder="2026-09-10T00:00:00Z" autocomplete="off">
+        <span class="hint">Leave this blank to use the current time.</span>
+      </label>
+      <label>Source
+        <select id="pin-src">
+          <option value="operator">operator</option>
+          <option value="temporallock">TemporalLock</option>
+          <option value="staticclock">StaticClock</option>
+          <option value="chronolock">ChronoLock</option>
+          <option value="trajectorylock">TrajectoryLock</option>
+          <option value="spectrallock">SpectralLock</option>
+          <option value="synthetic">synthetic</option>
+          <option value="aziel-corpus">Aziel Digital Library</option>
+        </select>
+      </label>
+    </div>
+    <button class="primary" type="submit">Pin</button>
+  </form>
+
+  <div class="board" id="board">
+    <section class="axis" id="col-T"><h2>T Clock</h2><p class="quiet">Empty</p></section>
+    <section class="axis" id="col-DELTA"><h2>Δ Interval</h2><p class="quiet">Empty</p></section>
+    <section class="axis" id="col-GAMMA"><h2>Γ Trajectory</h2><p class="quiet">Empty</p></section>
+    <section class="axis" id="col-PI"><h2>Π Pattern</h2><p class="quiet">Empty</p></section>
   </div>
-  <form id="pin-form">
-    <label>Pin T/Δ/Γ/Π
-      <select id="pin-axis">
-        <option value="T">T Clock</option>
-        <option value="DELTA">Δ Interval</option>
-        <option value="GAMMA">Γ Trajectory</option>
-        <option value="PI">Π Pattern</option>
-      </select>
-    </label>
-    <label>Value <input id="pin-t" placeholder="2026-09-10T00:00:00Z"></label>
-    <label>Src cite
-      <select id="pin-src">
-        <option value="operator">operator</option>
-        <option value="temporallock">TemporalLock</option>
-        <option value="staticclock">StaticClock</option>
-        <option value="chronolock">ChronoLock</option>
-        <option value="trajectorylock">TrajectoryLock</option>
-        <option value="spectrallock">SpectralLock</option>
-        <option value="synthetic">synthetic</option>
-        <option value="aziel-corpus">Aziel Digital Library</option>
-      </select>
-    </label>
-    <button type="submit">Pin</button>
-  </form>
-  <form id="library-form">
-    <label>Library pin — event <input id="lib-event" placeholder="paper event"></label>
-    <label>Paper date <input id="lib-date" placeholder="1912-04-15"></label>
-    <label>lat <input id="lib-lat" placeholder="41.726"></label>
-    <label>lon <input id="lib-lon" placeholder="-49.947"></label>
-    <label>gazetteer id <input id="lib-gaz"></label>
-    <label>surface
-      <select id="lib-surface"><option>MOCK</option><option>REAL</option></select>
-    </label>
-    <button type="submit">Library pin</button>
-    <button type="button" id="lib-demo-btn">MOCK demo</button>
-  </form>
-  <p class="note" id="score-box">possibility (time×geo) and bayesian (cited) stay labeled separately. Not courtroom proof. Not GIS.</p>
-  <svg id="pin-plot" viewBox="0 0 520 180" width="100%" height="180" style="background:#0e0e0e;border:1px solid #3d3420;border-radius:8px"></svg>
-  <form id="span-form">
-    <label>From id <input id="span-from"></label>
-    <label>To id <input id="span-to"></label>
-    <button type="submit">Span Δ</button>
-  </form>
-  <form id="join-form">
-    <label>Join type
-      <select id="join-type">
-        <option>T-DELTA</option>
-        <option>DELTA-GAMMA</option>
-        <option>GAMMA-PI</option>
-        <option>T-PI</option>
-        <option>PI-T</option>
-      </select>
-    </label>
-    <label>Left id <input id="join-left"></label>
-    <label>Right id <input id="join-right"></label>
-    <button type="submit">Join</button>
-  </form>
-  <form id="walk-form">
-    <label>Tip id <input id="walk-tip"></label>
-    <button type="submit">Walk</button>
-    <button type="button" id="trace-btn">Walk trace</button>
-    <button type="button" id="chain-btn">Verify chain</button>
-    <button type="button" id="frame-btn">Frame status</button>
-    <button type="button" id="export-btn">Export</button>
-    <button type="button" id="memory-cite-btn">Cite memory</button>
-    <button type="button" id="memory-observe-btn">Observe card</button>
-    <button type="button" id="plot-btn">Plot</button>
-    <button type="button" id="possibility-btn">Possibility</button>
-    <button type="button" id="recall-btn">Pattern recall</button>
-    <button type="button" id="tip-btn">Lattice tip</button>
-  </form>
-  <form id="import-form">
-    <label>Import JSON <textarea id="import-json" placeholder='{"cards":[]}'></textarea></label>
-    <button type="submit">Import</button>
-  </form>
-  <p class="note">Cards stay in this browser. Hosted Worker never stores a map. Companions are cite-only. Π-EMPTY when the lens is silent.</p>
-  <pre id="out">no op yet</pre>
+
+  <details class="fold" id="advanced">
+    <summary>Advanced</summary>
+    <div class="body">
+      <section class="group">
+        <h2>Span an interval</h2>
+        <form id="span-form" class="stack">
+          <label>From id <input id="span-from" autocomplete="off"></label>
+          <label>To id <input id="span-to" autocomplete="off"></label>
+          <button class="ghost" type="submit">Span</button>
+        </form>
+      </section>
+      <section class="group">
+        <h2>Join two cards</h2>
+        <form id="join-form" class="stack">
+          <label>Join type
+            <select id="join-type">
+              <option value="T-DELTA">Clock to interval (T-DELTA)</option>
+              <option value="DELTA-GAMMA">Interval to trajectory (DELTA-GAMMA)</option>
+              <option value="GAMMA-PI">Trajectory to pattern (GAMMA-PI)</option>
+              <option value="T-PI">Clock to pattern (T-PI)</option>
+              <option value="PI-T">Pattern to clock (PI-T)</option>
+            </select>
+          </label>
+          <label>Left id <input id="join-left" autocomplete="off"></label>
+          <label>Right id <input id="join-right" autocomplete="off"></label>
+          <button class="ghost" type="submit">Join</button>
+        </form>
+      </section>
+      <section class="group">
+        <h2>Walk and check</h2>
+        <form id="walk-form" class="stack">
+          <label>Tip id <input id="walk-tip" autocomplete="off"></label>
+          <div class="actions">
+            <button class="ghost" type="submit">Walk</button>
+            <button class="ghost" type="button" id="trace-btn">Walk trace</button>
+            <button class="ghost" type="button" id="chain-btn">Verify chain</button>
+            <button class="ghost" type="button" id="frame-btn">Frame status</button>
+          </div>
+        </form>
+      </section>
+      <section class="group">
+        <h2>Library pin</h2>
+        <p class="hint" id="hooks">Possibility and Bayesian stay separate labels when a pin carries them.</p>
+        <form id="library-form" class="stack">
+          <label>Event <input id="lib-event" placeholder="paper event" autocomplete="off"></label>
+          <label>Paper date <input id="lib-date" placeholder="1912-04-15" autocomplete="off"></label>
+          <label>Latitude <input id="lib-lat" placeholder="41.726" autocomplete="off"></label>
+          <label>Longitude <input id="lib-lon" placeholder="-49.947" autocomplete="off"></label>
+          <label>Gazetteer id <input id="lib-gaz" autocomplete="off"></label>
+          <label>Surface
+            <select id="lib-surface"><option>MOCK</option><option>REAL</option></select>
+          </label>
+          <div class="actions">
+            <button class="ghost" type="submit">Library pin</button>
+            <button class="ghost" type="button" id="lib-demo-btn">MOCK example</button>
+          </div>
+        </form>
+      </section>
+      <section class="group">
+        <h2>Lattice and memory</h2>
+        <p class="hint">These use the latest card, or the tip id above.</p>
+        <div class="actions">
+          <button class="ghost" type="button" id="plot-btn">Plot</button>
+          <button class="ghost" type="button" id="possibility-btn">Possibility</button>
+          <button class="ghost" type="button" id="recall-btn">Pattern recall</button>
+          <button class="ghost" type="button" id="tip-btn">Lattice tip</button>
+          <button class="ghost" type="button" id="memory-cite-btn">Cite memory</button>
+          <button class="ghost" type="button" id="memory-observe-btn">Observe card</button>
+        </div>
+      </section>
+      <section class="group">
+        <h2>Import and export</h2>
+        <form id="import-form" class="stack">
+          <label>Card bundle
+            <textarea id="import-json" placeholder="Paste a bundle from Export"></textarea>
+          </label>
+          <div class="actions">
+            <button class="ghost" type="submit">Import</button>
+            <button class="ghost" type="button" id="export-btn">Export</button>
+          </div>
+        </form>
+      </section>
+    </div>
+  </details>
+
+  <details class="fold" id="notes">
+    <summary>Notes</summary>
+    <div class="body">
+      <p>4DMap stamps inspection coordinates on cards with SHA-256 hashes. Forks are kept. A silent lens returns Π-EMPTY. The ZionPattern cap is 0.75.</p>
+      <p>Receipts are not a truth engine, Lumen, GIS 4D, a Node Gate, or certified forensics. Cards do not store a legal name, home, or county. Author: Aziel Eliab.</p>
+      <p>The inspection frame sits in the Internal Domain Layer after AZPIPE (<code>domains_are_doors:false</code>). It is not a hop gate. FragGate is the single door.</p>
+      <pre class="pipe">PUBLIC/AGENTS/UI → FragGate → SweepGate → ChainLock-IN → DecisionGATE → AZPIPE
+  → Internal Domain Layer (isolated softwares; domains_are_doors:false)  ←──  4DMap
+       inspection cards sit HERE as a read-side coordinate frame over
+       TemporalLock/StaticClock/ChronoLock/TrajectoryLock/SpectralLock evidence
+       (not a hop gate; not a door)
+  → TemporalLock → StaticClock → ChainLock-OUT → RESPONSE/RECEIPT</pre>
+    </div>
+  </details>
+
+  <p id="status" role="status">Waiting for a pin.</p>
+  <details class="fold" id="receipt-fold">
+    <summary>Receipt</summary>
+    <div class="body">
+      <pre id="out">No receipt yet.</pre>
+    </div>
+  </details>
+
   <script>
     const cards = [];
-    function axisOf(c) {
-      if (c.delta) return "DELTA";
-      if (c.gamma) return "GAMMA";
-      if (c.pi && c.pi !== "Π-EMPTY") return "PI";
+    const names = { T: "T Clock", DELTA: "Δ Interval", GAMMA: "Γ Trajectory", PI: "Π Pattern" };
+
+    function axisOf(card) {
+      if (card.delta) return "DELTA";
+      if (card.gamma) return "GAMMA";
+      if (card.pi && card.pi !== "Π-EMPTY") return "PI";
       return "T";
     }
+
     function paint() {
-      ["T","DELTA","GAMMA","PI"].forEach((a) => { document.getElementById("col-"+a).innerHTML = "<h2>"+({T:"T Clock",DELTA:"Δ Interval",GAMMA:"Γ Trajectory",PI:"Π Pattern"})[a]+"</h2>"; });
-      cards.forEach((c) => {
-        const col = document.getElementById("col-"+axisOf(c));
-        const d = document.createElement("div");
-        d.className = "card";
-        d.textContent = (c.id||"") + " · " + (c.src||"") + " · " + (c.h||"").slice(0,12);
-        col.appendChild(d);
+      Object.keys(names).forEach((axis) => {
+        const col = document.getElementById("col-" + axis);
+        col.innerHTML = "<h2>" + names[axis] + "</h2>";
       });
+      if (!cards.length) {
+        Object.keys(names).forEach((axis) => {
+          const quiet = document.createElement("p");
+          quiet.className = "quiet";
+          quiet.textContent = "Empty";
+          document.getElementById("col-" + axis).appendChild(quiet);
+        });
+      }
+      cards.forEach((card) => {
+        const col = document.getElementById("col-" + axisOf(card));
+        const row = document.createElement("div");
+        row.className = "card";
+        const hash = (card.h || "").slice(0, 12);
+        row.textContent = (card.id || "card") + " · " + (card.src || "") + (hash ? " · " + hash : "");
+        col.appendChild(row);
+      });
+      document.getElementById("empty").hidden = cards.length > 0;
     }
+
+    function setStatus(text) {
+      document.getElementById("status").textContent = text;
+    }
+
+    function hookSentence(body) {
+      const hooks = body.hooks || {};
+      const pos = hooks.possibility || body.possibility;
+      const bay = hooks.bayesian || body.bayesian;
+      if (!pos && !bay) return "";
+      const posText = pos ? pos.value + " (" + pos.label + ")" : "none";
+      const bayText = bay ? bay.value + " (" + bay.label + ")" : "none";
+      const line = " Possibility " + posText + ". Bayesian " + bayText + ".";
+      document.getElementById("hooks").textContent = "Possibility " + posText + ". Bayesian " + bayText + ". The labels stay separate.";
+      return line;
+    }
+
+    function summarize(op, body) {
+      if (body.ok === false || body.refused) {
+        return (body.message || "Refused.") + " Check the fields and try again.";
+      }
+      const extra = hookSentence(body);
+      if (op === "pin" || op === "library_pin") {
+        const where = body.glyph || body.axis || "card";
+        return "Pinned " + where + " " + (body.id || "card") + ". It is on the board." + extra;
+      }
+      if (op === "span") return "Spanned an interval" + (body.id ? " (" + body.id + ")." : ".");
+      if (op === "join") return "Joined the cards" + (body.id ? " (" + body.id + ")." : ".");
+      if (op === "walk" || op === "walk_trace") {
+        const n = body.n || 0;
+        return "Walked " + n + (n === 1 ? " card." : " cards.");
+      }
+      if (op === "verify_chain") return "Verified " + (body.verified != null ? body.verified : body.n || 0) + " hashes.";
+      if (op === "frame_status") return "Frame status is in the receipt.";
+      if (op === "card_export") return "Exported " + (body.n || 0) + " cards. The bundle is in Import.";
+      if (op === "card_import") return "Imported " + (body.n || 0) + " cards.";
+      if (op === "plot") return "Plot lists " + (body.n || 0) + " lattice pins. The list is in the receipt.";
+      if (op === "possibility") return "Possibility is in the receipt." + extra;
+      if (op === "pattern_recall") return "Pattern recall is in the receipt.";
+      if (op === "lattice_tip") return "Lattice tips are in the receipt.";
+      if (op === "memory_cite") return "Memory cite is in the receipt.";
+      if (op === "memory_observe") return "Memory observe packet is in the receipt.";
+      return "Done. The receipt has the result.";
+    }
+
+    function tipId() {
+      const typed = document.getElementById("walk-tip").value.trim();
+      if (typed) return typed;
+      if (cards.length) return cards[cards.length - 1].id || "";
+      return "";
+    }
+
     async function call(op, payload) {
-      const r = await fetch("/v1/"+op, { method:"POST", headers:{"content-type":"application/json"}, body: JSON.stringify({ ...payload, cards }) });
-      const j = await r.json();
-      document.getElementById("out").textContent = JSON.stringify(j, null, 2);
-      if (j.card) cards.push(j.card);
-      if (op === "card_import" && Array.isArray(j.cards)) {
-        j.cards.forEach((c) => { if (!cards.some((x) => x.h === c.h)) cards.push(c); });
+      try {
+        const response = await fetch("/v1/" + op, {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ ...payload, cards })
+        });
+        const body = await response.json();
+        document.getElementById("out").textContent = JSON.stringify(body, null, 2);
+        if (body.card) cards.push(body.card);
+        if (op === "card_import" && Array.isArray(body.cards)) {
+          body.cards.forEach((card) => {
+            if (!cards.some((existing) => existing.h === card.h)) cards.push(card);
+          });
+        }
+        setStatus(summarize(op, body));
+        paint();
+        return body;
+      } catch (err) {
+        setStatus("The workbench could not complete that. Check the fields and try again.");
+        return null;
       }
-      if (j.hooks || j.possibility) {
-        var pos = (j.hooks && j.hooks.possibility) || j.possibility;
-        var bay = (j.hooks && j.hooks.bayesian) || j.bayesian;
-        document.getElementById("score-box").textContent =
-          "possibility=" + (pos ? pos.value + " (" + pos.label + ")" : "none") +
-          " · bayesian=" + (bay ? bay.value + " (" + bay.label + ")" : "none") +
-          " · collapsed=false · not courtroom proof";
-      }
-      paint();
-      return j;
     }
-    document.getElementById("library-form").onsubmit = (e) => {
-      e.preventDefault();
+
+    function needTip(op, payload) {
+      if (!payload.tip && !payload.id) {
+        setStatus("Enter a tip id, or pin a card first.");
+        return false;
+      }
+      return true;
+    }
+
+    document.getElementById("pin-form").onsubmit = (event) => {
+      event.preventDefault();
+      const axis = document.getElementById("pin-axis").value;
+      const value = document.getElementById("pin-t").value;
+      call("pin", {
+        t: value || new Date().toISOString(),
+        axis,
+        src: document.getElementById("pin-src").value,
+        value: value
+      });
+    };
+
+    document.getElementById("span-form").onsubmit = (event) => {
+      event.preventDefault();
+      const fromId = document.getElementById("span-from").value.trim();
+      const toId = document.getElementById("span-to").value.trim();
+      if (!fromId || !toId) {
+        setStatus("Enter both card ids, then span.");
+        return;
+      }
+      call("span", { from_id: fromId, to_id: toId });
+    };
+
+    document.getElementById("join-form").onsubmit = (event) => {
+      event.preventDefault();
+      const left = document.getElementById("join-left").value.trim();
+      const right = document.getElementById("join-right").value.trim();
+      if (!left || !right) {
+        setStatus("Enter both card ids, then join.");
+        return;
+      }
+      call("join", {
+        left,
+        right,
+        join_type: document.getElementById("join-type").value
+      });
+    };
+
+    document.getElementById("walk-form").onsubmit = (event) => {
+      event.preventDefault();
+      const tip = document.getElementById("walk-tip").value.trim();
+      if (!tip) {
+        setStatus("Enter a tip id, then walk.");
+        return;
+      }
+      call("walk", { tip });
+    };
+
+    document.getElementById("trace-btn").onclick = () => {
+      const tip = document.getElementById("walk-tip").value.trim();
+      if (!tip) { setStatus("Enter a tip id, then walk."); return; }
+      call("walk_trace", { tip });
+    };
+    document.getElementById("chain-btn").onclick = () => {
+      const tip = document.getElementById("walk-tip").value.trim();
+      if (!tip) { setStatus("Enter a tip id, then verify."); return; }
+      call("verify_chain", { tip });
+    };
+    document.getElementById("frame-btn").onclick = () => call("frame_status", {});
+
+    document.getElementById("library-form").onsubmit = (event) => {
+      event.preventDefault();
+      const eventName = document.getElementById("lib-event").value.trim();
+      const date = document.getElementById("lib-date").value.trim();
+      if (!eventName || !date) {
+        setStatus("Enter an event and a paper date, then pin.");
+        return;
+      }
       call("library_pin", {
-        event: document.getElementById("lib-event").value,
-        date: document.getElementById("lib-date").value,
+        event: eventName,
+        date,
         lat: document.getElementById("lib-lat").value || undefined,
         lon: document.getElementById("lib-lon").value || undefined,
         gazetteer_id: document.getElementById("lib-gaz").value || undefined,
         surface: document.getElementById("lib-surface").value,
         src: "aziel-corpus",
-        prev: cards.length ? cards[cards.length-1].h : undefined
+        prev: cards.length ? cards[cards.length - 1].h : undefined
       });
     };
+
     document.getElementById("lib-demo-btn").onclick = () => {
       document.getElementById("lib-event").value = "synthetic paper event";
       document.getElementById("lib-date").value = "1912-04-15";
       document.getElementById("lib-lat").value = "41.726";
       document.getElementById("lib-lon").value = "-49.947";
-      call("library_pin", { event: "synthetic paper event", date: "1912-04-15", lat: 41.726, lon: -49.947, surface: "MOCK", src: "synthetic", note: "MOCK library demo — not a real case" });
+      document.getElementById("lib-surface").value = "MOCK";
+      call("library_pin", {
+        event: "synthetic paper event",
+        date: "1912-04-15",
+        lat: 41.726,
+        lon: -49.947,
+        surface: "MOCK",
+        src: "synthetic",
+        note: "MOCK library demo — not a real case"
+      });
     };
+
     document.getElementById("plot-btn").onclick = () => call("plot", {});
-    document.getElementById("possibility-btn").onclick = () => { if (cards.length) call("possibility", { id: cards[cards.length-1].id }); };
+    document.getElementById("possibility-btn").onclick = () => {
+      const id = tipId();
+      if (!needTip("possibility", { id })) return;
+      call("possibility", { id });
+    };
     document.getElementById("recall-btn").onclick = () => call("pattern_recall", {});
     document.getElementById("tip-btn").onclick = () => call("lattice_tip", {});
-    document.getElementById("pin-form").onsubmit = (e) => {
-      e.preventDefault();
-      const axis = document.getElementById("pin-axis").value;
-      call("pin", { t: document.getElementById("pin-t").value || new Date().toISOString(), axis, src: document.getElementById("pin-src").value, value: document.getElementById("pin-t").value });
+    document.getElementById("memory-cite-btn").onclick = () => {
+      const id = tipId();
+      if (!needTip("memory_cite", { id })) return;
+      call("memory_cite", { id });
     };
-    document.getElementById("span-form").onsubmit = (e) => {
-      e.preventDefault();
-      call("span", { from_id: document.getElementById("span-from").value, to_id: document.getElementById("span-to").value });
+    document.getElementById("memory-observe-btn").onclick = () => {
+      const id = tipId();
+      if (!needTip("memory_observe", { id })) return;
+      call("memory_observe", { id });
     };
-    document.getElementById("join-form").onsubmit = (e) => {
-      e.preventDefault();
-      call("join", { left: document.getElementById("join-left").value, right: document.getElementById("join-right").value, join_type: document.getElementById("join-type").value });
-    };
-    document.getElementById("walk-form").onsubmit = (e) => {
-      e.preventDefault();
-      call("walk", { tip: document.getElementById("walk-tip").value });
-    };
-    document.getElementById("trace-btn").onclick = () => call("walk_trace", { tip: document.getElementById("walk-tip").value });
-    document.getElementById("chain-btn").onclick = () => call("verify_chain", { tip: document.getElementById("walk-tip").value });
-    document.getElementById("frame-btn").onclick = () => call("frame_status", {});
-    document.getElementById("memory-cite-btn").onclick = () => call("memory_cite", { id: document.getElementById("walk-tip").value });
-    document.getElementById("memory-observe-btn").onclick = () => call("memory_observe", { id: document.getElementById("walk-tip").value });
+
     document.getElementById("export-btn").onclick = async () => {
-      const j = await call("card_export", {});
-      if (j.bundle) document.getElementById("import-json").value = JSON.stringify(j.bundle, null, 2);
+      const body = await call("card_export", {});
+      if (body && body.bundle) {
+        document.getElementById("import-json").value = JSON.stringify(body.bundle, null, 2);
+      }
     };
-    document.getElementById("import-form").onsubmit = (e) => {
-      e.preventDefault();
-      call("card_import", { bundle: JSON.parse(document.getElementById("import-json").value || "{}") });
+
+    document.getElementById("import-form").onsubmit = (event) => {
+      event.preventDefault();
+      const raw = document.getElementById("import-json").value.trim();
+      if (!raw) {
+        setStatus("Paste a card bundle, then import.");
+        return;
+      }
+      let bundle;
+      try {
+        bundle = JSON.parse(raw);
+      } catch (err) {
+        setStatus("That text is not JSON. Paste a bundle from Export, then import.");
+        return;
+      }
+      call("card_import", { bundle });
     };
+
+    fetch("/v1/health")
+      .then((response) => response.json())
+      .then((body) => {
+        if (body && body.version) {
+          document.getElementById("subline").textContent = "Local workbench · " + body.version;
+        }
+      })
+      .catch(() => {});
+
     paint();
   </script>
 </body>
