@@ -48,6 +48,19 @@ def test_index_routes_mesh_before_runtime() -> None:
     assert "GET /v1/mesh never enables" in INDEX
 
 
+def test_homepage_download_is_the_hero() -> None:
+    hero = HOME.split('id="board"', 1)[0]
+    assert 'id="downloadBtn"' in hero
+    assert 'class="btn block primary"' in hero
+    assert 'href="/download?asset=' in hero
+    assert "4dmap-0.3.0.tar.gz" in hero
+    assert ":focus-visible" in HOME
+    assert "prefers-color-scheme: light" in HOME
+    assert 'footer class="quiet"' in HOME
+    assert hero.find('id="downloadBtn"') < hero.find('id="meshStrip"')
+    assert hero.find('id="downloadBtn"') < hero.find('id="install"')
+
+
 def test_homepage_board_and_pipeline() -> None:
     assert "Four-axis board" in HOME
     assert "T Clock" in HOME

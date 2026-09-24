@@ -61,7 +61,7 @@ Direct tarball (also counted):
 
 Isolated counter: Worker `4dmap-download-tracker`, KV `4DMAP_DOWNLOADS`. Not mixed with any other product. `/v1` does not increment downloads. Hosted `/v1` never stores a map.
 
-Or tap **Download** / **One-click install** on the Worker homepage:
+Or tap **Download** / **Copy install command** on the Worker homepage:
 https://4dmap-download-tracker.vibelock.workers.dev/
 
 ## From source
