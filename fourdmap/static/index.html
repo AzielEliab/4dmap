@@ -226,6 +226,8 @@
     <button class="primary" type="submit">Pin</button>
   </form>
 
+  <p id="status" role="status">Waiting for a pin.</p>
+
   <div class="board" id="board">
     <section class="axis" id="col-T"><h2>T Clock</h2><p class="quiet">Empty</p></section>
     <section class="axis" id="col-DELTA"><h2>Δ Interval</h2><p class="quiet">Empty</p></section>
@@ -333,7 +335,6 @@
     </div>
   </details>
 
-  <p id="status" role="status">Waiting for a pin.</p>
   <details class="fold" id="receipt-fold">
     <summary>Receipt</summary>
     <div class="body">
@@ -444,6 +445,7 @@
         }
         setStatus(summarize(op, body));
         paint();
+        document.getElementById("status").scrollIntoView({ block: "nearest" });
         return body;
       } catch (err) {
         setStatus("The workbench could not complete that. Check the fields and try again.");
