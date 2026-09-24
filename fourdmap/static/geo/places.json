@@ -1,0 +1,738 @@
+{
+  "note": "Local place list for wording only. A match is a city-scale or region-scale name, not a surveyed point.",
+  "places": [
+    {
+      "name": "Halifax",
+      "lat": 44.65,
+      "lon": -63.57,
+      "scale_km": 28,
+      "aliases": [
+        "halifax"
+      ]
+    },
+    {
+      "name": "London",
+      "lat": 51.51,
+      "lon": -0.12,
+      "scale_km": 35,
+      "aliases": [
+        "london"
+      ]
+    },
+    {
+      "name": "Paris",
+      "lat": 48.86,
+      "lon": 2.35,
+      "scale_km": 30,
+      "aliases": [
+        "paris"
+      ]
+    },
+    {
+      "name": "New York",
+      "lat": 40.71,
+      "lon": -74.01,
+      "scale_km": 40,
+      "aliases": [
+        "new york",
+        "new york city"
+      ]
+    },
+    {
+      "name": "Rome",
+      "lat": 41.89,
+      "lon": 12.49,
+      "scale_km": 25,
+      "aliases": [
+        "rome",
+        "roma"
+      ]
+    },
+    {
+      "name": "Istanbul",
+      "lat": 41.01,
+      "lon": 28.98,
+      "scale_km": 40,
+      "aliases": [
+        "istanbul",
+        "constantinople",
+        "byzantium"
+      ]
+    },
+    {
+      "name": "Cairo",
+      "lat": 30.04,
+      "lon": 31.24,
+      "scale_km": 35,
+      "aliases": [
+        "cairo"
+      ]
+    },
+    {
+      "name": "Beijing",
+      "lat": 39.9,
+      "lon": 116.41,
+      "scale_km": 40,
+      "aliases": [
+        "beijing",
+        "peking"
+      ]
+    },
+    {
+      "name": "Tokyo",
+      "lat": 35.68,
+      "lon": 139.69,
+      "scale_km": 40,
+      "aliases": [
+        "tokyo",
+        "edo"
+      ]
+    },
+    {
+      "name": "Lisbon",
+      "lat": 38.72,
+      "lon": -9.14,
+      "scale_km": 20,
+      "aliases": [
+        "lisbon",
+        "lisboa"
+      ]
+    },
+    {
+      "name": "Madrid",
+      "lat": 40.42,
+      "lon": -3.7,
+      "scale_km": 25,
+      "aliases": [
+        "madrid"
+      ]
+    },
+    {
+      "name": "Berlin",
+      "lat": 52.52,
+      "lon": 13.41,
+      "scale_km": 30,
+      "aliases": [
+        "berlin"
+      ]
+    },
+    {
+      "name": "Vienna",
+      "lat": 48.21,
+      "lon": 16.37,
+      "scale_km": 25,
+      "aliases": [
+        "vienna",
+        "wien"
+      ]
+    },
+    {
+      "name": "Moscow",
+      "lat": 55.76,
+      "lon": 37.62,
+      "scale_km": 40,
+      "aliases": [
+        "moscow"
+      ]
+    },
+    {
+      "name": "Athens",
+      "lat": 37.98,
+      "lon": 23.73,
+      "scale_km": 20,
+      "aliases": [
+        "athens"
+      ]
+    },
+    {
+      "name": "Jerusalem",
+      "lat": 31.78,
+      "lon": 35.21,
+      "scale_km": 15,
+      "aliases": [
+        "jerusalem"
+      ]
+    },
+    {
+      "name": "Delhi",
+      "lat": 28.61,
+      "lon": 77.21,
+      "scale_km": 35,
+      "aliases": [
+        "delhi"
+      ]
+    },
+    {
+      "name": "Mumbai",
+      "lat": 19.08,
+      "lon": 72.88,
+      "scale_km": 30,
+      "aliases": [
+        "mumbai",
+        "bombay"
+      ]
+    },
+    {
+      "name": "Kolkata",
+      "lat": 22.57,
+      "lon": 88.36,
+      "scale_km": 30,
+      "aliases": [
+        "kolkata",
+        "calcutta"
+      ]
+    },
+    {
+      "name": "Cape Town",
+      "lat": -33.93,
+      "lon": 18.42,
+      "scale_km": 25,
+      "aliases": [
+        "cape town"
+      ]
+    },
+    {
+      "name": "Rio de Janeiro",
+      "lat": -22.91,
+      "lon": -43.17,
+      "scale_km": 35,
+      "aliases": [
+        "rio de janeiro",
+        "rio"
+      ]
+    },
+    {
+      "name": "Mexico City",
+      "lat": 19.43,
+      "lon": -99.13,
+      "scale_km": 40,
+      "aliases": [
+        "mexico city"
+      ]
+    },
+    {
+      "name": "Boston",
+      "lat": 42.36,
+      "lon": -71.06,
+      "scale_km": 20,
+      "aliases": [
+        "boston"
+      ]
+    },
+    {
+      "name": "Chicago",
+      "lat": 41.88,
+      "lon": -87.63,
+      "scale_km": 30,
+      "aliases": [
+        "chicago"
+      ]
+    },
+    {
+      "name": "San Francisco",
+      "lat": 37.77,
+      "lon": -122.42,
+      "scale_km": 20,
+      "aliases": [
+        "san francisco"
+      ]
+    },
+    {
+      "name": "New Orleans",
+      "lat": 29.95,
+      "lon": -90.07,
+      "scale_km": 20,
+      "aliases": [
+        "new orleans"
+      ]
+    },
+    {
+      "name": "Quebec",
+      "lat": 46.81,
+      "lon": -71.21,
+      "scale_km": 18,
+      "aliases": [
+        "quebec",
+        "quebec city"
+      ]
+    },
+    {
+      "name": "Montreal",
+      "lat": 45.5,
+      "lon": -73.57,
+      "scale_km": 25,
+      "aliases": [
+        "montreal"
+      ]
+    },
+    {
+      "name": "Washington",
+      "lat": 38.91,
+      "lon": -77.04,
+      "scale_km": 20,
+      "aliases": [
+        "washington"
+      ]
+    },
+    {
+      "name": "Philadelphia",
+      "lat": 39.95,
+      "lon": -75.17,
+      "scale_km": 25,
+      "aliases": [
+        "philadelphia"
+      ]
+    },
+    {
+      "name": "Gettysburg",
+      "lat": 39.83,
+      "lon": -77.23,
+      "scale_km": 8,
+      "aliases": [
+        "gettysburg"
+      ]
+    },
+    {
+      "name": "Southampton",
+      "lat": 50.9,
+      "lon": -1.4,
+      "scale_km": 12,
+      "aliases": [
+        "southampton"
+      ]
+    },
+    {
+      "name": "Venice",
+      "lat": 45.44,
+      "lon": 12.33,
+      "scale_km": 12,
+      "aliases": [
+        "venice"
+      ]
+    },
+    {
+      "name": "Naples",
+      "lat": 40.85,
+      "lon": 14.27,
+      "scale_km": 18,
+      "aliases": [
+        "naples"
+      ]
+    },
+    {
+      "name": "Florence",
+      "lat": 43.77,
+      "lon": 11.26,
+      "scale_km": 12,
+      "aliases": [
+        "florence"
+      ]
+    },
+    {
+      "name": "Geneva",
+      "lat": 46.2,
+      "lon": 6.14,
+      "scale_km": 12,
+      "aliases": [
+        "geneva"
+      ]
+    },
+    {
+      "name": "Amsterdam",
+      "lat": 52.37,
+      "lon": 4.9,
+      "scale_km": 18,
+      "aliases": [
+        "amsterdam"
+      ]
+    },
+    {
+      "name": "Brussels",
+      "lat": 50.85,
+      "lon": 4.35,
+      "scale_km": 15,
+      "aliases": [
+        "brussels"
+      ]
+    },
+    {
+      "name": "Dublin",
+      "lat": 53.35,
+      "lon": -6.26,
+      "scale_km": 18,
+      "aliases": [
+        "dublin"
+      ]
+    },
+    {
+      "name": "Edinburgh",
+      "lat": 55.95,
+      "lon": -3.19,
+      "scale_km": 12,
+      "aliases": [
+        "edinburgh"
+      ]
+    },
+    {
+      "name": "Oslo",
+      "lat": 59.91,
+      "lon": 10.75,
+      "scale_km": 18,
+      "aliases": [
+        "oslo"
+      ]
+    },
+    {
+      "name": "Stockholm",
+      "lat": 59.33,
+      "lon": 18.07,
+      "scale_km": 20,
+      "aliases": [
+        "stockholm"
+      ]
+    },
+    {
+      "name": "Copenhagen",
+      "lat": 55.68,
+      "lon": 12.57,
+      "scale_km": 15,
+      "aliases": [
+        "copenhagen"
+      ]
+    },
+    {
+      "name": "Warsaw",
+      "lat": 52.23,
+      "lon": 21.01,
+      "scale_km": 22,
+      "aliases": [
+        "warsaw"
+      ]
+    },
+    {
+      "name": "Prague",
+      "lat": 50.08,
+      "lon": 14.44,
+      "scale_km": 18,
+      "aliases": [
+        "prague"
+      ]
+    },
+    {
+      "name": "Budapest",
+      "lat": 47.5,
+      "lon": 19.04,
+      "scale_km": 20,
+      "aliases": [
+        "budapest"
+      ]
+    },
+    {
+      "name": "Kyiv",
+      "lat": 50.45,
+      "lon": 30.52,
+      "scale_km": 25,
+      "aliases": [
+        "kyiv",
+        "kiev"
+      ]
+    },
+    {
+      "name": "Saint Petersburg",
+      "lat": 59.93,
+      "lon": 30.34,
+      "scale_km": 30,
+      "aliases": [
+        "saint petersburg",
+        "st petersburg",
+        "petrograd",
+        "leningrad"
+      ]
+    },
+    {
+      "name": "Sevastopol",
+      "lat": 44.62,
+      "lon": 33.53,
+      "scale_km": 15,
+      "aliases": [
+        "sevastopol"
+      ]
+    },
+    {
+      "name": "Damascus",
+      "lat": 33.51,
+      "lon": 36.29,
+      "scale_km": 18,
+      "aliases": [
+        "damascus"
+      ]
+    },
+    {
+      "name": "Baghdad",
+      "lat": 33.32,
+      "lon": 44.37,
+      "scale_km": 25,
+      "aliases": [
+        "baghdad"
+      ]
+    },
+    {
+      "name": "Tehran",
+      "lat": 35.69,
+      "lon": 51.39,
+      "scale_km": 25,
+      "aliases": [
+        "tehran"
+      ]
+    },
+    {
+      "name": "Samarkand",
+      "lat": 39.65,
+      "lon": 66.96,
+      "scale_km": 15,
+      "aliases": [
+        "samarkand"
+      ]
+    },
+    {
+      "name": "Kyoto",
+      "lat": 35.01,
+      "lon": 135.77,
+      "scale_km": 18,
+      "aliases": [
+        "kyoto"
+      ]
+    },
+    {
+      "name": "Shanghai",
+      "lat": 31.23,
+      "lon": 121.47,
+      "scale_km": 35,
+      "aliases": [
+        "shanghai"
+      ]
+    },
+    {
+      "name": "Guangzhou",
+      "lat": 23.13,
+      "lon": 113.26,
+      "scale_km": 30,
+      "aliases": [
+        "guangzhou",
+        "canton"
+      ]
+    },
+    {
+      "name": "Singapore",
+      "lat": 1.35,
+      "lon": 103.82,
+      "scale_km": 20,
+      "aliases": [
+        "singapore"
+      ]
+    },
+    {
+      "name": "Manila",
+      "lat": 14.6,
+      "lon": 120.98,
+      "scale_km": 25,
+      "aliases": [
+        "manila"
+      ]
+    },
+    {
+      "name": "Jakarta",
+      "lat": -6.21,
+      "lon": 106.85,
+      "scale_km": 30,
+      "aliases": [
+        "jakarta",
+        "batavia"
+      ]
+    },
+    {
+      "name": "Sydney",
+      "lat": -33.87,
+      "lon": 151.21,
+      "scale_km": 30,
+      "aliases": [
+        "sydney"
+      ]
+    },
+    {
+      "name": "Honolulu",
+      "lat": 21.31,
+      "lon": -157.86,
+      "scale_km": 18,
+      "aliases": [
+        "honolulu"
+      ]
+    },
+    {
+      "name": "Lima",
+      "lat": -12.05,
+      "lon": -77.04,
+      "scale_km": 30,
+      "aliases": [
+        "lima"
+      ]
+    },
+    {
+      "name": "Buenos Aires",
+      "lat": -34.6,
+      "lon": -58.38,
+      "scale_km": 35,
+      "aliases": [
+        "buenos aires"
+      ]
+    },
+    {
+      "name": "Havana",
+      "lat": 23.14,
+      "lon": -82.36,
+      "scale_km": 20,
+      "aliases": [
+        "havana"
+      ]
+    },
+    {
+      "name": "Timbuktu",
+      "lat": 16.77,
+      "lon": -3.0,
+      "scale_km": 12,
+      "aliases": [
+        "timbuktu",
+        "timbuctoo"
+      ]
+    },
+    {
+      "name": "Marrakesh",
+      "lat": 31.63,
+      "lon": -8.0,
+      "scale_km": 15,
+      "aliases": [
+        "marrakesh",
+        "marrakech"
+      ]
+    },
+    {
+      "name": "Alexandria",
+      "lat": 31.2,
+      "lon": 29.92,
+      "scale_km": 20,
+      "aliases": [
+        "alexandria"
+      ]
+    },
+    {
+      "name": "Tunis",
+      "lat": 36.81,
+      "lon": 10.18,
+      "scale_km": 18,
+      "aliases": [
+        "tunis"
+      ]
+    },
+    {
+      "name": "Algiers",
+      "lat": 36.75,
+      "lon": 3.06,
+      "scale_km": 20,
+      "aliases": [
+        "algiers"
+      ]
+    },
+    {
+      "name": "Addis Ababa",
+      "lat": 9.03,
+      "lon": 38.74,
+      "scale_km": 20,
+      "aliases": [
+        "addis ababa"
+      ]
+    },
+    {
+      "name": "Nairobi",
+      "lat": -1.29,
+      "lon": 36.82,
+      "scale_km": 20,
+      "aliases": [
+        "nairobi"
+      ]
+    },
+    {
+      "name": "Lagos",
+      "lat": 6.52,
+      "lon": 3.38,
+      "scale_km": 30,
+      "aliases": [
+        "lagos"
+      ]
+    },
+    {
+      "name": "Accra",
+      "lat": 5.6,
+      "lon": -0.19,
+      "scale_km": 18,
+      "aliases": [
+        "accra"
+      ]
+    },
+    {
+      "name": "Reykjavik",
+      "lat": 64.15,
+      "lon": -21.94,
+      "scale_km": 12,
+      "aliases": [
+        "reykjavik"
+      ]
+    },
+    {
+      "name": "Luxembourg",
+      "lat": 49.61,
+      "lon": 6.13,
+      "scale_km": 12,
+      "aliases": [
+        "luxembourg city"
+      ]
+    },
+    {
+      "name": "North Atlantic",
+      "lat": 41.73,
+      "lon": -49.95,
+      "scale_km": 420,
+      "aliases": [
+        "north atlantic",
+        "grand banks"
+      ]
+    },
+    {
+      "name": "English Channel",
+      "lat": 50.2,
+      "lon": -1.0,
+      "scale_km": 140,
+      "aliases": [
+        "english channel"
+      ]
+    },
+    {
+      "name": "Mediterranean",
+      "lat": 36.0,
+      "lon": 18.0,
+      "scale_km": 700,
+      "aliases": [
+        "mediterranean",
+        "mediterranean sea"
+      ]
+    },
+    {
+      "name": "North Sea",
+      "lat": 56.0,
+      "lon": 3.0,
+      "scale_km": 350,
+      "aliases": [
+        "north sea"
+      ]
+    }
+  ]
+}

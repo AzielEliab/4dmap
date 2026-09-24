@@ -8,6 +8,7 @@ from __future__ import annotations
 import json
 from typing import Any
 
+from .area import estimate_area
 from .card import (
     CardError,
     axis_of,
@@ -626,6 +627,11 @@ def _neighbor_cite(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
     return neighbor_cite(payload, store.as_list())
 
 
+def _area_estimate(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    _ = store
+    return estimate_area(payload)
+
+
 OPS = {
     "pin": pin,
     "span": span,
@@ -656,6 +662,7 @@ OPS = {
     "lattice_tip": _lattice_tip,
     "poison_refuse": _poison_refuse,
     "neighbor_cite": _neighbor_cite,
+    "area_estimate": _area_estimate,
 }
 
 

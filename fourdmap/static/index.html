@@ -1,712 +1,372 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>4DMap — local workbench</title>
-<style>
-  :root {
-    color-scheme: light dark;
-    --bg: #f4f1ea;
-    --surface: #fffcf7;
-    --ink: #1c1915;
-    --muted: #5c564c;
-    --line: #e3dacb;
-    --gold: #c9a227;
-    --gold-ink: #1a1408;
-    --shadow: 0 1px 0 rgba(28, 25, 21, 0.04);
-  }
-  @media (prefers-color-scheme: dark) {
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>4DMap</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='6' fill='%238eafbe'/%3E%3Ccircle cx='8' cy='8' r='2' fill='%23c9a227'/%3E%3C/svg%3E">
+  <style>
     :root {
-      --bg: #12110e;
-      --surface: #1c1914;
-      --ink: #f3efe6;
-      --muted: #c2b7a4;
-      --line: #3a3428;
+      color-scheme: light dark;
+      --bg: #f4f1ea;
+      --ink: #1c1914;
+      --muted: #5e584e;
+      --card: rgba(255, 252, 247, 0.94);
+      --line: #e2d8c8;
       --gold: #c9a227;
       --gold-ink: #1a1408;
-      --shadow: none;
+      --shadow: 0 16px 40px rgba(40, 32, 18, 0.12);
     }
-  }
-  * { box-sizing: border-box; }
-  html { background: var(--bg); }
-  body {
-    margin: 0 auto;
-    max-width: 52rem;
-    padding: 1.25rem 1rem 3rem;
-    background: var(--bg);
-    color: var(--ink);
-    font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
-  }
-  .top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-    gap: 1rem;
-    padding-bottom: 0.85rem;
-    border-bottom: 3px solid var(--gold);
-    margin-bottom: 1.25rem;
-  }
-  .brand { margin: 0; font-size: 1.35rem; font-weight: 700; letter-spacing: -0.02em; }
-  .sub, .author, .lead, .hint, .quiet { color: var(--muted); }
-  .sub, .author { margin: 0.1rem 0 0; font-size: 0.92rem; }
-  h1 { margin: 0 0 0.35rem; font-size: 1.75rem; letter-spacing: -0.03em; line-height: 1.2; }
-  h2 { margin: 0 0 0.35rem; font-size: 0.95rem; }
-  .lead { margin: 0 0 1rem; max-width: 40rem; }
-  .board {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 0.75rem;
-    margin: 0 0 1rem;
-  }
-  .axis {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    padding: 0.75rem;
-    min-height: 4.75rem;
-    box-shadow: var(--shadow);
-  }
-  .axis h2 { color: var(--ink); }
-  .card {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 0.4rem 0.5rem;
-    margin: 0.4rem 0 0;
-    font-size: 0.82rem;
-    overflow-wrap: anywhere;
-  }
-  .jump { color: var(--ink); font-size: 0.92rem; text-decoration: none; border-bottom: 1px solid var(--gold); }
-  .timeline { list-style: none; margin: 0.75rem 0 0; padding: 0; display: grid; gap: 0.75rem; }
-  .timeline li {
-    border-left: 3px solid var(--gold);
-    padding: 0.15rem 0 0.15rem 0.85rem;
-    overflow-wrap: anywhere;
-  }
-  .timeline time { display: block; color: var(--muted); font-size: 0.88rem; }
-  .shadow-slug { margin: 0.15rem 0 0; font-weight: 700; }
-  .shadow-head { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
-  .shadow-head h2 { margin: 0; font-size: 1.15rem; }
-  #shadow-refresh { margin-top: 0; }
-  .empty {
-    margin: 0 0 1rem;
-    padding: 0.85rem 1rem;
-    background: var(--surface);
-    border: 1px dashed var(--line);
-    border-radius: 12px;
-  }
-  .panel, .fold {
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-  }
-  .panel { padding: 1rem; margin-bottom: 0.75rem; }
-  .fields {
-    display: grid;
-    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.3fr) minmax(0, 1fr);
-    gap: 0.75rem;
-  }
-  label { display: block; font-size: 0.88rem; font-weight: 600; }
-  .hint { display: block; font-weight: 400; margin-top: 0.15rem; }
-  input, select, textarea {
-    width: 100%;
-    margin-top: 0.35rem;
-    padding: 0.55rem 0.65rem;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: var(--bg);
-    color: var(--ink);
-    font: inherit;
-  }
-  textarea { min-height: 6.5rem; font: 13px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
-  button {
-    min-height: 44px;
-    padding: 0.55rem 1rem;
-    border-radius: 8px;
-    font: inherit;
-    font-weight: 650;
-    cursor: pointer;
-  }
-  button.primary {
-    margin-top: 0.9rem;
-    background: var(--gold);
-    color: var(--gold-ink);
-    border: 1px solid var(--gold);
-  }
-  button.ghost {
-    background: transparent;
-    color: var(--ink);
-    border: 1px solid var(--line);
-  }
-  :focus { outline: none; }
-  :focus-visible {
-    outline: 2px solid var(--gold);
-    outline-offset: 2px;
-  }
-  .fold { margin: 0.75rem 0; }
-  .fold > summary {
-    cursor: pointer;
-    padding: 0.85rem 1rem;
-    font-weight: 700;
-    min-height: 44px;
-    list-style: none;
-  }
-  .fold > summary::-webkit-details-marker { display: none; }
-  .fold > summary::before { content: "▸ "; color: var(--gold); }
-  .fold[open] > summary::before { content: "▾ "; }
-  .body { padding: 0 1rem 1rem; }
-  .group { margin: 0 0 1.1rem; }
-  .group h2 { margin-bottom: 0.55rem; }
-  .stack { display: grid; gap: 0.65rem; }
-  .actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.65rem; }
-  .actions button { flex: 1 1 9.5rem; }
-  #status {
-    margin: 1rem 0 0.5rem;
-    padding: 0.85rem 1rem;
-    background: var(--surface);
-    border-radius: 12px;
-    border: 1px solid var(--line);
-  }
-  pre {
-    margin: 0.5rem 0 0;
-    padding: 0.75rem;
-    overflow: auto;
-    max-width: 100%;
-    border-radius: 8px;
-    background: var(--bg);
-    border: 1px solid var(--line);
-    font: 12px/1.45 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-    white-space: pre-wrap;
-    overflow-wrap: anywhere;
-  }
-  .pipe { white-space: pre-wrap; }
-  a { color: var(--ink); }
-  @media (max-width: 800px) {
-    .board { grid-template-columns: 1fr 1fr; }
-    .fields { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 520px) {
-    body { padding: 1rem 0.85rem 2.5rem; }
-    .top { align-items: flex-start; flex-direction: column; gap: 0.2rem; }
-    .board { grid-template-columns: 1fr; }
-    .shadow-head { align-items: stretch; flex-direction: column; }
-    #shadow-refresh { width: 100%; }
-    button.primary, .actions button { width: 100%; }
-  }
-</style>
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #12110e;
+        --ink: #f4efe6;
+        --muted: #b7ad9c;
+        --card: rgba(24, 22, 18, 0.94);
+        --line: #3c362e;
+        --shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+      }
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      font-family: "Iowan Old Style", Palatino, Georgia, serif;
+      background: var(--bg);
+      color: var(--ink);
+      overflow: hidden;
+    }
+    button, input, select, textarea {
+      font: inherit;
+      color: inherit;
+    }
+    :focus-visible {
+      outline: 2px solid #c9a227;
+      outline-offset: 2px;
+    }
+    button, .primary { border-radius: 999px; }
+    .primary {
+      background: #c9a227;
+      color: #1a1408;
+      border: 0;
+      padding: 0.55rem 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .ghost {
+      background: transparent;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      padding: 0.4rem 0.75rem;
+      cursor: pointer;
+    }
+    header {
+      position: absolute;
+      z-index: 3;
+      top: 0; left: 0; right: 0;
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      pointer-events: none;
+    }
+    header > * { pointer-events: auto; }
+    .brand { font-weight: 700; letter-spacing: 0.01em; margin: 0; font-size: 1.15rem; }
+    .brand small { display: block; font-weight: 400; color: var(--muted); font-size: 0.72rem; }
+    #search-form { position: relative; flex: 1; max-width: 28rem; }
+    #search-form label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    #search, input, select, textarea {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      padding: 0.45rem 0.8rem;
+      width: 100%;
+    }
+    input[type="checkbox"], input[type="file"], input[type="range"] {
+      width: auto;
+      padding: 0;
+      border-radius: 4px;
+      background: transparent;
+    }
+    textarea { border-radius: 12px; }
+    #search-results {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0; right: 0;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      box-shadow: var(--shadow);
+      margin: 0;
+      padding: 0.25rem;
+      list-style: none;
+      max-height: 16rem;
+      overflow: auto;
+    }
+    #search-results:empty { display: none; }
+    #search-results button {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: 0;
+      border-radius: 8px;
+      padding: 0.4rem 0.5rem;
+      cursor: pointer;
+    }
+    .author { margin-left: auto; color: var(--muted); font-size: 0.85rem; }
+    #stage { position: absolute; inset: 0; }
+    #globe { width: 100%; height: 100%; display: block; touch-action: none; }
+    #globe-fallback {
+      position: absolute; inset: 40% 10% auto; text-align: center; color: var(--muted);
+    }
+    .sheet {
+      position: absolute;
+      z-index: 2;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+      padding: 0.85rem 0.95rem 1rem;
+    }
+    #pin-form {
+      left: 1rem;
+      bottom: 1rem;
+      width: min(22rem, calc(100% - 2rem));
+    }
+    #pin-form h2 { margin: 0 0 0.2rem; font-size: 1.15rem; }
+    #pin-form p { margin: 0 0 0.6rem; color: var(--muted); font-size: 0.86rem; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.45rem; }
+    .grid label, .span2 { display: flex; flex-direction: column; gap: 0.15rem; font-size: 0.78rem; color: var(--muted); }
+    .span2 { grid-column: 1 / -1; }
+    #pin-form .primary { margin-top: 0.65rem; }
+    #status { min-height: 1.2em; margin: 0.45rem 0 0; font-size: 0.86rem; }
+    #layers {
+      top: 4.2rem;
+      right: 1rem;
+      width: min(22rem, calc(100% - 2rem));
+      max-height: calc(100% - 5.4rem);
+      overflow: auto;
+    }
+    #layers[hidden] { display: none; }
+    #layers h2 { margin: 0 0 0.35rem; font-size: 1.05rem; }
+    .layer { display: flex; gap: 0.5rem; align-items: flex-start; margin: 0.45rem 0; font-size: 0.92rem; }
+    .layer input { width: auto; margin-top: 0.2rem; }
+    #era { width: 100%; border-radius: 999px; }
+    #era-note, #layer-note { color: var(--muted); font-size: 0.8rem; }
+    #shadow { margin-top: 0.8rem; border-top: 1px solid var(--line); padding-top: 0.7rem; }
+    #shadow h3 { margin: 0 0 0.3rem; font-size: 0.95rem; }
+    #shadow-list { list-style: none; margin: 0.4rem 0; padding: 0; }
+    #shadow-list li { padding: 0.35rem 0; border-bottom: 1px solid var(--line); font-size: 0.86rem; }
+    #pin-card {
+      top: 4.2rem;
+      left: 1rem;
+      width: min(26rem, calc(100% - 2rem));
+      max-height: calc(100% - 5.4rem);
+      overflow: auto;
+    }
+    #pin-card[hidden] { display: none; }
+    #pin-card h2 { margin: 0 0 0.35rem; font-size: 1.2rem; }
+    #pin-card dl { display: grid; grid-template-columns: 7.2rem 1fr; gap: 0.25rem 0.5rem; margin: 0; font-size: 0.88rem; }
+    #pin-card dt { color: var(--muted); }
+    #pin-card dd { margin: 0; }
+    #why { font-size: 0.92rem; line-height: 1.4; }
+    #legend {
+      position: absolute;
+      z-index: 2;
+      right: 1rem;
+      bottom: 1rem;
+      width: min(18rem, calc(100% - 2rem));
+      color: var(--muted);
+      font-size: 0.78rem;
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0.55rem 0.7rem;
+    }
+    #pin-list { list-style: none; margin: 0.35rem 0 0; padding: 0; }
+    #pin-list button { background: transparent; border: 0; color: var(--ink); cursor: pointer; padding: 0.15rem 0; text-align: left; }
+    .is-new { color: #8a6a10; font-weight: 700; }
+    @media (prefers-color-scheme: dark) {
+      .is-new { color: #e6c86a; }
+    }
+    #dock {
+      position: absolute;
+      z-index: 2;
+      left: 1rem;
+      bottom: 0.4rem;
+      display: none;
+    }
+    details {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-top: 0.4rem;
+      padding: 0.35rem 0.6rem;
+    }
+    details summary { cursor: pointer; }
+    #board {
+      position: absolute;
+      z-index: 4;
+      left: 1rem;
+      right: 1rem;
+      bottom: 1rem;
+      max-height: 70%;
+      overflow: auto;
+      display: none;
+    }
+    #board.open { display: block; }
+    .tools { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.4rem 0; }
+    #hint {
+      position: absolute;
+      z-index: 2;
+      left: 50%;
+      top: 4.3rem;
+      transform: translateX(-50%);
+      color: var(--muted);
+      font-size: 0.78rem;
+      pointer-events: none;
+      text-align: center;
+    }
+    body.card-open #pin-form { visibility: hidden; }
+    @media (max-width: 520px) {
+      header { flex-wrap: wrap; }
+      #search-form { order: 3; flex-basis: 100%; max-width: none; }
+      .author { margin-left: 0; }
+      #pin-form { max-height: 42vh; overflow: auto; }
+      #legend { display: none; }
+      #layers, #pin-card { top: auto; bottom: 0.6rem; max-height: 46vh; }
+      body.card-open #pin-form { display: none; }
+      #hint { display: none; }
+    }
+  </style>
 </head>
 <body>
-  <header class="top">
-    <div>
-      <p class="brand">4DMap</p>
-      <p class="sub" id="subline">Local workbench</p>
-    </div>
-    <div>
-      <a class="jump" href="#shadow">Softwares · Shadow</a>
-      <p class="author">Aziel Eliab</p>
-    </div>
+  <header>
+    <p class="brand">4DMap<small>Local workbench · 0.3.0</small></p>
+    <form id="search-form" role="search">
+      <label for="search">Search events or person labels</label>
+      <input id="search" type="search" placeholder="Search events or person labels" autocomplete="off">
+      <ul id="search-results"></ul>
+    </form>
+    <button type="button" class="ghost" id="layers-toggle" aria-expanded="false" aria-controls="layers">Layers</button>
+    <button type="button" class="ghost" id="board-toggle" aria-controls="board">Advanced</button>
+    <p class="author">Aziel Eliab</p>
   </header>
-
-  <h1>Pin a card</h1>
-  <p class="lead">Place a clock, an interval, a trajectory, or a pattern. Cards stay in this browser.</p>
-
-  <p class="empty" id="empty">No cards yet. Choose an axis, enter a value, and press Pin.</p>
-
-  <form class="panel" id="pin-form">
-    <div class="fields">
-      <label>Axis
-        <select id="pin-axis">
-          <option value="T">T Clock</option>
-          <option value="DELTA">Δ Interval</option>
-          <option value="GAMMA">Γ Trajectory</option>
-          <option value="PI">Π Pattern</option>
+  <p id="hint">Drag to turn. Scroll or pinch to zoom. Arrows rotate. Plus and minus zoom.</p>
+  <div id="stage">
+    <canvas id="globe" aria-label="Rotating globe"></canvas>
+    <p id="globe-fallback" hidden>WebGL is off on this computer, so the globe cannot turn.</p>
+  </div>
+  <form id="pin-form" class="sheet">
+    <h2>Pin</h2>
+    <p>A paper date, an event, and a place. The dot is the reported anchor.</p>
+    <div class="grid">
+      <label class="span2">Event<input id="event" name="event" required placeholder="Harbor fire watch"></label>
+      <label>Paper date<input id="date" name="date" type="date" required value="1912-04-14"></label>
+      <label>Surface
+        <select id="surface" name="surface">
+          <option value="MOCK" selected>MOCK</option>
+          <option value="REAL">REAL</option>
         </select>
       </label>
-      <label>Value
-        <input id="pin-t" placeholder="2026-09-10T00:00:00Z" autocomplete="off">
-        <span class="hint">Leave this blank to use the current time.</span>
-      </label>
-      <label>Source
-        <select id="pin-src">
-          <option value="operator">operator</option>
-          <option value="temporallock">TemporalLock</option>
-          <option value="staticclock">StaticClock</option>
-          <option value="chronolock">ChronoLock</option>
-          <option value="trajectorylock">TrajectoryLock</option>
-          <option value="spectrallock">SpectralLock</option>
-          <option value="synthetic">synthetic</option>
-          <option value="aziel-corpus">Aziel Digital Library</option>
-        </select>
-      </label>
+      <label class="span2">Place words<input id="place" name="place" placeholder="Halifax, near the harbor"></label>
+      <label>Reported latitude<input id="lat" name="lat" inputmode="decimal" placeholder="44.65"></label>
+      <label>Reported longitude<input id="lon" name="lon" inputmode="decimal" placeholder="-63.57"></label>
+      <label class="span2">Person label<input id="who" name="who" placeholder="Mara Quill"></label>
+      <details class="span2">
+        <summary>Attach logged uploads</summary>
+        <div id="attach-uploads"></div>
+      </details>
     </div>
     <button class="primary" type="submit">Pin</button>
+    <p id="status" role="status">Waiting for a pin.</p>
   </form>
-
-  <p id="status" role="status">Waiting for a pin.</p>
-
-  <div class="board" id="board">
-    <section class="axis" id="col-T"><h2>T Clock</h2><p class="quiet">Empty</p></section>
-    <section class="axis" id="col-DELTA"><h2>Δ Interval</h2><p class="quiet">Empty</p></section>
-    <section class="axis" id="col-GAMMA"><h2>Γ Trajectory</h2><p class="quiet">Empty</p></section>
-    <section class="axis" id="col-PI"><h2>Π Pattern</h2><p class="quiet">Empty</p></section>
+  <aside id="layers" class="sheet" hidden>
+    <h2>Layers</h2>
+    <p id="layer-note">Each layer turns on and off by itself. Tiles load only after a network layer is on.</p>
+    <label class="layer"><input id="layer-land" type="checkbox" checked> Blank earth, continents only</label>
+    <label class="layer"><input id="layer-borders" type="checkbox" checked> Country borders and names</label>
+    <label class="span2">Era <output id="era-value">1914</output>
+      <input id="era" type="range" min="1000" max="2010" value="1914" step="1">
+    </label>
+    <p id="era-note"></p>
+    <label class="layer"><input id="layer-satellite" type="checkbox"> Satellite (NASA GIBS)</label>
+    <label class="layer"><input id="layer-street" type="checkbox"> Street view, where a frame exists</label>
+    <label class="layer"><input id="layer-lidar" type="checkbox"> LiDAR / elevation, where a sample exists</label>
+    <label class="layer"><input id="layer-shadow" type="checkbox"> Softwares · Shadow</label>
+    <section id="shadow" data-endpoint="/v1/shadow_links">
+      <h3>Softwares · Shadow</h3>
+      <p>Read-only. ShadowLock is a separate Softwares. 4DMap shows the links that file already holds, in time order.</p>
+      <p id="shadow-empty">No ShadowLock links yet. ShadowLock is a separate Softwares. Open ShadowLock to link a software.</p>
+      <ul id="shadow-list"></ul>
+      <button type="button" class="ghost" id="shadow-refresh">Refresh</button>
+    </section>
+  </aside>
+  <article id="pin-card" class="sheet" hidden>
+    <h2 id="card-event"></h2>
+    <h3>Why this area</h3>
+    <p id="why">Open a pin. The shaded region is an estimate, not an exact point.</p>
+    <p id="coverage"></p>
+    <dl>
+      <dt>Date</dt><dd id="card-date"></dd>
+      <dt>Place</dt><dd id="card-place"></dd>
+      <dt>Person</dt><dd id="card-who"></dd>
+      <dt>Possibility</dt><dd id="card-possibility"></dd>
+      <dt>Bayesian</dt><dd id="card-bayesian"></dd>
+      <dt>Triad</dt><dd id="card-triad"></dd>
+      <dt>Uploads</dt><dd id="card-uploads"></dd>
+      <dt>Receipt</dt><dd id="card-hash"></dd>
+    </dl>
+    <button type="button" class="ghost" id="card-close">Close</button>
+  </article>
+  <aside id="legend">
+    <strong>Score</strong>
+    <p>Dot size and gold follow possibility (time × place). That number is not Bayesian, and it is not truth. A cited Bayesian value is a separate mark. Posterior ≠ truth.</p>
+    <ul id="pin-list"></ul>
+  </aside>
+  <div id="board">
+    <details id="advanced" open>
+      <summary>Advanced</summary>
+      <div class="tools">
+        <label>From <input id="from-id"></label>
+        <label>To <input id="to-id"></label>
+        <label>Join <input id="join-type" value="T-DELTA"></label>
+        <button type="button" class="ghost" id="act-span">Span</button>
+        <button type="button" class="ghost" id="act-join">Join</button>
+        <button type="button" class="ghost" id="act-walk">Walk</button>
+        <button type="button" class="ghost" id="act-tip">Lattice tip</button>
+        <button type="button" class="ghost" id="act-verify">Verify chain</button>
+        <button type="button" class="ghost" id="act-export">Export</button>
+      </div>
+      <form id="axis-form">
+        <label>Axis pin
+          <select id="axis">
+            <option value="T">T Clock</option>
+            <option value="DELTA">Δ Interval</option>
+            <option value="GAMMA">Γ Trajectory</option>
+            <option value="PI">Π Pattern</option>
+          </select>
+        </label>
+        <label>Value <input id="axis-value" placeholder="optional"></label>
+        <button type="submit" class="ghost">Pin axis</button>
+      </form>
+      <h3>Uploads</h3>
+      <p>Every upload is hashed and logged on this computer. The list keeps the name, size, and SHA-256.</p>
+      <input id="upload-file" type="file">
+      <ul id="upload-list"></ul>
+      <h3>Import</h3>
+      <label>Paste a card bundle
+        <textarea id="bundle" rows="4"></textarea>
+      </label>
+      <button type="button" class="ghost" id="act-import">Import</button>
+      <pre id="receipt"></pre>
+    </details>
+    <details id="notes">
+      <summary>Notes</summary>
+      <p>4DMap is an inspection coordinate frame (4DM-WP-1.0). Possibility is time × place. Bayesian is a cited belief, kept separate. Posterior ≠ truth. Receipts are not a truth engine, Lumen, GIS, certified forensics, or a Node Gate.</p>
+      <p>ShadowLock is a separate Softwares, with its own download and desk. This page only reads its link file.</p>
+      <p>Author: Aziel Eliab.</p>
+    </details>
   </div>
-
-  <section class="panel" id="shadow" aria-labelledby="shadow-title">
-    <div class="shadow-head">
-      <h2 id="shadow-title">Softwares · Shadow</h2>
-      <button class="ghost" type="button" id="shadow-refresh">Refresh</button>
-    </div>
-    <p class="hint">Read-only. ShadowLock is a separate Softwares. 4DMap shows the links that file already holds, in time order.</p>
-    <div id="shadow-body">
-      <p class="empty" id="shadow-empty">No ShadowLock links yet. ShadowLock is a separate Softwares. Open ShadowLock to link a software.</p>
-    </div>
-  </section>
-
-  <details class="fold" id="advanced">
-    <summary>Advanced</summary>
-    <div class="body">
-      <section class="group">
-        <h2>Span an interval</h2>
-        <form id="span-form" class="stack">
-          <label>From id <input id="span-from" autocomplete="off"></label>
-          <label>To id <input id="span-to" autocomplete="off"></label>
-          <button class="ghost" type="submit">Span</button>
-        </form>
-      </section>
-      <section class="group">
-        <h2>Join two cards</h2>
-        <form id="join-form" class="stack">
-          <label>Join type
-            <select id="join-type">
-              <option value="T-DELTA">Clock to interval (T-DELTA)</option>
-              <option value="DELTA-GAMMA">Interval to trajectory (DELTA-GAMMA)</option>
-              <option value="GAMMA-PI">Trajectory to pattern (GAMMA-PI)</option>
-              <option value="T-PI">Clock to pattern (T-PI)</option>
-              <option value="PI-T">Pattern to clock (PI-T)</option>
-            </select>
-          </label>
-          <label>Left id <input id="join-left" autocomplete="off"></label>
-          <label>Right id <input id="join-right" autocomplete="off"></label>
-          <button class="ghost" type="submit">Join</button>
-        </form>
-      </section>
-      <section class="group">
-        <h2>Walk and check</h2>
-        <form id="walk-form" class="stack">
-          <label>Tip id <input id="walk-tip" autocomplete="off"></label>
-          <div class="actions">
-            <button class="ghost" type="submit">Walk</button>
-            <button class="ghost" type="button" id="trace-btn">Walk trace</button>
-            <button class="ghost" type="button" id="chain-btn">Verify chain</button>
-            <button class="ghost" type="button" id="frame-btn">Frame status</button>
-          </div>
-        </form>
-      </section>
-      <section class="group">
-        <h2>Library pin</h2>
-        <p class="hint" id="hooks">Possibility and Bayesian stay separate labels when a pin carries them.</p>
-        <form id="library-form" class="stack">
-          <label>Event <input id="lib-event" placeholder="paper event" autocomplete="off"></label>
-          <label>Paper date <input id="lib-date" placeholder="1912-04-15" autocomplete="off"></label>
-          <label>Latitude <input id="lib-lat" placeholder="41.726" autocomplete="off"></label>
-          <label>Longitude <input id="lib-lon" placeholder="-49.947" autocomplete="off"></label>
-          <label>Gazetteer id <input id="lib-gaz" autocomplete="off"></label>
-          <label>Surface
-            <select id="lib-surface"><option>MOCK</option><option>REAL</option></select>
-          </label>
-          <div class="actions">
-            <button class="ghost" type="submit">Library pin</button>
-            <button class="ghost" type="button" id="lib-demo-btn">MOCK example</button>
-          </div>
-        </form>
-      </section>
-      <section class="group">
-        <h2>Lattice and memory</h2>
-        <p class="hint">These use the latest card, or the tip id above.</p>
-        <div class="actions">
-          <button class="ghost" type="button" id="plot-btn">Plot</button>
-          <button class="ghost" type="button" id="possibility-btn">Possibility</button>
-          <button class="ghost" type="button" id="recall-btn">Pattern recall</button>
-          <button class="ghost" type="button" id="tip-btn">Lattice tip</button>
-          <button class="ghost" type="button" id="memory-cite-btn">Cite memory</button>
-          <button class="ghost" type="button" id="memory-observe-btn">Observe card</button>
-        </div>
-      </section>
-      <section class="group">
-        <h2>Import and export</h2>
-        <form id="import-form" class="stack">
-          <label>Card bundle
-            <textarea id="import-json" placeholder="Paste a bundle from Export"></textarea>
-          </label>
-          <div class="actions">
-            <button class="ghost" type="submit">Import</button>
-            <button class="ghost" type="button" id="export-btn">Export</button>
-          </div>
-        </form>
-      </section>
-    </div>
-  </details>
-
-  <details class="fold" id="notes">
-    <summary>Notes</summary>
-    <div class="body">
-      <p>4DMap stamps inspection coordinates on cards with SHA-256 hashes. Forks are kept. A silent lens returns Π-EMPTY. The ZionPattern cap is 0.75.</p>
-      <p>ShadowLock is a separate Softwares, with its own download and desk. Softwares · Shadow only reads the link file ShadowLock writes.</p>
-      <p>Receipts are not a truth engine, Lumen, GIS 4D, a Node Gate, or certified forensics. Cards do not store a legal name, home, or county. Author: Aziel Eliab.</p>
-      <p>The inspection frame sits in the Internal Domain Layer after AZPIPE (<code>domains_are_doors:false</code>). It is not a hop gate. FragGate is the single door.</p>
-      <pre class="pipe">PUBLIC/AGENTS/UI → FragGate → SweepGate → ChainLock-IN → DecisionGATE → AZPIPE
-  → Internal Domain Layer (isolated softwares; domains_are_doors:false)  ←──  4DMap
-       inspection cards sit HERE as a read-side coordinate frame over
-       TemporalLock/StaticClock/ChronoLock/TrajectoryLock/SpectralLock evidence
-       (not a hop gate; not a door)
-  → TemporalLock → StaticClock → ChainLock-OUT → RESPONSE/RECEIPT</pre>
-    </div>
-  </details>
-
-  <details class="fold" id="receipt-fold">
-    <summary>Receipt</summary>
-    <div class="body">
-      <pre id="out">No receipt yet.</pre>
-    </div>
-  </details>
-
-  <script>
-    const cards = [];
-    const names = { T: "T Clock", DELTA: "Δ Interval", GAMMA: "Γ Trajectory", PI: "Π Pattern" };
-
-    function axisOf(card) {
-      if (card.delta) return "DELTA";
-      if (card.gamma) return "GAMMA";
-      if (card.pi && card.pi !== "Π-EMPTY") return "PI";
-      return "T";
-    }
-
-    function paint() {
-      Object.keys(names).forEach((axis) => {
-        const col = document.getElementById("col-" + axis);
-        col.innerHTML = "<h2>" + names[axis] + "</h2>";
-      });
-      if (!cards.length) {
-        Object.keys(names).forEach((axis) => {
-          const quiet = document.createElement("p");
-          quiet.className = "quiet";
-          quiet.textContent = "Empty";
-          document.getElementById("col-" + axis).appendChild(quiet);
-        });
-      }
-      cards.forEach((card) => {
-        const col = document.getElementById("col-" + axisOf(card));
-        const row = document.createElement("div");
-        row.className = "card";
-        const hash = (card.h || "").slice(0, 12);
-        row.textContent = (card.id || "card") + " · " + (card.src || "") + (hash ? " · " + hash : "");
-        col.appendChild(row);
-      });
-      document.getElementById("empty").hidden = cards.length > 0;
-    }
-
-    function setStatus(text) {
-      document.getElementById("status").textContent = text;
-    }
-
-    function hookSentence(body) {
-      const hooks = body.hooks || {};
-      const pos = hooks.possibility || body.possibility;
-      const bay = hooks.bayesian || body.bayesian;
-      if (!pos && !bay) return "";
-      const posText = pos ? pos.value + " (" + pos.label + ")" : "none";
-      const bayText = bay ? bay.value + " (" + bay.label + ")" : "none";
-      const line = " Possibility " + posText + ". Bayesian " + bayText + ".";
-      document.getElementById("hooks").textContent = "Possibility " + posText + ". Bayesian " + bayText + ". The labels stay separate.";
-      return line;
-    }
-
-    function summarize(op, body) {
-      if (body.ok === false || body.refused) {
-        return (body.message || "Refused.") + " Check the fields and try again.";
-      }
-      const extra = hookSentence(body);
-      if (op === "pin" || op === "library_pin") {
-        const where = body.glyph || body.axis || "card";
-        return "Pinned " + where + " " + (body.id || "card") + ". It is on the board." + extra;
-      }
-      if (op === "span") return "Spanned an interval" + (body.id ? " (" + body.id + ")." : ".");
-      if (op === "join") return "Joined the cards" + (body.id ? " (" + body.id + ")." : ".");
-      if (op === "walk" || op === "walk_trace") {
-        const n = body.n || 0;
-        return "Walked " + n + (n === 1 ? " card." : " cards.");
-      }
-      if (op === "verify_chain") return "Verified " + (body.verified != null ? body.verified : body.n || 0) + " hashes.";
-      if (op === "frame_status") return "Frame status is in the receipt.";
-      if (op === "card_export") return "Exported " + (body.n || 0) + " cards. The bundle is in Import.";
-      if (op === "card_import") return "Imported " + (body.n || 0) + " cards.";
-      if (op === "plot") return "Plot lists " + (body.n || 0) + " lattice pins. The list is in the receipt.";
-      if (op === "possibility") return "Possibility is in the receipt." + extra;
-      if (op === "pattern_recall") return "Pattern recall is in the receipt.";
-      if (op === "lattice_tip") return "Lattice tips are in the receipt.";
-      if (op === "memory_cite") return "Memory cite is in the receipt.";
-      if (op === "memory_observe") return "Memory observe packet is in the receipt.";
-      return "Done. The receipt has the result.";
-    }
-
-    function tipId() {
-      const typed = document.getElementById("walk-tip").value.trim();
-      if (typed) return typed;
-      if (cards.length) return cards[cards.length - 1].id || "";
-      return "";
-    }
-
-    async function call(op, payload) {
-      try {
-        const response = await fetch("/v1/" + op, {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({ ...payload, cards })
-        });
-        const body = await response.json();
-        document.getElementById("out").textContent = JSON.stringify(body, null, 2);
-        if (body.card) cards.push(body.card);
-        if (op === "card_import" && Array.isArray(body.cards)) {
-          body.cards.forEach((card) => {
-            if (!cards.some((existing) => existing.h === card.h)) cards.push(card);
-          });
-        }
-        setStatus(summarize(op, body));
-        paint();
-        document.getElementById("status").scrollIntoView({ block: "nearest" });
-        return body;
-      } catch (err) {
-        setStatus("The workbench could not complete that. Check the fields and try again.");
-        return null;
-      }
-    }
-
-    function needTip(op, payload) {
-      if (!payload.tip && !payload.id) {
-        setStatus("Enter a tip id, or pin a card first.");
-        return false;
-      }
-      return true;
-    }
-
-    document.getElementById("pin-form").onsubmit = (event) => {
-      event.preventDefault();
-      const axis = document.getElementById("pin-axis").value;
-      const value = document.getElementById("pin-t").value;
-      call("pin", {
-        t: value || new Date().toISOString(),
-        axis,
-        src: document.getElementById("pin-src").value,
-        value: value
-      });
-    };
-
-    document.getElementById("span-form").onsubmit = (event) => {
-      event.preventDefault();
-      const fromId = document.getElementById("span-from").value.trim();
-      const toId = document.getElementById("span-to").value.trim();
-      if (!fromId || !toId) {
-        setStatus("Enter both card ids, then span.");
-        return;
-      }
-      call("span", { from_id: fromId, to_id: toId });
-    };
-
-    document.getElementById("join-form").onsubmit = (event) => {
-      event.preventDefault();
-      const left = document.getElementById("join-left").value.trim();
-      const right = document.getElementById("join-right").value.trim();
-      if (!left || !right) {
-        setStatus("Enter both card ids, then join.");
-        return;
-      }
-      call("join", {
-        left,
-        right,
-        join_type: document.getElementById("join-type").value
-      });
-    };
-
-    document.getElementById("walk-form").onsubmit = (event) => {
-      event.preventDefault();
-      const tip = document.getElementById("walk-tip").value.trim();
-      if (!tip) {
-        setStatus("Enter a tip id, then walk.");
-        return;
-      }
-      call("walk", { tip });
-    };
-
-    document.getElementById("trace-btn").onclick = () => {
-      const tip = document.getElementById("walk-tip").value.trim();
-      if (!tip) { setStatus("Enter a tip id, then walk."); return; }
-      call("walk_trace", { tip });
-    };
-    document.getElementById("chain-btn").onclick = () => {
-      const tip = document.getElementById("walk-tip").value.trim();
-      if (!tip) { setStatus("Enter a tip id, then verify."); return; }
-      call("verify_chain", { tip });
-    };
-    document.getElementById("frame-btn").onclick = () => call("frame_status", {});
-
-    document.getElementById("library-form").onsubmit = (event) => {
-      event.preventDefault();
-      const eventName = document.getElementById("lib-event").value.trim();
-      const date = document.getElementById("lib-date").value.trim();
-      if (!eventName || !date) {
-        setStatus("Enter an event and a paper date, then pin.");
-        return;
-      }
-      call("library_pin", {
-        event: eventName,
-        date,
-        lat: document.getElementById("lib-lat").value || undefined,
-        lon: document.getElementById("lib-lon").value || undefined,
-        gazetteer_id: document.getElementById("lib-gaz").value || undefined,
-        surface: document.getElementById("lib-surface").value,
-        src: "aziel-corpus",
-        prev: cards.length ? cards[cards.length - 1].h : undefined
-      });
-    };
-
-    document.getElementById("lib-demo-btn").onclick = () => {
-      document.getElementById("lib-event").value = "synthetic paper event";
-      document.getElementById("lib-date").value = "1912-04-15";
-      document.getElementById("lib-lat").value = "41.726";
-      document.getElementById("lib-lon").value = "-49.947";
-      document.getElementById("lib-surface").value = "MOCK";
-      call("library_pin", {
-        event: "synthetic paper event",
-        date: "1912-04-15",
-        lat: 41.726,
-        lon: -49.947,
-        surface: "MOCK",
-        src: "synthetic",
-        note: "MOCK library demo — not a real case"
-      });
-    };
-
-    document.getElementById("plot-btn").onclick = () => call("plot", {});
-    document.getElementById("possibility-btn").onclick = () => {
-      const id = tipId();
-      if (!needTip("possibility", { id })) return;
-      call("possibility", { id });
-    };
-    document.getElementById("recall-btn").onclick = () => call("pattern_recall", {});
-    document.getElementById("tip-btn").onclick = () => call("lattice_tip", {});
-    document.getElementById("memory-cite-btn").onclick = () => {
-      const id = tipId();
-      if (!needTip("memory_cite", { id })) return;
-      call("memory_cite", { id });
-    };
-    document.getElementById("memory-observe-btn").onclick = () => {
-      const id = tipId();
-      if (!needTip("memory_observe", { id })) return;
-      call("memory_observe", { id });
-    };
-
-    document.getElementById("export-btn").onclick = async () => {
-      const body = await call("card_export", {});
-      if (body && body.bundle) {
-        document.getElementById("import-json").value = JSON.stringify(body.bundle, null, 2);
-      }
-    };
-
-    document.getElementById("import-form").onsubmit = (event) => {
-      event.preventDefault();
-      const raw = document.getElementById("import-json").value.trim();
-      if (!raw) {
-        setStatus("Paste a card bundle, then import.");
-        return;
-      }
-      let bundle;
-      try {
-        bundle = JSON.parse(raw);
-      } catch (err) {
-        setStatus("That text is not JSON. Paste a bundle from Export, then import.");
-        return;
-      }
-      call("card_import", { bundle });
-    };
-
-    function paintShadow(body) {
-      const host = document.getElementById("shadow-body");
-      host.replaceChildren();
-      if (!body || body.ok === false) {
-        const note = document.createElement("p");
-        note.className = "empty";
-        note.textContent = (body && body.message) || "The ShadowLock link file could not be read. Check the file, then refresh.";
-        host.appendChild(note);
-        return;
-      }
-      const links = Array.isArray(body.links) ? body.links : [];
-      if (!links.length) {
-        const note = document.createElement("p");
-        note.className = "empty";
-        note.id = "shadow-empty";
-        const where = body.path || "~/.shadowlock/links.json";
-        note.textContent = "No ShadowLock links yet. ShadowLock is a separate Softwares. Open ShadowLock to link a software. 4DMap only reads " + where + ".";
-        host.appendChild(note);
-        return;
-      }
-      const list = document.createElement("ol");
-      list.className = "timeline";
-      links.forEach((link) => {
-        const item = document.createElement("li");
-        const when = document.createElement("time");
-        when.dateTime = link.linked_at || "";
-        when.textContent = link.linked_at || "Time not recorded";
-        const title = document.createElement("p");
-        title.className = "shadow-slug";
-        title.textContent = link.slug + (link.label ? " — " + link.label : "");
-        item.append(when, title);
-        if (link.kind) {
-          const kind = document.createElement("p");
-          kind.className = "hint";
-          kind.textContent = link.kind;
-          item.appendChild(kind);
-        }
-        const bits = [];
-        if (link.input_id) bits.push("Input " + link.input_id);
-        if (link.input_path) bits.push("Path " + link.input_path);
-        if (bits.length) {
-          const input = document.createElement("p");
-          input.className = "hint";
-          input.textContent = bits.join(" · ");
-          item.appendChild(input);
-        }
-        list.appendChild(item);
-      });
-      host.appendChild(list);
-      if (body.skipped) {
-        const skipped = document.createElement("p");
-        skipped.className = "hint";
-        skipped.textContent = body.skipped + " record(s) skipped. Each link needs a software slug and an input id or path.";
-        host.appendChild(skipped);
-      }
-    }
-
-    function loadShadow() {
-      fetch("/v1/shadow_links")
-        .then((response) => response.json())
-        .then(paintShadow)
-        .catch(() => paintShadow({ ok: false, message: "The workbench could not read ShadowLock links. Refresh and try again." }));
-    }
-
-    document.getElementById("shadow-refresh").onclick = loadShadow;
-    loadShadow();
-
-    fetch("/v1/health")
-      .then((response) => response.json())
-      .then((body) => {
-        if (body && body.version) {
-          document.getElementById("subline").textContent = "Local workbench · " + body.version;
-        }
-      })
-      .catch(() => {});
-
-    paint();
-  </script>
+  <script type="module" src="/static/globe.js"></script>
 </body>
 </html>

@@ -1,0 +1,27 @@
+{
+  "source": "aourednik/historical-basemaps",
+  "source_url": "https://github.com/aourednik/historical-basemaps",
+  "note": "Bundled eras are 1914, 1945, 1994, and 2010 only. Other slider years use the nearest bundled era and say so.",
+  "eras": [
+    {
+      "year": 1914,
+      "file": "era-1914.geojson"
+    },
+    {
+      "year": 1945,
+      "file": "era-1945.geojson"
+    },
+    {
+      "year": 1994,
+      "file": "era-1994.geojson"
+    },
+    {
+      "year": 2010,
+      "file": "era-2010.geojson"
+    }
+  ],
+  "land": {
+    "file": "land.geojson",
+    "source": "Natural Earth 110m land (public domain)"
+  }
+}

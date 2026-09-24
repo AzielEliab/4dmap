@@ -92,9 +92,11 @@ A person gets a short summary. `--json` prints the machine object. `-o` still wr
 
 `4dmap ui` prints `Open http://127.0.0.1:8844/` and serves the workbench on this computer only.
 
-The first screen is **Pin**. Span, join, walk, library pins, import, and the other board actions sit under **Advanced**. **Notes** holds the inspection scope. The page follows the system light or dark theme.
+The first screen is a globe and **Pin**. Drag the globe to turn it. Scroll or pinch to zoom. A pin is a paper date, an event, and a reported place. Opening a pin shades an approximate area and says why, in plain words. It does not draw an exact point. Layers (blank earth, era borders, satellite, street view, LiDAR, and Softwares · Shadow) each turn on and off on their own. Satellite, street, and LiDAR fetch only after you turn that layer on. The page follows the system light or dark theme. Span, join, walk, import, and uploads sit under **Advanced**. **Notes** holds the inspection scope.
 
-**Softwares · Shadow** is a read-only list of links ShadowLock already wrote. The file is `~/.shadowlock/links.json`, or the path in `SHADOWLOCK_LINKS`. The shape is [docs/SHADOWLOCK-LINKS.md](docs/SHADOWLOCK-LINKS.md). When the file is empty, the page says “No ShadowLock links yet” and points to the ShadowLock package.
+Pins from the page, the CLI, and `--json` append to the same hash chain: `~/.4dmap/lattice.json` (or `FOURDMAP_LATTICE`). The ops are the existing `library_pin`, `lattice_tip`, and `verify_chain`.
+
+**Softwares · Shadow** is one read-only layer. ShadowLock is a separate Softwares. The file is `~/.shadowlock/links.json`, or the path in `SHADOWLOCK_LINKS`. The shape is [docs/SHADOWLOCK-LINKS.md](docs/SHADOWLOCK-LINKS.md). When the file is empty, the page says “No ShadowLock links yet” and points to the ShadowLock package.
 
 ## iPhone & Android
 

@@ -137,6 +137,8 @@ _TITLES = {
     "poison-refuse": "Poison feature recorded on the refuse set",
     "neighbor_cite": "Library cite",
     "neighbor-cite": "Library cite",
+    "area": "Estimated an area",
+    "area_estimate": "Estimated an area",
     "demo": "Synthetic example",
 }
 
@@ -215,6 +217,12 @@ def _human_result(command: str, result: dict) -> str:
     note = result.get("note")
     if isinstance(note, str) and note and len(note) <= 160:
         _add_field(lines, "note", note)
+    if command == "area":
+        _add_field(lines, "radius_km", result.get("radius_km"))
+        lines.append("  exact point  no")
+        why = result.get("why")
+        if isinstance(why, str) and why:
+            lines.append(why)
     if command == "demo":
         lines.append("")
         lines.append("Next: 4dmap demo -o example.json")
@@ -267,6 +275,7 @@ def _build_parser() -> MapParser:
             "  lattice-tip      List lattice tips\n"
             "  poison-refuse    Append a poison feature hash to the refuse set\n"
             "  neighbor-cite    Cite the Aziel Digital Library on a card\n"
+            "  area             Estimate a shaded area. Not an exact point\n"
             "  server           Same as ui\n"
             "\n"
             "Examples:\n"
@@ -486,7 +495,24 @@ def _build_parser() -> MapParser:
     p_lib.add_argument("--surface", default="MOCK", choices=("REAL", "MOCK"), help="MOCK or REAL")
     p_lib.add_argument("--src", default="aziel-corpus", help="Source cite")
     p_lib.add_argument("--note", default=None, help="Short note")
+    p_lib.add_argument("--who", default=None, help="Person labels, separated by commas")
+    p_lib.add_argument("--place", default=None, help="Place words from the report")
+    p_lib.add_argument("--uploads", default=None, help="SHA-256 hashes, separated by commas")
     add_cards(p_lib)
+
+    p_area = sub.add_parser(
+        "area",
+        parents=[json_flags],
+        help=argparse.SUPPRESS,
+        description="Estimate a shaded area around a reported anchor. Not an exact point.",
+    )
+    p_area.add_argument("--event", default=None, help="Event name")
+    p_area.add_argument("--date", required=True, help="Paper date")
+    p_area.add_argument("--lat", required=True, help="Reported latitude")
+    p_area.add_argument("--lon", required=True, help="Reported longitude")
+    p_area.add_argument("--place", default=None, help="Place words from the report")
+    p_area.add_argument("--note", default=None, help="Extra report words")
+    p_area.add_argument("--year", default=None, help="Era year for border names")
 
     p_plot = sub.add_parser(
         "plot",
@@ -625,6 +651,12 @@ def main(argv: Sequence[str] | None = None) -> int:
         if args.command == "cap":
             result = dispatch("cap", {"score": args.score})
             return _emit(result, None, as_json, "cap")
+        if args.command == "area":
+            from .area import estimate_area
+
+            payload = {k: v for k, v in vars(args).items() if k not in _SKIP_PAYLOAD and v is not None}
+            result = estimate_area(payload)
+            return _emit(result, None, as_json, "area")
         op_map = {
             "export": "card_export",
             "import": "card_import",
@@ -644,7 +676,14 @@ def main(argv: Sequence[str] | None = None) -> int:
             "neighbor-cite": "neighbor_cite",
         }
         op = op_map.get(args.command, args.command)
-        cards = _load_cards(getattr(args, "cards", None))
+        explicit_cards = getattr(args, "cards", None)
+        using_lattice = not explicit_cards
+        if using_lattice:
+            from .chainfile import load_cards, save_cards
+
+            cards = load_cards()
+        else:
+            cards = _load_cards(explicit_cards)
         payload = {k: v for k, v in vars(args).items() if k not in _SKIP_PAYLOAD and v is not None}
         if args.command == "import":
             payload["bundle"] = _load_cards(args.bundle)
@@ -654,9 +693,21 @@ def main(argv: Sequence[str] | None = None) -> int:
             payload["bayesian"] = {"label": "bayesian", "value": payload["bayesian"], "cite": "cli"}
         result = dispatch(op, payload, cards)
         result["cards_out"] = cards
-        if "card" in result:
+        if "card" in result and isinstance(result["card"], dict):
             cards = cards + [result["card"]]
             result["cards_out"] = cards
+        if using_lattice and args.command == "import":
+            seen = {card.get("h") for card in cards}
+            for card in result.get("cards") or []:
+                if isinstance(card, dict) and card.get("h") not in seen:
+                    cards.append(card)
+                    seen.add(card.get("h"))
+            result["cards_out"] = cards
+        if using_lattice:
+            from .chainfile import save_cards
+
+            written = save_cards(cards)
+            result["lattice_file"] = str(written)
         output = getattr(args, "output", None)
         if output:
             return _emit(result, output, True, args.command)
