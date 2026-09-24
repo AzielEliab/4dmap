@@ -10,6 +10,7 @@ from urllib.parse import urlparse
 from .card import CardError
 from .ops import dispatch
 from .scope import AUTHOR, DEFAULT_PORT, LIVE_OPS, LOOPBACK, __version__
+from .shadowlinks import load_shadow_links
 
 STATIC = Path(__file__).resolve().parent / "static"
 
@@ -35,6 +36,11 @@ def make_server(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> ThreadingHTTP
             if path in {"/", "/index.html"}:
                 html = (STATIC / "index.html").read_bytes()
                 self._send(200, html, "text/html; charset=utf-8")
+                return
+            if path == "/v1/shadow_links":
+                result = load_shadow_links()
+                status = 200 if result.get("ok") else 400
+                self._send(status, json.dumps(result, ensure_ascii=False).encode("utf-8"), "application/json; charset=utf-8")
                 return
             if path == "/v1/health":
                 payload = json.dumps({

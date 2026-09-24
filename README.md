@@ -81,15 +81,18 @@ Open http://127.0.0.1:8844. No CDN, no telemetry.
 4dmap pin --t 2026-09-10T00:00:00Z --src synthetic
 4dmap pin --json --t 2026-09-10T00:00:00Z --src synthetic
 4dmap doctor
+4dmap shadow
 ```
 
-A person gets a short summary. `--json` prints the machine object. `-o` still writes that object to a file. Advanced commands stay available; `4dmap --help` lists them after the common ones.
+A person gets a short summary. `--json` prints the machine object. `-o` still writes that object to a file. Advanced commands stay available; `4dmap --help` lists them after the common ones. `4dmap shadow` reads the ShadowLock link file.
 
 ## Local UI
 
 `4dmap ui` prints `Open http://127.0.0.1:8844/` and serves the workbench on this computer only.
 
 The first screen is **Pin**. Span, join, walk, library pins, import, and the other board actions sit under **Advanced**. **Notes** holds the inspection scope. The page follows the system light or dark theme.
+
+**Softwares · Shadow** lists linked Softwares and their inputs in time order. The link file is `~/.shadowlock/links.json`, or the path in `SHADOWLOCK_LINKS`. The shape is [docs/SHADOWLOCK-LINKS.md](docs/SHADOWLOCK-LINKS.md). An empty file says “No ShadowLock links yet.”
 
 ## iPhone & Android
 

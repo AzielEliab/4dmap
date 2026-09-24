@@ -305,6 +305,18 @@ def _build_parser() -> MapParser:
     p_ui.add_argument("--host", default=LOOPBACK, help="Loopback address (127.0.0.1)")
     p_ui.add_argument("--port", type=int, default=DEFAULT_PORT, help=f"Port (default {DEFAULT_PORT})")
     sub.add_parser("server", help=argparse.SUPPRESS)
+    p_shadow = sub.add_parser(
+        "shadow",
+        parents=[json_flags],
+        help="Show ShadowLock links from this computer",
+        description="Read ~/.shadowlock/links.json and list linked Softwares in time order.",
+        epilog="Example: 4dmap shadow --links examples/shadowlock-links.json",
+    )
+    p_shadow.add_argument(
+        "--links",
+        default=None,
+        help="Link file. Default: ~/.shadowlock/links.json or SHADOWLOCK_LINKS",
+    )
 
     def add_cards(target: argparse.ArgumentParser) -> None:
         target.add_argument("--cards", help="JSON file of existing cards")
@@ -584,6 +596,22 @@ def main(argv: Sequence[str] | None = None) -> int:
         from .server import serve
 
         serve(host=getattr(args, "host", LOOPBACK), port=getattr(args, "port", DEFAULT_PORT))
+        return 0
+
+    if args.command == "shadow":
+        from .shadowlinks import load_shadow_links, shadow_text
+
+        result = load_shadow_links(getattr(args, "links", None))
+        output = getattr(args, "output", None)
+        if output or as_json:
+            if not result.get("ok") and not output:
+                print(json.dumps(result, indent=2, ensure_ascii=False))
+                return 2
+            return _emit(result, output, True, "shadow")
+        if not result.get("ok"):
+            print(shadow_text(result), file=sys.stderr, end="")
+            return 2
+        print(shadow_text(result), end="")
         return 0
 
     try:

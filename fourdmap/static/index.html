@@ -76,6 +76,18 @@
     font-size: 0.82rem;
     overflow-wrap: anywhere;
   }
+  .jump { color: var(--ink); font-size: 0.92rem; text-decoration: none; border-bottom: 1px solid var(--gold); }
+  .timeline { list-style: none; margin: 0.75rem 0 0; padding: 0; display: grid; gap: 0.75rem; }
+  .timeline li {
+    border-left: 3px solid var(--gold);
+    padding: 0.15rem 0 0.15rem 0.85rem;
+    overflow-wrap: anywhere;
+  }
+  .timeline time { display: block; color: var(--muted); font-size: 0.88rem; }
+  .shadow-slug { margin: 0.15rem 0 0; font-weight: 700; }
+  .shadow-head { display: flex; justify-content: space-between; align-items: center; gap: 0.75rem; }
+  .shadow-head h2 { margin: 0; font-size: 1.15rem; }
+  #shadow-refresh { margin-top: 0; }
   .empty {
     margin: 0 0 1rem;
     padding: 0.85rem 1rem;
@@ -178,6 +190,8 @@
     body { padding: 1rem 0.85rem 2.5rem; }
     .top { align-items: flex-start; flex-direction: column; gap: 0.2rem; }
     .board { grid-template-columns: 1fr; }
+    .shadow-head { align-items: stretch; flex-direction: column; }
+    #shadow-refresh { width: 100%; }
     button.primary, .actions button { width: 100%; }
   }
 </style>
@@ -188,7 +202,10 @@
       <p class="brand">4DMap</p>
       <p class="sub" id="subline">Local workbench</p>
     </div>
-    <p class="author">Aziel Eliab</p>
+    <div>
+      <a class="jump" href="#shadow">Softwares · Shadow</a>
+      <p class="author">Aziel Eliab</p>
+    </div>
   </header>
 
   <h1>Pin a card</h1>
@@ -234,6 +251,17 @@
     <section class="axis" id="col-GAMMA"><h2>Γ Trajectory</h2><p class="quiet">Empty</p></section>
     <section class="axis" id="col-PI"><h2>Π Pattern</h2><p class="quiet">Empty</p></section>
   </div>
+
+  <section class="panel" id="shadow" aria-labelledby="shadow-title">
+    <div class="shadow-head">
+      <h2 id="shadow-title">Softwares · Shadow</h2>
+      <button class="ghost" type="button" id="shadow-refresh">Refresh</button>
+    </div>
+    <p class="hint">Linked Softwares and their inputs, in time order, from the ShadowLock link file on this computer.</p>
+    <div id="shadow-body">
+      <p class="empty" id="shadow-empty">No ShadowLock links yet.</p>
+    </div>
+  </section>
 
   <details class="fold" id="advanced">
     <summary>Advanced</summary>
@@ -600,6 +628,73 @@
       }
       call("card_import", { bundle });
     };
+
+    function paintShadow(body) {
+      const host = document.getElementById("shadow-body");
+      host.replaceChildren();
+      if (!body || body.ok === false) {
+        const note = document.createElement("p");
+        note.className = "empty";
+        note.textContent = (body && body.message) || "The ShadowLock link file could not be read. Check the file, then refresh.";
+        host.appendChild(note);
+        return;
+      }
+      const links = Array.isArray(body.links) ? body.links : [];
+      if (!links.length) {
+        const note = document.createElement("p");
+        note.className = "empty";
+        note.id = "shadow-empty";
+        const where = body.path || "~/.shadowlock/links.json";
+        note.textContent = "No ShadowLock links yet. Link records are read from " + where + ". Refresh after that file has links.";
+        host.appendChild(note);
+        return;
+      }
+      const list = document.createElement("ol");
+      list.className = "timeline";
+      links.forEach((link) => {
+        const item = document.createElement("li");
+        const when = document.createElement("time");
+        when.dateTime = link.linked_at || "";
+        when.textContent = link.linked_at || "Time not recorded";
+        const title = document.createElement("p");
+        title.className = "shadow-slug";
+        title.textContent = link.slug + (link.label ? " — " + link.label : "");
+        item.append(when, title);
+        if (link.kind) {
+          const kind = document.createElement("p");
+          kind.className = "hint";
+          kind.textContent = link.kind;
+          item.appendChild(kind);
+        }
+        const bits = [];
+        if (link.input_id) bits.push("Input " + link.input_id);
+        if (link.input_path) bits.push("Path " + link.input_path);
+        if (bits.length) {
+          const input = document.createElement("p");
+          input.className = "hint";
+          input.textContent = bits.join(" · ");
+          item.appendChild(input);
+        }
+        list.appendChild(item);
+      });
+      host.appendChild(list);
+      if (body.skipped) {
+        const skipped = document.createElement("p");
+        skipped.className = "hint";
+        skipped.textContent = body.skipped + " record(s) skipped. Each link needs a software slug and an input id or path.";
+        host.appendChild(skipped);
+      }
+    }
+
+    function loadShadow() {
+      fetch("/v1/shadow_links")
+        .then((response) => response.json())
+        .then(paintShadow)
+        .catch(() => paintShadow({ ok: false, message: "The workbench could not read ShadowLock links. Refresh and try again." }));
+    }
+
+    document.getElementById("shadow-refresh").onclick = loadShadow;
+    loadShadow();
 
     fetch("/v1/health")
       .then((response) => response.json())
