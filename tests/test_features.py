@@ -8,12 +8,17 @@ from pathlib import Path
 from urllib.request import urlopen
 
 from fourdmap.features import (
+    CATALOG_ONLY,
     EMPTY_SUBSURFACE,
     NO_ERA_NAME,
+    NO_EXTENT,
     NO_FEATURE,
+    _shape_for,
     list_features,
     list_subsurface,
 )
+from fourdmap.ops import dispatch
+from fourdmap.lattice import plot_model
 from fourdmap.server import make_server
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -111,3 +116,88 @@ def test_feature_routes_do_not_seal_pins(tmp_path, monkeypatch) -> None:
     finally:
         httpd.shutdown()
         thread.join(timeout=2)
+
+
+def _nile_pins(lat, lon, events):
+    cards = []
+    dates = ("1912-04-14", "1913-01-02", "1914-06-01")
+    for event, date in zip(events, dates):
+        out = dispatch(
+            "library_pin",
+            {
+                "event": event,
+                "date": date,
+                "lat": lat,
+                "lon": lon,
+                "place": "Nile",
+                "src": "operator",
+                "note": "place words: Nile",
+            },
+            cards,
+        )
+        cards.append(out["card"])
+    return cards
+
+
+def test_features_keep_modern_shape_and_recalibrate_only_with_enough_pins() -> None:
+    bare = next(row for row in list_features(1914)["features"] if row["catalog_name"] == "Nile")
+    assert NO_EXTENT in bare["era_note"]
+    assert CATALOG_ONLY in bare["era_note"]
+    assert bare["recalibrated"] is False
+    assert bare["disc"] is None
+    lat, lon = bare["lat"], bare["lon"]
+    shaped, shape = _shape_for({"name": "Nile", "lat": lat, "lon": lon}, 1914)
+    assert shape == NO_EXTENT
+    assert shaped["lat"] == lat and shaped["lon"] == lon
+    dated, dated_note = _shape_for(
+        {
+            "name": "Nile",
+            "lat": lat,
+            "lon": lon,
+            "extents": [{"year": 1994, "lat": 1.0, "lon": 2.0, "source": "public sheet"}],
+        },
+        1914,
+    )
+    assert dated["lat"] == 1.0
+    assert "nearest public extent: 1994" in dated_note
+    assert "not a 1914 extent" in dated_note
+
+    few = _nile_pins(lat, lon, ("Flood watch", "Bank survey"))
+    held = next(row for row in list_features(1914, cards=few)["features"] if row["catalog_name"] == "Nile")
+    assert CATALOG_ONLY in held["era_note"]
+    assert held["recalibrated"] is False
+    same = _nile_pins(lat, lon, ("Flood watch", "Flood watch", "Flood watch"))
+    same_row = next(row for row in list_features(1914, cards=same)["features"] if row["catalog_name"] == "Nile")
+    assert CATALOG_ONLY in same_row["era_note"]
+
+    cards = _nile_pins(lat, lon, ("Flood watch", "Bank survey", "Delta note"))
+    before = {row["catalog_name"] for row in list_features(1914)["features"]}
+    tuned = list_features(1914, cards=cards)
+    assert {row["catalog_name"] for row in tuned["features"]} == before
+    nile = next(row for row in tuned["features"] if row["catalog_name"] == "Nile")
+    assert "recalibrated from 3 pins" in nile["era_note"]
+    assert "catalog: Nile" in nile["era_note"]
+    assert "Posterior ≠ truth." in nile["era_note"]
+    assert nile["lat"] == lat and nile["lon"] == lon
+    assert nile["disc"]["lat"] == lat and nile["disc"]["lon"] == lon
+    assert nile["needs_receipt"] is True
+    assert nile["name"] == "Nile"
+    later = next(row for row in list_features(2010, cards=cards)["features"] if row["catalog_name"] == "Nile")
+    assert NO_EXTENT in later["era_note"]
+    assert CATALOG_ONLY in later["era_note"]
+    assert "recalibrated from" not in later["era_note"]
+    tunnel = next(row for row in list_subsurface(1914, cards=cards)["features"] if row["catalog_name"] == "Channel Tunnel")
+    assert "Survey year 1994" in tunnel["era_note"]
+    assert NO_EXTENT in tunnel["era_note"]
+    assert CATALOG_ONLY in tunnel["era_note"]
+
+    plotted = plot_model(cards)["n"]
+    sealed = dispatch("pin", {"axis": "PI", "note": nile["receipt_note"], "src": "4dmap"}, cards)
+    after = cards + [sealed["card"]]
+    assert plot_model(after)["n"] == plotted
+    again = next(row for row in list_features(1914, cards=after)["features"] if row["catalog_name"] == "Nile")
+    assert again["needs_receipt"] is False
+    script = (ROOT / "fourdmap" / "static" / "globe.js").read_text(encoding="utf-8")
+    assert "modern catalog shape; no historical extent in source" in script
+    assert CATALOG_ONLY in script
+    assert 'axis: "PI"' in script

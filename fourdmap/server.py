@@ -116,7 +116,7 @@ def make_server(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> ThreadingHTTP
                 qs = parse_qs(parsed.query)
                 year = (qs.get("year") or ["1914"])[0]
                 types = (qs.get("types") or [""])[0]
-                self._json(200, list_features(year, types))
+                self._json(200, list_features(year, types, load_cards()))
                 return
             if path == "/v1/subsurface":
                 qs = parse_qs(parsed.query)
@@ -132,7 +132,7 @@ def make_server(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> ThreadingHTTP
                     except ValueError:
                         self._json(400, {"ok": False, "message": "Latitude and longitude must be numbers."})
                         return
-                self._json(200, list_subsurface(year, types, lat, lon))
+                self._json(200, list_subsurface(year, types, lat, lon, cards=load_cards()))
                 return
             if path == "/v1/pattern":
                 links = load_shadow_links()

@@ -25,6 +25,8 @@ let eraYear = 1914;
 let sliderOwnsYear = false;
 let sealingPattern = false;
 const sealedPairs = new Set();
+let sealingRecal = false;
+const sealedRecal = new Set();
 let satelliteImage = null;
 let satelliteNote = "";
 let satelliteStamp = "";
@@ -621,6 +623,31 @@ function toward(center, point, t) {
   return { lat: center.lat + (point.lat - center.lat) * t, lon: center.lon + delta * t };
 }
 
+function circleRing(lat, lon, radiusKm) {
+  const steps = 28;
+  const dLat = radiusKm / 111.32;
+  const cos = Math.cos((lat * Math.PI) / 180) || 0.01;
+  const dLon = radiusKm / (111.32 * Math.abs(cos));
+  const ring = [];
+  for (let i = 0; i < steps; i += 1) {
+    const angle = (i / steps) * Math.PI * 2;
+    ring.push({
+      lat: lat + Math.sin(angle) * dLat,
+      lon: lon + Math.cos(angle) * dLon,
+    });
+  }
+  return ring;
+}
+
+function drawFeatureDisc(row) {
+  if (!$("pin-card").hidden) return;
+  if (!row || !row.disc || row.disc.radius_km == null || row.disc.lat == null || row.disc.lon == null) {
+    drawArea(null);
+    return;
+  }
+  drawArea(circleRing(Number(row.disc.lat), Number(row.disc.lon), Number(row.disc.radius_km)));
+}
+
 function drawArea(ring) {
   while (areaGroup.children.length) {
     const child = areaGroup.children[0];
@@ -696,6 +723,7 @@ async function loadPins() {
   rebuildPins();
   await loadPattern();
   await refreshPlaceLabels();
+  await loadCatalogs();
 }
 
 function rememberOpened(id) {
@@ -788,6 +816,7 @@ async function openPin(id) {
   const pin = pins.find((item) => item.id === id);
   if (!pin) return;
   $("feature-card").hidden = true;
+  focusFeatureId = "";
   focusId = id;
   rememberOpened(id);
   rebuildPins();
@@ -998,6 +1027,7 @@ function showFeature(row) {
     $("feature-era").textContent = "no public subsurface map here.";
     $("feature-note").textContent = "No entrance or survey plate from the public catalog is at this click.";
     card.hidden = false;
+    drawFeatureDisc(null);
     return;
   }
   focusFeatureId = row.id || "";
@@ -1007,6 +1037,10 @@ function showFeature(row) {
   $("feature-era").textContent = row.era_note || "";
   $("feature-note").textContent = "This marker is a catalog location. It is not an event pin.";
   card.hidden = false;
+  const chipId = row.group === "subsurface" ? "chip-sub" : "chip-features";
+  const layerOn = row.group === "subsurface" ? layers.subsurface : layers.features;
+  if (layerOn && row.era_note) showChip(chipId, row.era_note, true);
+  drawFeatureDisc(row);
 }
 
 function addCatalogLine(line, color) {
@@ -1061,9 +1095,18 @@ function drawCatalog() {
   const featureCount = layers.features ? visibleFeatures().length : 0;
   const subCount = layers.subsurface ? visibleSubsurface().length : 0;
   if (layers.features) {
-    const note = featureCount
-      ? `${featureCount} public features. modern catalog name; no era name in source.`
-      : "No public feature of that type is in this catalog.";
+    const rows = visibleFeatures();
+    const focused = rows.find((row) => row.id === focusFeatureId);
+    const shape = "modern catalog shape; no historical extent in source";
+    const hold = "catalog only; not enough pins to recalibrate.";
+    let note = "No public feature of that type is in this catalog.";
+    if (rows.length && focused && focused.era_note) note = focused.era_note;
+    else if (rows.length) {
+      const changed = rows.find((row) => row.recalibrated && row.era_note);
+      note = changed
+        ? changed.era_note
+        : `${featureCount} public features. modern catalog name; no era name in source. ${shape}. ${hold}`;
+    }
     showChip("chip-features", note, true);
   } else showChip("chip-features", "", false);
   if (layers.subsurface) {
@@ -1091,6 +1134,7 @@ async function loadCatalogs() {
     const row = [...featureRows, ...subsurfaceRows].find((item) => item.id === focusFeatureId);
     if (row) showFeature(row);
   }
+  if (ticket === catalogReq) await sealRecalibrations();
 }
 
 async function refreshPlaceLabels() {
@@ -1430,6 +1474,29 @@ function pairKey(edge) {
   return [String(edge.from), String(edge.to)].sort().join("|");
 }
 
+async function sealRecalibrations() {
+  if (sealingRecal) return;
+  const rows = [...featureRows, ...subsurfaceRows].filter((row) => (
+    row && row.needs_receipt && row.receipt_key && row.receipt_note && !sealedRecal.has(row.receipt_key)
+  ));
+  if (!rows.length) return;
+  sealingRecal = true;
+  try {
+    for (const row of rows) {
+      sealedRecal.add(row.receipt_key);
+      await post("pin", {
+        axis: "PI",
+        note: row.receipt_note,
+        src: "4dmap",
+      });
+    }
+  } catch (err) {
+    $("receipt").textContent = err.message;
+  } finally {
+    sealingRecal = false;
+  }
+}
+
 async function sealOpenTethers() {
   if (sealingPattern) return;
   const open = matrixEdges.filter((edge) => (
@@ -1724,6 +1791,7 @@ for (const [id] of [...FEATURE_TYPE_IDS, ...SUB_TYPE_IDS]) {
 $("feature-close").addEventListener("click", () => {
   $("feature-card").hidden = true;
   focusFeatureId = "";
+  if ($("pin-card").hidden) drawArea(null);
 });
 $("shadow-refresh").addEventListener("click", loadShadow);
 $("upload-file").addEventListener("change", async () => {
