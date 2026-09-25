@@ -29,6 +29,8 @@ let satelliteNote = "";
 let satelliteStamp = "";
 let topoImage = null;
 let topoStamp = "";
+let earthReq = 0;
+let placeReq = 0;
 let matrixEdges = [];
 let focusId = null;
 let areaRing = null;
@@ -893,8 +895,12 @@ function placeAliasHit(pin, q) {
 }
 
 async function refreshPlaceLabels() {
-  const response = await fetch(`/v1/places/era?year=${encodeURIComponent(eraYear)}`);
+  const ticket = ++placeReq;
+  const year = eraYear;
+  const response = await fetch(`/v1/places/era?year=${encodeURIComponent(year)}`);
+  if (ticket !== placeReq) return;
   const data = await response.json();
+  if (ticket !== placeReq) return;
   const byId = new Map((data.pins || []).map((row) => [row.id, row]));
   for (const pin of pins) {
     const row = byId.get(pin.id);
@@ -990,9 +996,9 @@ function activeYear() {
   return eraYear;
 }
 
-async function frameNote(layer, product) {
-  const year = activeYear();
-  const query = new URLSearchParams({ layer, year: String(year) });
+async function frameNote(layer, product, year) {
+  const chosen = year == null ? activeYear() : year;
+  const query = new URLSearchParams({ layer, year: String(chosen) });
   if (product) query.set("product", product);
   const response = await fetch(`/v1/layers/frame?${query}`);
   return response.json();
@@ -1006,10 +1012,15 @@ function showChip(id, text, on) {
 }
 
 async function refreshFrames() {
-  if (layers.satellite) await loadSatellite();
-  else showChip("chip-satellite", "", false);
+  const ticket = ++earthReq;
+  const year = activeYear();
+  const stale = () => ticket !== earthReq;
+  if (layers.satellite) await loadSatellite(year, stale);
+  else if (!stale()) showChip("chip-satellite", "", false);
+  if (stale()) return;
   if (layers.lidar) {
-    const frame = await frameNote("lidar");
+    const frame = await frameNote("lidar", undefined, year);
+    if (stale()) return;
     showChip("chip-lidar", frame.note || "", true);
     if (focusId) {
       const pin = pins.find((item) => item.id === focusId);
@@ -1017,25 +1028,29 @@ async function refreshFrames() {
     }
   } else showChip("chip-lidar", "", false);
   const ocean = [];
-  if (layers.bathy) ocean.push(await frameNote("ocean", "bathymetry"));
-  if (layers.sst) ocean.push(await frameNote("ocean", "sst"));
-  if (layers.ice) ocean.push(await frameNote("ocean", "seaice"));
-  if (layers.coast) ocean.push(await frameNote("ocean", "coast"));
+  if (layers.bathy) ocean.push(await frameNote("ocean", "bathymetry", year));
+  if (layers.sst) ocean.push(await frameNote("ocean", "sst", year));
+  if (layers.ice) ocean.push(await frameNote("ocean", "seaice", year));
+  if (layers.coast) ocean.push(await frameNote("ocean", "coast", year));
+  if (stale()) return;
   showChip("chip-ocean", ocean.map((row) => row.note).filter(Boolean).join(" "), ocean.length > 0);
-  if (layers.topo) await loadTopography();
+  if (layers.topo) await loadTopography(year, stale);
   else showChip("chip-topo", "", false);
 }
 
-async function loadTopography() {
-  const year = activeYear();
-  const frame = await frameNote("topography");
+async function loadTopography(year, stale) {
+  const chosen = year == null ? activeYear() : year;
+  const expired = stale || (() => false);
+  const frame = await frameNote("topography", undefined, chosen);
+  if (expired() || !layers.topo) return;
   let note = frame.note || "";
   if (layers.satellite && satelliteImage) {
     note = `${note} Satellite is on, so this relief image is not painted over it.`.trim();
   }
-  topoStamp = String(frame.frame_date || frame.frame_year || year);
+  topoStamp = String(frame.frame_date || frame.frame_year || chosen);
   showChip("chip-topo", note, true);
-  const response = await fetch(`/v1/tiles/topography?year=${encodeURIComponent(year)}`);
+  const response = await fetch(`/v1/tiles/topography?year=${encodeURIComponent(chosen)}`);
+  if (expired() || !layers.topo) return;
   if (!response.ok) {
     topoImage = null;
     let message = note;
@@ -1046,11 +1061,13 @@ async function loadTopography() {
     } catch (_err) {
       /* keep the frame note */
     }
+    if (expired() || !layers.topo) return;
     showChip("chip-topo", message, true);
     paintEarth();
     return;
   }
   const blob = await response.blob();
+  if (expired() || !layers.topo) return;
   if (!blob.type.startsWith("image/")) {
     topoImage = null;
     showChip("chip-topo", `${note} Topography did not load. No substitute relief is drawn.`.trim(), true);
@@ -1058,18 +1075,22 @@ async function loadTopography() {
     return;
   }
   topoImage = await createImageBitmap(blob);
+  if (expired() || !layers.topo) return;
   showChip("chip-topo", note, true);
   paintEarth();
 }
 
-async function loadSatellite() {
+async function loadSatellite(year, stale) {
+  const chosen = year == null ? activeYear() : year;
+  const expired = stale || (() => false);
   satelliteNote = "";
   satelliteImage = null;
-  const year = activeYear();
-  const frame = await frameNote("satellite");
-  satelliteStamp = String(frame.frame_date || frame.frame_year || year);
+  const frame = await frameNote("satellite", undefined, chosen);
+  if (expired() || !layers.satellite) return;
+  satelliteStamp = String(frame.frame_date || frame.frame_year || chosen);
   showChip("chip-satellite", frame.note || "", true);
-  const response = await fetch(`/v1/tiles/satellite?year=${encodeURIComponent(year)}`);
+  const response = await fetch(`/v1/tiles/satellite?year=${encodeURIComponent(chosen)}`);
+  if (expired() || !layers.satellite) return;
   if (!response.ok) {
     let message = frame.note || "Satellite imagery did not load from NASA GIBS. No substitute image is drawn.";
     try {
@@ -1079,12 +1100,14 @@ async function loadSatellite() {
     } catch (_err) {
       /* keep the frame note */
     }
+    if (expired() || !layers.satellite) return;
     satelliteNote = message;
     showChip("chip-satellite", message, true);
     paintEarth();
     return;
   }
   const blob = await response.blob();
+  if (expired() || !layers.satellite) return;
   if (!blob.type.startsWith("image/")) {
     satelliteNote = `${frame.note || ""} Satellite imagery did not load. No substitute image is drawn.`.trim();
     showChip("chip-satellite", satelliteNote, true);
@@ -1092,6 +1115,7 @@ async function loadSatellite() {
     return;
   }
   satelliteImage = await createImageBitmap(blob);
+  if (expired() || !layers.satellite) return;
   satelliteNote = frame.note || "";
   paintEarth();
 }
