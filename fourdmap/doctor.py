@@ -259,5 +259,5 @@ def run_doctor(*, as_json: bool = False) -> int:
         for name, passed, detail in rows:
             mark = "ok" if passed else "FAIL"
             print(f"  [{mark}] {name}: {detail}")
-        print(LIMITATION if ok else "doctor failed")
+        print("All checks passed." if ok else "Doctor failed. Read the FAIL lines above.")
     return 0 if ok else 1

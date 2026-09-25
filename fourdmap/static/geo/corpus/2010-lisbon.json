@@ -1,0 +1,14 @@
+{
+  "fixture": true,
+  "records": [
+    {
+      "fixture": true,
+      "event": "Quay note",
+      "date": "2010-04-18",
+      "time": "11:05",
+      "who": ["Ned Brooks"],
+      "location": "Lisbon",
+      "surface": "MOCK"
+    }
+  ]
+}

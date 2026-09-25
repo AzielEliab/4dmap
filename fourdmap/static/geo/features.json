@@ -1,0 +1,10643 @@
+{
+ "retrieved": "2026-09-25",
+ "kind": "feature",
+ "note": "Coordinates are copied from the cited public files. 4DMap did not invent locations.",
+ "features": [
+  {
+   "id": "wd-Q524",
+   "name": "Mount Vesuvius",
+   "type": "volcano",
+   "lat": 40.82261,
+   "lon": 14.42919,
+   "source": "Wikidata Q524 (active stratovolcano in the Gulf of Naples, Italy); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q524",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q39231",
+   "name": "Mount Fuji",
+   "type": "volcano",
+   "lat": 35.360556,
+   "lon": 138.7275,
+   "source": "Wikidata Q39231 (volcano in Yamanashi and Shizuoka Prefectures, Japan); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q39231",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q188698",
+   "name": "Kīlauea",
+   "type": "volcano",
+   "lat": 19.421097,
+   "lon": -155.286762,
+   "source": "Wikidata Q188698 (active volcano in Hawaii); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q188698",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q82613",
+   "name": "Krakatoa",
+   "type": "volcano",
+   "lat": -6.102,
+   "lon": 105.423,
+   "source": "Wikidata Q82613 (Sunda Strait volcanic island caldera); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q82613",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q16990",
+   "name": "Mount Etna",
+   "type": "volcano",
+   "lat": 37.750835,
+   "lon": 14.99322,
+   "source": "Wikidata Q16990 (active stratovolcano on the east coast of Sicily, Italy); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q16990",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q39651",
+   "name": "Eyjafjallajökull",
+   "type": "volcano",
+   "lat": 63.633333,
+   "lon": -19.6,
+   "source": "Wikidata Q39651 (ice cap in Iceland covering the caldera of a volcano); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q39651",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q159762",
+   "name": "Mauna Loa",
+   "type": "volcano",
+   "lat": 19.483333,
+   "lon": -155.6,
+   "source": "Wikidata Q159762 (volcano on the island of Hawaii in Hawaii, United States); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q159762",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q168714",
+   "name": "Tambora",
+   "type": "volcano",
+   "lat": -8.245278,
+   "lon": 117.992778,
+   "source": "Wikidata Q168714 (stratovolcano on the island of Sumbawa in Indonesia); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q168714",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q510",
+   "name": "Mariana Trench",
+   "type": "deep",
+   "lat": 11.35,
+   "lon": 142.2,
+   "source": "Wikidata Q510 (deepest oceanic trench on Earth); P625 preferred coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q510",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q666090",
+   "name": "Puerto Rico Trench",
+   "type": "deep",
+   "lat": 19.835833,
+   "lon": -66.754444,
+   "source": "Wikidata Q666090 (oceanic trench on a transform boundary between the Caribbean and North American Plates); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q666090",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q119294",
+   "name": "Tonga Trench",
+   "type": "deep",
+   "lat": -22.944722,
+   "lon": -174.733056,
+   "source": "Wikidata Q119294 (deepest oceanic trench in the southwestern Pacific Ocean); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q119294",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q656364",
+   "name": "Philippine Trench",
+   "type": "deep",
+   "lat": 10.043928,
+   "lon": 126.68245,
+   "source": "Wikidata Q656364 (oceanic trench); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q656364",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q118394",
+   "name": "Sunda Trench",
+   "type": "deep",
+   "lat": -10.316667,
+   "lon": 109.966667,
+   "source": "Wikidata Q118394 (oceanic trench in the Indian Ocean near Sumatra); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q118394",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q459173",
+   "name": "Challenger Deep",
+   "type": "deep",
+   "lat": 11.373333,
+   "lon": 142.591667,
+   "source": "Wikidata Q459173 (deepest known point in the Earth's seabed hydrosphere); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q459173",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q55816",
+   "name": "Chicxulub crater",
+   "type": "crater",
+   "lat": 21.4,
+   "lon": -89.516667,
+   "source": "Wikidata Q55816 (prehistoric impact crater buried underneath the Yucatán Peninsula in Mexico); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q55816",
+   "retrieved": "2026-09-25",
+   "record_year": 1981,
+   "record_property": "Wikidata P575 time of discovery",
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q431381",
+   "name": "Meteor Crater",
+   "type": "crater",
+   "lat": 35.028056,
+   "lon": -111.023333,
+   "source": "Wikidata Q431381 (meteorite impact crater in northern Arizona); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q431381",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q330095",
+   "name": "Vredefort crater",
+   "type": "crater",
+   "lat": -27.0,
+   "lon": 27.5,
+   "source": "Wikidata Q330095 (largest verified impact crater on earth, dating from the Paleoproterozoic Era); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q330095",
+   "retrieved": "2026-09-25",
+   "record_year": 1937,
+   "record_property": "Wikidata P575 time of discovery",
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q538553",
+   "name": "Nördlinger Ries",
+   "type": "crater",
+   "lat": 48.866667,
+   "lon": 10.583333,
+   "source": "Wikidata Q538553 (meteorite impact crater in Bavaria, Germany); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q538553",
+   "retrieved": "2026-09-25",
+   "record_year": 1960,
+   "record_property": "Wikidata P575 time of discovery",
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q513",
+   "name": "Mount Everest",
+   "type": "peak",
+   "lat": 27.988056,
+   "lon": 86.925,
+   "source": "Wikidata Q513 (Earth's highest mountain above sea level, located in the Mahalangur Himal sub-range of the Himalayas); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q513",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q43512",
+   "name": "K2",
+   "type": "peak",
+   "lat": 35.881111,
+   "lon": 76.513333,
+   "source": "Wikidata Q43512 (2nd-highest mountain on Earth); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q43512",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q130018",
+   "name": "Denali",
+   "type": "peak",
+   "lat": 63.069103,
+   "lon": -151.006261,
+   "source": "Wikidata Q130018 (highest mountain in North America, located in Alaska); P625 preferred coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q130018",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q118841",
+   "name": "Grand Canyon",
+   "type": "canyon",
+   "lat": 36.0975,
+   "lon": -112.095278,
+   "source": "Wikidata Q118841 (steep-sided canyon carved by the Colorado River in Arizona, United States); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q118841",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q7343",
+   "name": "Great Barrier Reef",
+   "type": "reef",
+   "lat": -16.4,
+   "lon": 145.8,
+   "source": "Wikidata Q7343 (over 2300 km long coral reef off Australia's northeast coast, UNESCO World Heritage Site); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q7343",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q36124",
+   "name": "Strait of Gibraltar",
+   "type": "strait",
+   "lat": 35.973889,
+   "lon": -5.516111,
+   "source": "Wikidata Q36124 (strait that connects the Atlantic Ocean to the Mediterranean Sea); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q36124",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q48359",
+   "name": "Strait of Malacca",
+   "type": "strait",
+   "lat": 2.833,
+   "lon": 101.037,
+   "source": "Wikidata Q48359 (strait between the Malay Peninsula and the Indonesian island of Sumatra); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q48359",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q571430",
+   "name": "Antarctic ice sheet",
+   "type": "ice",
+   "lat": -90.0,
+   "lon": 0.0,
+   "source": "Wikidata Q571430 (polar ice cap); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q571430",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "wd-Q1542432",
+   "name": "Greenland ice sheet",
+   "type": "ice",
+   "lat": 76.7,
+   "lon": -41.2,
+   "source": "Wikidata Q1542432 (glacier in Greenland); P625 first Earth coordinate",
+   "source_url": "https://www.wikidata.org/wiki/Q1542432",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "group": "feature"
+  },
+  {
+   "id": "ne-fall-Niagara Falls",
+   "name": "Niagara Falls",
+   "type": "waterfall",
+   "lat": 43.087714,
+   "lon": -79.044118,
+   "source": "Natural Earth 50m geography region points v5.1.2",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-fall-Salto Angel",
+   "name": "Salto Angel",
+   "type": "waterfall",
+   "lat": 5.686896,
+   "lon": -62.061818,
+   "source": "Natural Earth 50m geography region points v5.1.2",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-fall-Iguazu Falls",
+   "name": "Iguazu Falls",
+   "type": "waterfall",
+   "lat": -25.568292,
+   "lon": -54.582997,
+   "source": "Natural Earth 50m geography region points v5.1.2",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-fall-Victoria Falls",
+   "name": "Victoria Falls",
+   "type": "waterfall",
+   "lat": -17.928033,
+   "lon": 25.852794,
+   "source": "Natural Earth 50m geography region points v5.1.2",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-bermuda",
+   "name": "Bermuda Islands",
+   "type": "region",
+   "lat": 32.317267,
+   "lon": -64.742909,
+   "source": "Natural Earth 50m geography region points v5.1.2",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": null,
+   "place_note": "Geographic label of the Bermuda Islands in Natural Earth. No mystery polygon is drawn.",
+   "aliases": [
+    "Bermuda"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-river-Brahmaputra",
+   "name": "Brahmaputra",
+   "type": "river",
+   "lat": 27.71856,
+   "lon": 91.10296,
+   "source": "Natural Earth 110m rivers and lake centerlines v5.1.2. The dot is the centerline centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     82.40048,
+     30.41148
+    ],
+    [
+     82.72273,
+     30.36505
+    ],
+    [
+     83.76102,
+     29.83332
+    ],
+    [
+     84.06673,
+     29.61328
+    ],
+    [
+     84.37907,
+     29.49451
+    ],
+    [
+     84.70721,
+     29.29635
+    ],
+    [
+     85.40867,
+     29.27439
+    ],
+    [
+     87.66021,
+     29.15153
+    ],
+    [
+     87.78873,
+     29.2656
+    ],
+    [
+     87.98412,
+     29.34203
+    ],
+    [
+     88.6308,
+     29.35066
+    ],
+    [
+     91.03799,
+     29.3165
+    ],
+    [
+     92.09549,
+     29.25341
+    ],
+    [
+     93.25005,
+     29.0698
+    ],
+    [
+     93.6075,
+     29.10859
+    ],
+    [
+     94.35603,
+     29.30953
+    ],
+    [
+     94.82039,
+     29.54215
+    ],
+    [
+     95.15061,
+     29.81012
+    ],
+    [
+     95.26543,
+     29.82854
+    ],
+    [
+     95.33602,
+     29.74072
+    ],
+    [
+     95.37261,
+     29.59574
+    ],
+    [
+     95.3169,
+     29.41769
+    ],
+    [
+     94.87646,
+     28.96795
+    ],
+    [
+     94.87083,
+     28.83196
+    ],
+    [
+     95.04353,
+     28.51123
+    ],
+    [
+     95.08792,
+     28.21724
+    ],
+    [
+     95.39648,
+     28.00292
+    ],
+    [
+     95.38284,
+     27.90434
+    ],
+    [
+     95.28993,
+     27.78787
+    ],
+    [
+     94.8315,
+     27.46416
+    ],
+    [
+     94.3952,
+     27.04241
+    ],
+    [
+     93.75162,
+     26.73204
+    ],
+    [
+     92.67789,
+     26.55512
+    ],
+    [
+     92.32225,
+     26.46443
+    ],
+    [
+     91.68343,
+     26.21486
+    ],
+    [
+     91.25038,
+     26.18321
+    ],
+    [
+     90.60608,
+     26.18083
+    ],
+    [
+     90.33405,
+     26.13476
+    ],
+    [
+     90.11236,
+     26.02952
+    ],
+    [
+     89.92498,
+     25.8738
+    ],
+    [
+     89.78804,
+     25.6321
+    ],
+    [
+     89.61265,
+     24.94837
+    ],
+    [
+     89.71419,
+     24.58462
+    ],
+    [
+     89.74442,
+     23.85867
+    ],
+    [
+     90.0057,
+     23.65902
+    ],
+    [
+     90.22569,
+     23.41842
+    ],
+    [
+     90.38728,
+     23.11983
+    ],
+    [
+     90.50753,
+     22.78024
+    ]
+   ],
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-river-Mekong",
+   "name": "Mekong",
+   "type": "river",
+   "lat": 20.75066,
+   "lon": 101.53219,
+   "source": "Natural Earth 110m rivers and lake centerlines v5.1.2. The dot is the centerline centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     94.084,
+     33.15586
+    ],
+    [
+     94.4477,
+     33.1633
+    ],
+    [
+     94.94142,
+     33.08927
+    ],
+    [
+     95.84043,
+     32.63227
+    ],
+    [
+     96.23932,
+     32.52587
+    ],
+    [
+     96.9413,
+     31.96554
+    ],
+    [
+     97.16516,
+     31.48852
+    ],
+    [
+     97.25678,
+     31.09647
+    ],
+    [
+     97.84625,
+     30.27774
+    ],
+    [
+     98.28458,
+     29.6669
+    ],
+    [
+     98.62399,
+     28.96312
+    ],
+    [
+     99.02809,
+     27.51628
+    ],
+    [
+     99.15015,
+     27.02786
+    ],
+    [
+     99.17258,
+     26.02645
+    ],
+    [
+     99.24028,
+     25.66825
+    ],
+    [
+     99.39128,
+     25.34476
+    ],
+    [
+     99.66682,
+     25.01356
+    ],
+    [
+     99.91657,
+     24.83383
+    ],
+    [
+     100.30032,
+     24.72146
+    ],
+    [
+     100.42129,
+     24.64726
+    ],
+    [
+     100.48733,
+     24.52595
+    ],
+    [
+     100.51994,
+     24.37792
+    ],
+    [
+     100.47555,
+     24.16398
+    ],
+    [
+     100.13852,
+     23.47311
+    ],
+    [
+     100.12239,
+     23.31114
+    ],
+    [
+     100.17149,
+     23.10657
+    ],
+    [
+     100.98374,
+     21.84497
+    ],
+    [
+     101.01826,
+     21.79771
+    ],
+    [
+     101.15003,
+     21.84998
+    ],
+    [
+     101.18,
+     21.43657
+    ],
+    [
+     100.3291,
+     20.78612
+    ],
+    [
+     100.11599,
+     20.41785
+    ],
+    [
+     100.54888,
+     20.10924
+    ],
+    [
+     100.55909,
+     20.00237
+    ],
+    [
+     100.56929,
+     19.89553
+    ],
+    [
+     100.5973,
+     19.89305
+    ],
+    [
+     101.11479,
+     19.85215
+    ],
+    [
+     101.47156,
+     19.87013
+    ],
+    [
+     102.1848,
+     20.04891
+    ],
+    [
+     101.88374,
+     19.55519
+    ],
+    [
+     101.76483,
+     18.72178
+    ],
+    [
+     101.49229,
+     18.16003
+    ],
+    [
+     101.48598,
+     17.9697
+    ],
+    [
+     101.56365,
+     17.82052
+    ],
+    [
+     101.58598,
+     17.81046
+    ],
+    [
+     102.11359,
+     18.1091
+    ],
+    [
+     102.413,
+     17.93278
+    ],
+    [
+     102.99871,
+     17.96169
+    ],
+    [
+     103.20019,
+     18.30963
+    ],
+    [
+     103.95648,
+     18.24095
+    ],
+    [
+     104.71695,
+     17.42886
+    ],
+    [
+     104.77932,
+     16.44186
+    ],
+    [
+     105.58904,
+     15.57032
+    ],
+    [
+     105.57607,
+     15.32465
+    ],
+    [
+     105.78169,
+     15.12052
+    ],
+    [
+     105.89104,
+     14.77109
+    ],
+    [
+     105.86969,
+     14.21784
+    ],
+    [
+     105.96493,
+     13.8574
+    ],
+    [
+     105.94933,
+     13.35009
+    ],
+    [
+     105.97227,
+     12.65964
+    ],
+    [
+     105.9299,
+     12.39707
+    ],
+    [
+     105.81016,
+     12.28677
+    ],
+    [
+     105.65069,
+     12.23396
+    ],
+    [
+     105.36812,
+     11.97048
+    ],
+    [
+     105.04985,
+     11.8046
+    ],
+    [
+     104.95114,
+     11.59092
+    ],
+    [
+     105.11258,
+     10.93262
+    ],
+    [
+     105.20798,
+     10.70687
+    ],
+    [
+     105.56661,
+     10.26707
+    ],
+    [
+     106.36108,
+     9.43379
+    ]
+   ],
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-river-Ob",
+   "name": "Ob",
+   "type": "river",
+   "lat": 57.21373,
+   "lon": 73.39696,
+   "source": "Natural Earth 110m rivers and lake centerlines v5.1.2. The dot is the centerline centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     90.32537,
+     47.65017
+    ],
+    [
+     90.20052,
+     47.40801
+    ],
+    [
+     89.73342,
+     47.1625
+    ],
+    [
+     89.3969,
+     47.06914
+    ],
+    [
+     89.04814,
+     47.08744
+    ],
+    [
+     86.94356,
+     47.66011
+    ],
+    [
+     86.40013,
+     47.85656
+    ],
+    [
+     85.26708,
+     47.99438
+    ],
+    [
+     84.35685,
+     47.73213
+    ],
+    [
+     83.83564,
+     48.03552
+    ],
+    [
+     83.61973,
+     48.19398
+    ],
+    [
+     83.55116,
+     48.31312
+    ],
+    [
+     83.49158,
+     48.77857
+    ],
+    [
+     83.61901,
+     48.8965
+    ],
+    [
+     83.8684,
+     49.02535
+    ],
+    [
+     84.01165,
+     49.17591
+    ],
+    [
+     83.88277,
+     49.34624
+    ],
+    [
+     83.36373,
+     49.64384
+    ],
+    [
+     82.48482,
+     50.06041
+    ],
+    [
+     82.14003,
+     50.18216
+    ],
+    [
+     81.78109,
+     50.25187
+    ],
+    [
+     80.42778,
+     50.38519
+    ],
+    [
+     78.54532,
+     50.76729
+    ],
+    [
+     77.24286,
+     51.86903
+    ],
+    [
+     76.99885,
+     52.1301
+    ],
+    [
+     76.6061,
+     52.69252
+    ],
+    [
+     76.32788,
+     52.90178
+    ],
+    [
+     75.58953,
+     53.29649
+    ],
+    [
+     75.30934,
+     53.49632
+    ],
+    [
+     75.11782,
+     53.68789
+    ],
+    [
+     75.02191,
+     53.8479
+    ],
+    [
+     74.99359,
+     53.98559
+    ],
+    [
+     74.51993,
+     54.37529
+    ],
+    [
+     74.39617,
+     54.42505
+    ],
+    [
+     74.12368,
+     54.53453
+    ],
+    [
+     73.85061,
+     54.644
+    ],
+    [
+     73.72509,
+     54.69377
+    ],
+    [
+     73.63321,
+     54.74135
+    ],
+    [
+     73.4659,
+     54.82972
+    ],
+    [
+     73.37612,
+     54.8773
+    ],
+    [
+     73.08177,
+     55.22955
+    ],
+    [
+     73.11516,
+     55.30603
+    ],
+    [
+     73.33406,
+     55.44576
+    ],
+    [
+     73.65517,
+     55.5855
+    ],
+    [
+     74.24108,
+     55.76125
+    ],
+    [
+     74.47187,
+     55.87488
+    ],
+    [
+     74.62452,
+     56.02728
+    ],
+    [
+     74.7103,
+     56.20334
+    ],
+    [
+     74.70265,
+     56.41235
+    ],
+    [
+     74.62984,
+     56.64435
+    ],
+    [
+     74.47807,
+     56.85948
+    ],
+    [
+     74.27994,
+     57.02779
+    ],
+    [
+     73.69021,
+     57.25547
+    ],
+    [
+     72.90106,
+     57.44631
+    ],
+    [
+     71.47432,
+     57.65875
+    ],
+    [
+     70.28902,
+     57.94623
+    ],
+    [
+     68.83986,
+     58.03359
+    ],
+    [
+     68.68061,
+     58.0685
+    ],
+    [
+     68.3845,
+     58.13311
+    ],
+    [
+     68.22403,
+     58.16728
+    ],
+    [
+     68.24539,
+     58.24942
+    ],
+    [
+     68.26811,
+     58.33238
+    ],
+    [
+     68.5037,
+     58.52707
+    ],
+    [
+     68.60143,
+     58.74608
+    ],
+    [
+     68.79314,
+     58.98407
+    ],
+    [
+     68.96833,
+     59.40475
+    ],
+    [
+     69.12956,
+     59.55042
+    ],
+    [
+     69.3343,
+     59.64954
+    ],
+    [
+     69.78275,
+     59.87262
+    ],
+    [
+     69.80456,
+     59.99603
+    ],
+    [
+     69.76766,
+     60.10713
+    ],
+    [
+     69.83732,
+     60.25686
+    ],
+    [
+     69.80409,
+     60.51501
+    ],
+    [
+     69.72508,
+     60.65834
+    ],
+    [
+     69.4975,
+     60.81308
+    ],
+    [
+     69.39807,
+     60.86172
+    ],
+    [
+     69.17914,
+     60.96873
+    ],
+    [
+     68.95981,
+     61.0757
+    ],
+    [
+     68.85914,
+     61.12423
+    ],
+    [
+     68.82179,
+     61.10671
+    ],
+    [
+     68.78612,
+     61.08935
+    ],
+    [
+     68.40847,
+     61.20691
+    ],
+    [
+     68.22589,
+     61.44767
+    ],
+    [
+     67.6451,
+     61.73047
+    ],
+    [
+     67.23283,
+     62.06812
+    ],
+    [
+     66.28074,
+     62.44684
+    ],
+    [
+     65.68873,
+     62.66238
+    ],
+    [
+     65.40994,
+     62.84728
+    ],
+    [
+     65.30323,
+     63.07507
+    ],
+    [
+     65.42725,
+     63.30652
+    ],
+    [
+     65.68899,
+     63.58733
+    ],
+    [
+     65.83333,
+     64.01516
+    ],
+    [
+     65.91839,
+     64.11505
+    ],
+    [
+     65.92603,
+     64.22435
+    ],
+    [
+     65.58228,
+     64.70737
+    ],
+    [
+     65.51066,
+     64.96565
+    ],
+    [
+     65.41103,
+     65.04017
+    ],
+    [
+     65.36839,
+     65.16747
+    ],
+    [
+     65.7663,
+     65.80268
+    ],
+    [
+     65.83539,
+     65.9998
+    ],
+    [
+     65.83927,
+     66.15718
+    ],
+    [
+     66.34141,
+     66.44318
+    ],
+    [
+     66.67731,
+     66.56653
+    ],
+    [
+     67.0331,
+     66.60508
+    ],
+    [
+     68.19287,
+     66.57576
+    ],
+    [
+     69.01349,
+     66.78835
+    ],
+    [
+     69.93044,
+     66.74683
+    ],
+    [
+     70.8401,
+     66.65304
+    ],
+    [
+     71.46957,
+     66.66348
+    ]
+   ],
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-river-Peace",
+   "name": "Peace",
+   "type": "river",
+   "lat": 61.41184,
+   "lon": -121.01403,
+   "source": "Natural Earth 110m rivers and lake centerlines v5.1.2. The dot is the centerline centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -124.83563,
+     56.75692
+    ],
+    [
+     -124.20045,
+     56.24349
+    ],
+    [
+     -123.88874,
+     56.08882
+    ],
+    [
+     -123.54354,
+     56.04472
+    ],
+    [
+     -122.73007,
+     56.09854
+    ],
+    [
+     -122.22171,
+     56.02123
+    ],
+    [
+     -121.97364,
+     56.01978
+    ],
+    [
+     -121.35714,
+     56.18975
+    ],
+    [
+     -120.24459,
+     56.15197
+    ],
+    [
+     -119.50944,
+     56.25145
+    ],
+    [
+     -119.18871,
+     56.24437
+    ],
+    [
+     -118.67035,
+     56.01622
+    ],
+    [
+     -118.34623,
+     55.98131
+    ],
+    [
+     -117.77914,
+     56.0541
+    ],
+    [
+     -117.50613,
+     56.15536
+    ],
+    [
+     -117.20036,
+     56.41232
+    ],
+    [
+     -117.1769,
+     56.54502
+    ],
+    [
+     -117.25821,
+     56.85488
+    ],
+    [
+     -117.13228,
+     57.28103
+    ],
+    [
+     -117.10752,
+     57.65416
+    ],
+    [
+     -117.03701,
+     57.92923
+    ],
+    [
+     -116.85415,
+     58.06958
+    ],
+    [
+     -116.67623,
+     58.12741
+    ],
+    [
+     -116.54211,
+     58.28895
+    ],
+    [
+     -116.32315,
+     58.37096
+    ],
+    [
+     -115.98847,
+     58.41871
+    ],
+    [
+     -114.97251,
+     58.40972
+    ],
+    [
+     -114.61323,
+     58.47586
+    ],
+    [
+     -114.48896,
+     58.51217
+    ],
+    [
+     -114.21144,
+     58.59048
+    ],
+    [
+     -113.92362,
+     58.66496
+    ],
+    [
+     -113.76845,
+     58.68975
+    ],
+    [
+     -113.58349,
+     58.72357
+    ],
+    [
+     -113.29753,
+     58.80785
+    ],
+    [
+     -113.14919,
+     58.85532
+    ],
+    [
+     -112.64762,
+     59.09761
+    ],
+    [
+     -112.32267,
+     59.1259
+    ],
+    [
+     -112.06504,
+     59.08358
+    ],
+    [
+     -111.92647,
+     58.97346
+    ],
+    [
+     -111.41076,
+     59.00505
+    ],
+    [
+     -111.44384,
+     59.53663
+    ],
+    [
+     -111.56902,
+     59.84795
+    ],
+    [
+     -112.38313,
+     60.22154
+    ],
+    [
+     -112.49321,
+     60.31461
+    ],
+    [
+     -112.4837,
+     60.45052
+    ],
+    [
+     -112.57134,
+     60.54059
+    ],
+    [
+     -113.16012,
+     60.85324
+    ],
+    [
+     -113.28246,
+     61.17381
+    ],
+    [
+     -113.45966,
+     61.24267
+    ],
+    [
+     -113.58198,
+     61.24421
+    ],
+    [
+     -113.70401,
+     61.24587
+    ],
+    [
+     -113.8389,
+     61.256
+    ],
+    [
+     -114.13604,
+     61.27811
+    ],
+    [
+     -114.43324,
+     61.30019
+    ],
+    [
+     -114.56835,
+     61.31021
+    ],
+    [
+     -116.33434,
+     61.0894
+    ],
+    [
+     -116.69863,
+     61.12139
+    ],
+    [
+     -117.66811,
+     61.30783
+    ],
+    [
+     -118.15498,
+     61.42147
+    ],
+    [
+     -119.07063,
+     61.30132
+    ],
+    [
+     -119.76837,
+     61.33414
+    ],
+    [
+     -120.31782,
+     61.46335
+    ],
+    [
+     -120.57504,
+     61.56968
+    ],
+    [
+     -120.8134,
+     61.78096
+    ],
+    [
+     -121.58916,
+     61.97369
+    ],
+    [
+     -123.02422,
+     62.2423
+    ],
+    [
+     -123.25467,
+     62.34891
+    ],
+    [
+     -123.29611,
+     62.50993
+    ],
+    [
+     -123.22893,
+     62.86668
+    ],
+    [
+     -123.3205,
+     63.05734
+    ],
+    [
+     -123.95442,
+     63.74102
+    ],
+    [
+     -124.33649,
+     64.00276
+    ],
+    [
+     -124.48935,
+     64.22316
+    ],
+    [
+     -124.76168,
+     64.42387
+    ],
+    [
+     -125.02515,
+     64.69202
+    ],
+    [
+     -125.30023,
+     64.80597
+    ],
+    [
+     -126.18162,
+     65.0491
+    ],
+    [
+     -126.92933,
+     65.29139
+    ],
+    [
+     -128.03019,
+     65.60835
+    ],
+    [
+     -128.67142,
+     65.72276
+    ],
+    [
+     -128.90856,
+     65.86055
+    ],
+    [
+     -128.98336,
+     66.02966
+    ],
+    [
+     -128.84208,
+     66.32251
+    ],
+    [
+     -129.02561,
+     66.45548
+    ],
+    [
+     -129.77052,
+     66.73161
+    ],
+    [
+     -130.04371,
+     66.88088
+    ],
+    [
+     -130.34504,
+     67.21378
+    ],
+    [
+     -130.53283,
+     67.30584
+    ],
+    [
+     -130.7594,
+     67.35367
+    ],
+    [
+     -131.20868,
+     67.45469
+    ],
+    [
+     -132.65283,
+     67.29331
+    ],
+    [
+     -133.01578,
+     67.29274
+    ],
+    [
+     -133.37255,
+     67.35935
+    ],
+    [
+     -133.82973,
+     67.52058
+    ],
+    [
+     -134.19007,
+     67.74152
+    ],
+    [
+     -134.39957,
+     68.05264
+    ],
+    [
+     -134.40719,
+     68.18209
+    ],
+    [
+     -134.15969,
+     68.44967
+    ],
+    [
+     -134.24423,
+     68.70619
+    ],
+    [
+     -134.8359,
+     68.96377
+    ],
+    [
+     -135.31341,
+     69.37499
+    ]
+   ],
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-river-Danube",
+   "name": "Danube",
+   "type": "river",
+   "lat": 46.06232,
+   "lon": 20.55126,
+   "source": "Natural Earth 110m rivers and lake centerlines v5.1.2. The dot is the centerline centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     8.21979,
+     48.04681
+    ],
+    [
+     8.55336,
+     47.98082
+    ],
+    [
+     9.41408,
+     48.13835
+    ],
+    [
+     10.71989,
+     48.64871
+    ],
+    [
+     11.68356,
+     48.79413
+    ],
+    [
+     12.03299,
+     49.0275
+    ],
+    [
+     12.15576,
+     49.00076
+    ],
+    [
+     12.38378,
+     48.95182
+    ],
+    [
+     12.50656,
+     48.92756
+    ],
+    [
+     12.6597,
+     48.8751
+    ],
+    [
+     12.9966,
+     48.75609
+    ],
+    [
+     13.33351,
+     48.63639
+    ],
+    [
+     13.48665,
+     48.58184
+    ],
+    [
+     14.70167,
+     48.23406
+    ],
+    [
+     14.9956,
+     48.21305
+    ],
+    [
+     15.63443,
+     48.37462
+    ],
+    [
+     15.93673,
+     48.35348
+    ],
+    [
+     16.87807,
+     48.17179
+    ],
+    [
+     17.48847,
+     47.86747
+    ],
+    [
+     17.85713,
+     47.75843
+    ],
+    [
+     18.69651,
+     47.88095
+    ],
+    [
+     18.90988,
+     47.8061
+    ],
+    [
+     19.02569,
+     47.6682
+    ],
+    [
+     18.93324,
+     47.17593
+    ],
+    [
+     18.95231,
+     46.77777
+    ],
+    [
+     18.88229,
+     46.27966
+    ],
+    [
+     18.76421,
+     46.03435
+    ],
+    [
+     18.78051,
+     45.96511
+    ],
+    [
+     18.81098,
+     45.90144
+    ],
+    [
+     18.88723,
+     45.80625
+    ],
+    [
+     19.00909,
+     45.62166
+    ],
+    [
+     19.07277,
+     45.52151
+    ],
+    [
+     19.15521,
+     45.448
+    ],
+    [
+     19.30863,
+     45.31346
+    ],
+    [
+     19.39223,
+     45.24683
+    ],
+    [
+     19.51298,
+     45.23265
+    ],
+    [
+     19.7769,
+     45.19143
+    ],
+    [
+     20.04049,
+     45.14828
+    ],
+    [
+     20.16025,
+     45.1283
+    ],
+    [
+     20.54198,
+     44.80176
+    ],
+    [
+     20.76781,
+     44.74419
+    ],
+    [
+     21.36007,
+     44.82667
+    ],
+    [
+     21.56202,
+     44.76895
+    ],
+    [
+     22.14509,
+     44.47842
+    ],
+    [
+     22.45902,
+     44.70252
+    ],
+    [
+     22.70573,
+     44.578
+    ],
+    [
+     22.47401,
+     44.40923
+    ],
+    [
+     22.65715,
+     44.23492
+    ],
+    [
+     22.94483,
+     43.82379
+    ],
+    [
+     23.3323,
+     43.89701
+    ],
+    [
+     24.10068,
+     43.74105
+    ],
+    [
+     25.56927,
+     43.68845
+    ],
+    [
+     26.06516,
+     43.94349
+    ],
+    [
+     27.2424,
+     44.17599
+    ],
+    [
+     27.28506,
+     44.15304
+    ],
+    [
+     27.30152,
+     44.13338
+    ],
+    [
+     27.38442,
+     44.16656
+    ],
+    [
+     27.60085,
+     44.23523
+    ],
+    [
+     27.82384,
+     44.30308
+    ],
+    [
+     27.92639,
+     44.33378
+    ],
+    [
+     28.05279,
+     44.40941
+    ],
+    [
+     28.04411,
+     44.49584
+    ],
+    [
+     27.87668,
+     44.74412
+    ],
+    [
+     27.98819,
+     45.21848
+    ],
+    [
+     28.04673,
+     45.27932
+    ],
+    [
+     28.15745,
+     45.39591
+    ],
+    [
+     28.22301,
+     45.46937
+    ],
+    [
+     28.34612,
+     45.43491
+    ],
+    [
+     28.5637,
+     45.3511
+    ],
+    [
+     28.67978,
+     45.30403
+    ],
+    [
+     29.14973,
+     45.46493
+    ],
+    [
+     29.60329,
+     45.29331
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Donau"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-river-Paraná",
+   "name": "Paraná",
+   "type": "river",
+   "lat": -23.94928,
+   "lon": -58.04287,
+   "source": "Natural Earth 110m rivers and lake centerlines v5.1.2. The dot is the centerline centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -55.07529,
+     -14.31938
+    ],
+    [
+     -55.43245,
+     -14.35737
+    ],
+    [
+     -56.12057,
+     -14.68913
+    ],
+    [
+     -56.33467,
+     -14.85858
+    ],
+    [
+     -56.39368,
+     -15.06838
+    ],
+    [
+     -56.08722,
+     -15.84332
+    ],
+    [
+     -55.93469,
+     -16.07886
+    ],
+    [
+     -55.92733,
+     -16.21534
+    ],
+    [
+     -55.99913,
+     -16.33688
+    ],
+    [
+     -56.42939,
+     -16.65247
+    ],
+    [
+     -56.54055,
+     -16.80822
+    ],
+    [
+     -56.58974,
+     -17.06717
+    ],
+    [
+     -56.98016,
+     -17.59474
+    ],
+    [
+     -57.17501,
+     -17.7352
+    ],
+    [
+     -57.31823,
+     -17.92547
+    ],
+    [
+     -57.44272,
+     -18.46756
+    ],
+    [
+     -57.59976,
+     -18.87936
+    ],
+    [
+     -57.33719,
+     -19.21092
+    ],
+    [
+     -57.38696,
+     -19.39349
+    ],
+    [
+     -57.45651,
+     -19.48431
+    ],
+    [
+     -57.6104,
+     -19.68393
+    ],
+    [
+     -57.76642,
+     -19.88308
+    ],
+    [
+     -57.84238,
+     -19.97248
+    ],
+    [
+     -57.93052,
+     -20.02198
+    ],
+    [
+     -58.0101,
+     -20.07335
+    ],
+    [
+     -58.16639,
+     -20.1767
+    ],
+    [
+     -57.87067,
+     -20.73269
+    ],
+    [
+     -57.88879,
+     -21.10264
+    ],
+    [
+     -57.93716,
+     -22.09018
+    ],
+    [
+     -57.97467,
+     -22.16221
+    ],
+    [
+     -57.83236,
+     -22.55015
+    ],
+    [
+     -57.82928,
+     -22.81979
+    ],
+    [
+     -57.3421,
+     -23.70274
+    ],
+    [
+     -57.2011,
+     -24.04308
+    ],
+    [
+     -57.12178,
+     -24.33474
+    ],
+    [
+     -57.13038,
+     -24.63953
+    ],
+    [
+     -57.26846,
+     -24.9716
+    ],
+    [
+     -57.57315,
+     -25.25846
+    ],
+    [
+     -57.63051,
+     -25.42176
+    ],
+    [
+     -57.62866,
+     -25.51054
+    ],
+    [
+     -57.62973,
+     -25.60118
+    ],
+    [
+     -57.70432,
+     -25.71482
+    ],
+    [
+     -57.88774,
+     -25.99701
+    ],
+    [
+     -58.12543,
+     -26.36338
+    ],
+    [
+     -58.36278,
+     -26.72954
+    ],
+    [
+     -58.54523,
+     -27.01111
+    ],
+    [
+     -58.61817,
+     -27.12372
+    ],
+    [
+     -58.85023,
+     -27.61077
+    ],
+    [
+     -58.89307,
+     -27.96475
+    ],
+    [
+     -59.07381,
+     -28.34855
+    ],
+    [
+     -59.22736,
+     -29.05833
+    ],
+    [
+     -59.39624,
+     -29.19682
+    ],
+    [
+     -59.52264,
+     -29.40301
+    ],
+    [
+     -59.58897,
+     -29.70496
+    ],
+    [
+     -59.65429,
+     -30.71725
+    ],
+    [
+     -60.06351,
+     -31.26962
+    ],
+    [
+     -60.38044,
+     -31.53167
+    ],
+    [
+     -60.59118,
+     -31.78157
+    ],
+    [
+     -60.69621,
+     -32.05112
+    ],
+    [
+     -60.72649,
+     -32.33456
+    ],
+    [
+     -60.71249,
+     -32.55703
+    ],
+    [
+     -60.64159,
+     -32.78461
+    ],
+    [
+     -60.49018,
+     -33.01943
+    ],
+    [
+     -60.24895,
+     -33.2434
+    ],
+    [
+     -59.86851,
+     -33.49832
+    ],
+    [
+     -59.20044,
+     -33.81235
+    ],
+    [
+     -58.66884,
+     -33.99358
+    ],
+    [
+     -58.42948,
+     -33.99095
+    ]
+   ],
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-river-Congo",
+   "name": "Congo",
+   "type": "river",
+   "lat": -4.01496,
+   "lon": 22.04609,
+   "source": "Natural Earth 110m rivers and lake centerlines v5.1.2. The dot is the centerline centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     26.24928,
+     -11.7429
+    ],
+    [
+     25.93829,
+     -11.6535
+    ],
+    [
+     25.6396,
+     -11.18578
+    ],
+    [
+     25.71118,
+     -10.74255
+    ],
+    [
+     25.46711,
+     -10.37518
+    ],
+    [
+     25.44819,
+     -10.09292
+    ],
+    [
+     25.50194,
+     -9.45503
+    ],
+    [
+     25.64673,
+     -9.24827
+    ],
+    [
+     25.9232,
+     -9.0997
+    ],
+    [
+     26.08144,
+     -8.76623
+    ],
+    [
+     26.44131,
+     -8.272
+    ],
+    [
+     26.73204,
+     -8.16172
+    ],
+    [
+     26.85757,
+     -8.04659
+    ],
+    [
+     26.91937,
+     -7.91667
+    ],
+    [
+     26.88826,
+     -7.64238
+    ],
+    [
+     27.00939,
+     -6.98743
+    ],
+    [
+     27.01709,
+     -6.62218
+    ],
+    [
+     26.93048,
+     -5.61025
+    ],
+    [
+     26.9819,
+     -5.25224
+    ],
+    [
+     26.9464,
+     -5.00863
+    ],
+    [
+     26.81245,
+     -4.74674
+    ],
+    [
+     26.35961,
+     -4.33472
+    ],
+    [
+     26.13663,
+     -4.06828
+    ],
+    [
+     26.01446,
+     -3.74297
+    ],
+    [
+     25.99285,
+     -3.58706
+    ],
+    [
+     25.94532,
+     -3.24433
+    ],
+    [
+     25.89778,
+     -2.90231
+    ],
+    [
+     25.87618,
+     -2.74851
+    ],
+    [
+     25.86848,
+     -2.60498
+    ],
+    [
+     25.85013,
+     -2.25948
+    ],
+    [
+     25.82822,
+     -1.84636
+    ],
+    [
+     25.80988,
+     -1.49997
+    ],
+    [
+     25.80218,
+     -1.35465
+    ],
+    [
+     25.68156,
+     -1.01234
+    ],
+    [
+     25.55242,
+     -0.77882
+    ],
+    [
+     25.48018,
+     -0.53904
+    ],
+    [
+     25.51341,
+     -0.05441
+    ],
+    [
+     25.40944,
+     0.34566
+    ],
+    [
+     24.9336,
+     0.53857
+    ],
+    [
+     24.29229,
+     0.78171
+    ],
+    [
+     22.73487,
+     1.95004
+    ],
+    [
+     22.34709,
+     2.12938
+    ],
+    [
+     21.71261,
+     2.14103
+    ],
+    [
+     20.26753,
+     1.92345
+    ],
+    [
+     19.90765,
+     1.84289
+    ],
+    [
+     19.14284,
+     1.5736
+    ],
+    [
+     18.71248,
+     1.19011
+    ],
+    [
+     18.48758,
+     0.91137
+    ],
+    [
+     18.33586,
+     0.58699
+    ],
+    [
+     18.19923,
+     0.09979
+    ],
+    [
+     17.59958,
+     -0.64906
+    ],
+    [
+     17.52372,
+     -0.74383
+    ],
+    [
+     16.86531,
+     -1.22582
+    ],
+    [
+     16.40709,
+     -1.74093
+    ],
+    [
+     15.9728,
+     -2.71239
+    ],
+    [
+     16.00629,
+     -3.53513
+    ],
+    [
+     15.75354,
+     -3.85516
+    ],
+    [
+     15.17099,
+     -4.34351
+    ],
+    [
+     14.5826,
+     -4.97024
+    ],
+    [
+     14.19591,
+     -4.97184
+    ],
+    [
+     14.07462,
+     -5.02031
+    ],
+    [
+     13.82642,
+     -5.25772
+    ],
+    [
+     13.60995,
+     -5.36339
+    ],
+    [
+     13.4696,
+     -5.7596
+    ],
+    [
+     13.42815,
+     -5.77644
+    ],
+    [
+     13.3756,
+     -5.86424
+    ],
+    [
+     13.02487,
+     -5.98439
+    ],
+    [
+     12.73517,
+     -5.96568
+    ],
+    [
+     12.32243,
+     -6.10009
+    ]
+   ],
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-river-Lena",
+   "name": "Lena",
+   "type": "river",
+   "lat": 61.84729,
+   "lon": 117.86806,
+   "source": "Natural Earth 110m rivers and lake centerlines v5.1.2. The dot is the centerline centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     107.98011,
+     54.00415
+    ],
+    [
+     108.04336,
+     54.10205
+    ],
+    [
+     108.04067,
+     54.18501
+    ],
+    [
+     107.78291,
+     54.29379
+    ],
+    [
+     107.18171,
+     53.92136
+    ],
+    [
+     107.02316,
+     53.87113
+    ],
+    [
+     106.92715,
+     53.88433
+    ],
+    [
+     106.10735,
+     53.88544
+    ],
+    [
+     105.66542,
+     54.02166
+    ],
+    [
+     105.28776,
+     54.385
+    ],
+    [
+     105.15527,
+     54.88094
+    ],
+    [
+     105.16974,
+     55.05359
+    ],
+    [
+     105.72319,
+     55.84476
+    ],
+    [
+     105.78572,
+     56.22913
+    ],
+    [
+     106.24641,
+     56.48526
+    ],
+    [
+     106.18802,
+     56.56479
+    ],
+    [
+     105.9823,
+     56.65117
+    ],
+    [
+     105.86189,
+     56.76072
+    ],
+    [
+     106.01103,
+     56.89694
+    ],
+    [
+     106.32501,
+     57.0104
+    ],
+    [
+     106.80726,
+     57.11129
+    ],
+    [
+     107.03288,
+     57.27085
+    ],
+    [
+     107.39348,
+     57.30092
+    ],
+    [
+     107.69723,
+     57.4383
+    ],
+    [
+     108.08155,
+     57.7603
+    ],
+    [
+     108.60891,
+     58.04532
+    ],
+    [
+     108.92506,
+     58.16513
+    ],
+    [
+     109.4857,
+     58.28306
+    ],
+    [
+     110.00882,
+     58.56332
+    ],
+    [
+     111.10126,
+     58.78305
+    ],
+    [
+     111.83388,
+     59.14275
+    ],
+    [
+     112.34997,
+     59.30067
+    ],
+    [
+     112.64277,
+     59.54453
+    ],
+    [
+     113.51083,
+     59.92807
+    ],
+    [
+     114.43093,
+     60.49305
+    ],
+    [
+     114.94444,
+     60.73242
+    ],
+    [
+     115.47179,
+     60.74453
+    ],
+    [
+     116.1518,
+     60.60715
+    ],
+    [
+     116.86236,
+     60.35528
+    ],
+    [
+     117.46821,
+     60.01319
+    ],
+    [
+     117.80163,
+     59.88043
+    ],
+    [
+     118.31741,
+     59.80054
+    ],
+    [
+     118.66008,
+     59.87738
+    ],
+    [
+     119.36298,
+     60.16429
+    ],
+    [
+     119.49669,
+     60.18917
+    ],
+    [
+     119.81561,
+     60.24858
+    ],
+    [
+     120.19652,
+     60.31963
+    ],
+    [
+     120.51609,
+     60.37943
+    ],
+    [
+     120.65112,
+     60.4051
+    ],
+    [
+     120.79356,
+     60.4534
+    ],
+    [
+     121.05523,
+     60.54143
+    ],
+    [
+     121.19584,
+     60.58868
+    ],
+    [
+     123.55115,
+     60.59165
+    ],
+    [
+     124.99488,
+     60.75764
+    ],
+    [
+     126.32421,
+     61.05571
+    ],
+    [
+     128.47612,
+     61.28908
+    ],
+    [
+     129.21561,
+     61.49919
+    ],
+    [
+     129.74307,
+     61.9094
+    ],
+    [
+     129.9199,
+     62.14494
+    ],
+    [
+     129.95603,
+     62.41521
+    ],
+    [
+     129.85743,
+     62.71204
+    ],
+    [
+     129.37963,
+     63.48987
+    ],
+    [
+     128.30114,
+     63.59976
+    ],
+    [
+     127.95501,
+     63.71647
+    ],
+    [
+     126.85265,
+     64.22445
+    ],
+    [
+     125.50917,
+     64.67998
+    ],
+    [
+     124.79722,
+     65.01841
+    ],
+    [
+     124.52566,
+     65.23654
+    ],
+    [
+     124.17964,
+     65.85639
+    ],
+    [
+     123.69687,
+     66.50266
+    ],
+    [
+     123.23354,
+     67.35958
+    ],
+    [
+     123.1459,
+     67.64946
+    ],
+    [
+     123.18342,
+     67.88852
+    ],
+    [
+     123.74287,
+     68.41128
+    ],
+    [
+     124.07633,
+     68.97548
+    ],
+    [
+     124.32381,
+     69.18343
+    ],
+    [
+     124.62157,
+     69.33644
+    ],
+    [
+     125.07126,
+     69.77559
+    ],
+    [
+     125.48477,
+     69.97366
+    ],
+    [
+     125.90873,
+     70.22786
+    ],
+    [
+     125.94066,
+     70.42787
+    ],
+    [
+     127.10173,
+     70.64122
+    ],
+    [
+     127.33624,
+     70.75
+    ],
+    [
+     127.46036,
+     70.8703
+    ],
+    [
+     127.45551,
+     71.00435
+    ],
+    [
+     127.27557,
+     71.33141
+    ],
+    [
+     127.10989,
+     71.83029
+    ],
+    [
+     126.92882,
+     72.06984
+    ],
+    [
+     126.68966,
+     72.2944
+    ],
+    [
+     126.01229,
+     72.32972
+    ],
+    [
+     124.61165,
+     72.65159
+    ],
+    [
+     122.75192,
+     72.90651
+    ]
+   ],
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-river-Yangtze",
+   "name": "Yangtze",
+   "type": "river",
+   "lat": 29.81643,
+   "lon": 105.82384,
+   "source": "Natural Earth 110m rivers and lake centerlines v5.1.2. The dot is the centerline centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     90.7947,
+     34.30041
+    ],
+    [
+     91.15157,
+     34.3209
+    ],
+    [
+     92.99281,
+     34.1003
+    ],
+    [
+     93.83761,
+     34.3209
+    ],
+    [
+     94.15583,
+     34.55639
+    ],
+    [
+     94.38895,
+     34.65383
+    ],
+    [
+     94.68169,
+     34.67453
+    ],
+    [
+     95.00405,
+     34.60171
+    ],
+    [
+     95.37483,
+     34.40658
+    ],
+    [
+     96.00378,
+     33.88408
+    ],
+    [
+     96.40986,
+     33.68094
+    ],
+    [
+     97.03282,
+     33.23686
+    ],
+    [
+     97.45015,
+     32.78089
+    ],
+    [
+     98.16179,
+     32.28658
+    ],
+    [
+     98.37532,
+     32.00975
+    ],
+    [
+     98.54151,
+     31.6898
+    ],
+    [
+     98.77416,
+     31.35969
+    ],
+    [
+     98.69871,
+     31.15094
+    ],
+    [
+     98.90903,
+     30.67585
+    ],
+    [
+     98.98438,
+     30.34277
+    ],
+    [
+     99.09641,
+     29.25049
+    ],
+    [
+     99.23222,
+     28.43338
+    ],
+    [
+     99.27537,
+     28.35367
+    ],
+    [
+     99.35547,
+     28.205
+    ],
+    [
+     99.39862,
+     28.12301
+    ],
+    [
+     99.43456,
+     28.01657
+    ],
+    [
+     99.51365,
+     27.78572
+    ],
+    [
+     99.59274,
+     27.55551
+    ],
+    [
+     99.62868,
+     27.45099
+    ],
+    [
+     99.79823,
+     27.16501
+    ],
+    [
+     99.98049,
+     27.08062
+    ],
+    [
+     100.14038,
+     27.24555
+    ],
+    [
+     100.246,
+     27.49566
+    ],
+    [
+     100.37127,
+     27.65852
+    ],
+    [
+     100.47007,
+     27.56912
+    ],
+    [
+     100.51198,
+     27.36037
+    ],
+    [
+     100.44062,
+     26.79865
+    ],
+    [
+     100.45318,
+     26.37612
+    ],
+    [
+     100.5049,
+     26.24078
+    ],
+    [
+     100.61477,
+     26.21514
+    ],
+    [
+     101.00219,
+     26.25845
+    ],
+    [
+     101.66303,
+     26.52985
+    ],
+    [
+     101.82307,
+     26.52954
+    ],
+    [
+     101.88611,
+     26.41048
+    ],
+    [
+     101.91216,
+     26.22091
+    ],
+    [
+     101.99654,
+     26.10427
+    ],
+    [
+     102.44298,
+     26.277
+    ],
+    [
+     102.75639,
+     26.31255
+    ],
+    [
+     102.89737,
+     26.39322
+    ],
+    [
+     102.98093,
+     26.59218
+    ],
+    [
+     102.95778,
+     27.22366
+    ],
+    [
+     103.02516,
+     27.37352
+    ],
+    [
+     103.14702,
+     27.43435
+    ],
+    [
+     103.47061,
+     27.8853
+    ],
+    [
+     103.54363,
+     28.14614
+    ],
+    [
+     103.78977,
+     28.33222
+    ],
+    [
+     103.84563,
+     28.48307
+    ],
+    [
+     103.85075,
+     28.66804
+    ],
+    [
+     104.3256,
+     28.66719
+    ],
+    [
+     104.74124,
+     28.77721
+    ],
+    [
+     105.11279,
+     28.76693
+    ],
+    [
+     105.54713,
+     28.88049
+    ],
+    [
+     105.82003,
+     28.87689
+    ],
+    [
+     105.90571,
+     29.01203
+    ],
+    [
+     106.6143,
+     29.54874
+    ],
+    [
+     107.60432,
+     29.92368
+    ],
+    [
+     107.88988,
+     30.14126
+    ],
+    [
+     108.30815,
+     30.57953
+    ],
+    [
+     108.40199,
+     30.73598
+    ],
+    [
+     108.57604,
+     30.85975
+    ],
+    [
+     108.86357,
+     30.93728
+    ],
+    [
+     109.46002,
+     31.01002
+    ],
+    [
+     110.25578,
+     31.02271
+    ],
+    [
+     110.82758,
+     30.9217
+    ],
+    [
+     111.21505,
+     30.72898
+    ],
+    [
+     111.53359,
+     30.37975
+    ],
+    [
+     112.03257,
+     30.35174
+    ],
+    [
+     112.20796,
+     30.22033
+    ],
+    [
+     112.4404,
+     29.81823
+    ],
+    [
+     112.59579,
+     29.74123
+    ],
+    [
+     112.78188,
+     29.74395
+    ],
+    [
+     112.91583,
+     29.71
+    ],
+    [
+     112.95655,
+     29.55094
+    ],
+    [
+     113.1277,
+     29.46278
+    ],
+    [
+     113.65759,
+     29.89352
+    ],
+    [
+     113.93499,
+     30.06401
+    ],
+    [
+     113.92284,
+     30.21844
+    ],
+    [
+     114.05054,
+     30.30177
+    ],
+    [
+     114.30324,
+     30.59304
+    ],
+    [
+     114.54353,
+     30.59545
+    ],
+    [
+     114.78765,
+     30.51793
+    ],
+    [
+     115.39035,
+     30.01316
+    ],
+    [
+     115.67917,
+     29.85614
+    ],
+    [
+     115.97611,
+     29.80544
+    ],
+    [
+     116.26337,
+     29.83872
+    ],
+    [
+     116.69534,
+     30.04954
+    ],
+    [
+     116.95434,
+     30.40817
+    ],
+    [
+     117.32662,
+     30.69477
+    ],
+    [
+     117.59895,
+     30.81543
+    ],
+    [
+     117.87733,
+     31.10497
+    ],
+    [
+     118.27302,
+     31.38222
+    ],
+    [
+     118.55037,
+     31.82085
+    ],
+    [
+     118.738,
+     32.02218
+    ],
+    [
+     119.00445,
+     32.1507
+    ],
+    [
+     119.33182,
+     32.20491
+    ],
+    [
+     119.74585,
+     32.13703
+    ],
+    [
+     120.57743,
+     31.61376
+    ],
+    [
+     120.92123,
+     31.51619
+    ],
+    [
+     121.85823,
+     31.4149
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Chang"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-river-Nile",
+   "name": "Nile",
+   "type": "river",
+   "lat": 14.43049,
+   "lon": 31.90694,
+   "source": "Natural Earth 110m rivers and lake centerlines v5.1.2. The dot is the centerline centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     33.20689,
+     0.26154
+    ],
+    [
+     33.18726,
+     0.42819
+    ],
+    [
+     32.89311,
+     1.31144
+    ],
+    [
+     32.8015,
+     1.36654
+    ],
+    [
+     32.62476,
+     1.47171
+    ],
+    [
+     32.51004,
+     1.53675
+    ],
+    [
+     32.36249,
+     1.60688
+    ],
+    [
+     32.24096,
+     1.66584
+    ],
+    [
+     32.17259,
+     1.68222
+    ],
+    [
+     32.15936,
+     1.72527
+    ],
+    [
+     32.2946,
+     1.93058
+    ],
+    [
+     32.29532,
+     2.07915
+    ],
+    [
+     32.18825,
+     2.20782
+    ],
+    [
+     31.99865,
+     2.2842
+    ],
+    [
+     31.76693,
+     2.29293
+    ],
+    [
+     31.66294,
+     2.267
+    ],
+    [
+     31.46991,
+     2.21888
+    ],
+    [
+     31.36623,
+     2.1931
+    ],
+    [
+     31.42065,
+     2.29688
+    ],
+    [
+     31.47475,
+     2.40058
+    ],
+    [
+     31.45717,
+     2.53821
+    ],
+    [
+     31.43956,
+     2.67573
+    ],
+    [
+     31.46142,
+     2.95042
+    ],
+    [
+     31.56405,
+     3.22466
+    ],
+    [
+     31.71975,
+     3.43522
+    ],
+    [
+     32.01586,
+     3.61366
+    ],
+    [
+     31.72957,
+     4.0226
+    ],
+    [
+     31.60467,
+     4.34268
+    ],
+    [
+     31.60348,
+     4.68628
+    ],
+    [
+     31.74554,
+     5.41928
+    ],
+    [
+     31.67283,
+     5.92997
+    ],
+    [
+     31.14831,
+     6.82966
+    ],
+    [
+     30.78993,
+     7.24129
+    ],
+    [
+     30.59207,
+     7.54419
+    ],
+    [
+     30.45843,
+     7.8804
+    ],
+    [
+     30.28842,
+     8.5731
+    ],
+    [
+     30.26402,
+     8.90894
+    ],
+    [
+     30.32991,
+     9.21099
+    ],
+    [
+     30.5191,
+     9.39937
+    ],
+    [
+     30.79226,
+     9.46082
+    ],
+    [
+     31.12475,
+     9.43253
+    ],
+    [
+     31.32158,
+     9.40408
+    ],
+    [
+     31.53852,
+     9.45963
+    ],
+    [
+     31.78393,
+     9.63393
+    ],
+    [
+     32.15822,
+     10.04001
+    ],
+    [
+     32.23946,
+     10.22041
+    ],
+    [
+     32.17512,
+     10.43942
+    ],
+    [
+     32.1992,
+     10.56974
+    ],
+    [
+     32.58481,
+     11.13033
+    ],
+    [
+     32.68811,
+     11.47072
+    ],
+    [
+     32.74914,
+     11.99534
+    ],
+    [
+     32.7786,
+     12.63427
+    ],
+    [
+     32.74806,
+     12.99569
+    ],
+    [
+     32.65018,
+     13.34495
+    ],
+    [
+     32.31718,
+     14.12457
+    ],
+    [
+     32.25362,
+     14.46284
+    ],
+    [
+     32.49014,
+     15.63455
+    ],
+    [
+     32.55934,
+     15.94551
+    ],
+    [
+     32.70274,
+     16.21875
+    ],
+    [
+     32.9511,
+     16.43858
+    ],
+    [
+     33.312,
+     16.6424
+    ],
+    [
+     33.58046,
+     16.87186
+    ],
+    [
+     33.77234,
+     17.16836
+    ],
+    [
+     33.88106,
+     17.55557
+    ],
+    [
+     33.91269,
+     17.91382
+    ],
+    [
+     33.87734,
+     18.19731
+    ],
+    [
+     33.59591,
+     18.8049
+    ],
+    [
+     33.3797,
+     19.42313
+    ],
+    [
+     33.15909,
+     19.44853
+    ],
+    [
+     32.91704,
+     19.40042
+    ],
+    [
+     32.64465,
+     19.24836
+    ],
+    [
+     32.0929,
+     18.79368
+    ],
+    [
+     31.4948,
+     18.15011
+    ],
+    [
+     31.31001,
+     18.03949
+    ],
+    [
+     31.14459,
+     18.03502
+    ],
+    [
+     30.97726,
+     18.07766
+    ],
+    [
+     30.82187,
+     18.20553
+    ],
+    [
+     30.68508,
+     18.40689
+    ],
+    [
+     30.4945,
+     19.0245
+    ],
+    [
+     30.34774,
+     19.82176
+    ],
+    [
+     30.55858,
+     20.08591
+    ],
+    [
+     30.58525,
+     20.19458
+    ],
+    [
+     30.3649,
+     20.52867
+    ],
+    [
+     30.34547,
+     20.65063
+    ],
+    [
+     30.61181,
+     21.05463
+    ],
+    [
+     31.09064,
+     21.6092
+    ],
+    [
+     31.43357,
+     22.09674
+    ],
+    [
+     31.77236,
+     22.44478
+    ],
+    [
+     32.00449,
+     22.61784
+    ],
+    [
+     32.45118,
+     22.72962
+    ],
+    [
+     32.58905,
+     22.86088
+    ],
+    [
+     32.74511,
+     23.06913
+    ],
+    [
+     32.85958,
+     23.35098
+    ],
+    [
+     32.89684,
+     23.6598
+    ],
+    [
+     32.87947,
+     23.98768
+    ],
+    [
+     32.88893,
+     24.56305
+    ],
+    [
+     32.84133,
+     24.88592
+    ],
+    [
+     32.58977,
+     25.32724
+    ],
+    [
+     32.52321,
+     25.612
+    ],
+    [
+     32.72444,
+     25.87661
+    ],
+    [
+     32.7492,
+     26.00399
+    ],
+    [
+     32.6646,
+     26.08466
+    ],
+    [
+     32.12195,
+     26.13851
+    ],
+    [
+     31.78522,
+     26.49048
+    ],
+    [
+     31.30355,
+     27.09855
+    ],
+    [
+     31.08589,
+     27.29942
+    ],
+    [
+     30.92745,
+     27.52013
+    ],
+    [
+     30.85282,
+     27.769
+    ],
+    [
+     30.83743,
+     28.03767
+    ],
+    [
+     30.77159,
+     28.26789
+    ],
+    [
+     30.79898,
+     28.45576
+    ],
+    [
+     31.16857,
+     29.30253
+    ],
+    [
+     31.22727,
+     29.6523
+    ],
+    [
+     31.23761,
+     30.12069
+    ],
+    [
+     31.17554,
+     31.01689
+    ],
+    [
+     31.03354,
+     31.5318
+    ]
+   ],
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-river-Amazon",
+   "name": "Amazon",
+   "type": "river",
+   "lat": -5.63436,
+   "lon": -67.65014,
+   "source": "Natural Earth 110m rivers and lake centerlines v5.1.2. The dot is the centerline centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -71.66875,
+     -15.33638
+    ],
+    [
+     -71.50116,
+     -14.79233
+    ],
+    [
+     -71.55754,
+     -14.28688
+    ],
+    [
+     -71.65921,
+     -14.07795
+    ],
+    [
+     -71.85713,
+     -13.90168
+    ],
+    [
+     -72.13681,
+     -13.73921
+    ],
+    [
+     -72.75075,
+     -13.48682
+    ],
+    [
+     -73.22111,
+     -13.42187
+    ],
+    [
+     -73.5623,
+     -13.01755
+    ],
+    [
+     -73.85867,
+     -12.49614
+    ],
+    [
+     -73.98067,
+     -12.19838
+    ],
+    [
+     -74.14423,
+     -11.45279
+    ],
+    [
+     -74.14516,
+     -11.27766
+    ],
+    [
+     -73.8026,
+     -11.18877
+    ],
+    [
+     -73.73573,
+     -11.02977
+    ],
+    [
+     -73.78828,
+     -10.80208
+    ],
+    [
+     -73.99537,
+     -10.39435
+    ],
+    [
+     -74.05059,
+     -10.1817
+    ],
+    [
+     -74.00661,
+     -9.86033
+    ],
+    [
+     -74.16689,
+     -9.68148
+    ],
+    [
+     -74.4755,
+     -9.02922
+    ],
+    [
+     -74.46819,
+     -8.73885
+    ],
+    [
+     -74.33734,
+     -8.51168
+    ],
+    [
+     -74.48307,
+     -8.39013
+    ],
+    [
+     -74.66032,
+     -8.06902
+    ],
+    [
+     -74.90839,
+     -7.83637
+    ],
+    [
+     -75.02177,
+     -7.46151
+    ],
+    [
+     -75.21569,
+     -7.17806
+    ],
+    [
+     -75.2082,
+     -7.08546
+    ],
+    [
+     -75.13603,
+     -7.01234
+    ],
+    [
+     -75.16078,
+     -6.52663
+    ],
+    [
+     -75.10347,
+     -6.23848
+    ],
+    [
+     -74.93844,
+     -6.06604
+    ],
+    [
+     -74.74709,
+     -5.97013
+    ],
+    [
+     -74.30618,
+     -5.63986
+    ],
+    [
+     -74.06434,
+     -5.13788
+    ],
+    [
+     -73.97427,
+     -5.04491
+    ],
+    [
+     -73.80657,
+     -4.97236
+    ],
+    [
+     -73.48864,
+     -4.44484
+    ],
+    [
+     -73.35828,
+     -4.17339
+    ],
+    [
+     -73.21578,
+     -4.03722
+    ],
+    [
+     -73.13912,
+     -3.6837
+    ],
+    [
+     -73.03505,
+     -3.55477
+    ],
+    [
+     -72.87211,
+     -3.49477
+    ],
+    [
+     -72.47585,
+     -3.48103
+    ],
+    [
+     -72.13262,
+     -3.4201
+    ],
+    [
+     -71.86556,
+     -3.43597
+    ],
+    [
+     -71.54273,
+     -3.7313
+    ],
+    [
+     -71.26583,
+     -3.85966
+    ],
+    [
+     -70.90047,
+     -3.96007
+    ],
+    [
+     -70.62899,
+     -3.88819
+    ],
+    [
+     -70.36549,
+     -3.91118
+    ],
+    [
+     -70.11339,
+     -4.06833
+    ],
+    [
+     -69.8693,
+     -4.32036
+    ],
+    [
+     -69.66404,
+     -4.27173
+    ],
+    [
+     -69.50325,
+     -4.13918
+    ],
+    [
+     -69.26287,
+     -3.62216
+    ],
+    [
+     -68.95294,
+     -3.4433
+    ],
+    [
+     -68.06876,
+     -3.2969
+    ],
+    [
+     -67.96011,
+     -3.21701
+    ],
+    [
+     -67.93238,
+     -3.10803
+    ],
+    [
+     -67.65822,
+     -2.86541
+    ],
+    [
+     -67.37891,
+     -2.70733
+    ],
+    [
+     -66.84659,
+     -2.65922
+    ],
+    [
+     -66.54146,
+     -2.48626
+    ],
+    [
+     -65.99788,
+     -2.49654
+    ],
+    [
+     -65.76097,
+     -2.60299
+    ],
+    [
+     -65.62046,
+     -2.60925
+    ],
+    [
+     -65.4391,
+     -2.68464
+    ],
+    [
+     -64.57561,
+     -3.39819
+    ],
+    [
+     -64.01113,
+     -3.74354
+    ],
+    [
+     -63.17728,
+     -4.03515
+    ],
+    [
+     -62.7365,
+     -3.85589
+    ],
+    [
+     -62.41055,
+     -3.78943
+    ],
+    [
+     -61.81082,
+     -3.85516
+    ],
+    [
+     -61.49355,
+     -3.76959
+    ],
+    [
+     -60.59606,
+     -3.35086
+    ],
+    [
+     -59.9245,
+     -3.20595
+    ],
+    [
+     -59.82996,
+     -3.14193
+    ],
+    [
+     -59.65793,
+     -3.12322
+    ],
+    [
+     -58.68905,
+     -3.34233
+    ],
+    [
+     -58.5356,
+     -3.22626
+    ],
+    [
+     -58.31592,
+     -3.21184
+    ],
+    [
+     -57.76649,
+     -2.65849
+    ],
+    [
+     -57.47589,
+     -2.49551
+    ],
+    [
+     -56.70224,
+     -2.47928
+    ],
+    [
+     -56.11954,
+     -2.133
+    ],
+    [
+     -55.82214,
+     -2.0145
+    ],
+    [
+     -55.51485,
+     -1.94949
+    ],
+    [
+     -55.15102,
+     -2.1376
+    ],
+    [
+     -54.80639,
+     -2.17563
+    ],
+    [
+     -54.52512,
+     -2.44032
+    ],
+    [
+     -54.18596,
+     -2.31118
+    ],
+    [
+     -53.79198,
+     -1.97853
+    ],
+    [
+     -53.49645,
+     -1.82811
+    ],
+    [
+     -52.4362,
+     -1.43077
+    ],
+    [
+     -51.78818,
+     -1.0851
+    ],
+    [
+     -51.00024,
+     -0.48317
+    ],
+    [
+     -50.55482,
+     0.05628
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Amazonas"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-river-Mississippi",
+   "name": "Mississippi",
+   "type": "river",
+   "lat": 40.92812,
+   "lon": -97.81086,
+   "source": "Natural Earth 110m rivers and lake centerlines v5.1.2. The dot is the centerline centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -110.7437,
+     44.72673
+    ],
+    [
+     -111.09967,
+     44.75652
+    ],
+    [
+     -111.3092,
+     44.86845
+    ],
+    [
+     -111.54179,
+     44.94266
+    ],
+    [
+     -111.65406,
+     45.30971
+    ],
+    [
+     -111.4528,
+     46.22266
+    ],
+    [
+     -111.5158,
+     46.36143
+    ],
+    [
+     -111.65045,
+     46.58417
+    ],
+    [
+     -111.78362,
+     46.73812
+    ],
+    [
+     -111.92197,
+     46.94129
+    ],
+    [
+     -111.6445,
+     47.29226
+    ],
+    [
+     -110.51154,
+     47.91382
+    ],
+    [
+     -109.81908,
+     47.80693
+    ],
+    [
+     -108.82129,
+     47.73877
+    ],
+    [
+     -108.30861,
+     47.62711
+    ],
+    [
+     -108.10809,
+     47.58688
+    ],
+    [
+     -107.85922,
+     47.54469
+    ],
+    [
+     -106.75996,
+     47.8208
+    ],
+    [
+     -106.40572,
+     48.02053
+    ],
+    [
+     -105.82297,
+     48.05846
+    ],
+    [
+     -104.92224,
+     48.11686
+    ],
+    [
+     -103.77232,
+     48.0273
+    ],
+    [
+     -102.89402,
+     48.05867
+    ],
+    [
+     -101.79363,
+     47.55327
+    ],
+    [
+     -101.50206,
+     47.51816
+    ],
+    [
+     -101.3554,
+     47.427
+    ],
+    [
+     -101.00528,
+     47.17113
+    ],
+    [
+     -100.83629,
+     46.83227
+    ],
+    [
+     -100.69145,
+     46.60478
+    ],
+    [
+     -100.57042,
+     46.14054
+    ],
+    [
+     -100.37051,
+     45.08492
+    ],
+    [
+     -100.63987,
+     44.74771
+    ],
+    [
+     -100.55719,
+     44.53372
+    ],
+    [
+     -100.39392,
+     44.43496
+    ],
+    [
+     -100.0432,
+     44.25698
+    ],
+    [
+     -99.62552,
+     44.16645
+    ],
+    [
+     -99.43218,
+     44.03624
+    ],
+    [
+     -99.37696,
+     43.91479
+    ],
+    [
+     -99.41173,
+     43.69746
+    ],
+    [
+     -99.25018,
+     43.51065
+    ],
+    [
+     -98.70437,
+     43.1308
+    ],
+    [
+     -98.61204,
+     43.00375
+    ],
+    [
+     -98.33611,
+     42.87364
+    ],
+    [
+     -97.88182,
+     42.83971
+    ],
+    [
+     -97.28739,
+     42.84617
+    ],
+    [
+     -96.75414,
+     42.63383
+    ],
+    [
+     -96.62304,
+     42.50265
+    ],
+    [
+     -96.41036,
+     42.38927
+    ],
+    [
+     -96.34892,
+     42.14195
+    ],
+    [
+     -96.10457,
+     41.78768
+    ],
+    [
+     -96.02486,
+     41.52455
+    ],
+    [
+     -95.85595,
+     41.11656
+    ],
+    [
+     -95.86187,
+     40.76472
+    ],
+    [
+     -95.77642,
+     40.50135
+    ],
+    [
+     -95.45236,
+     40.21507
+    ],
+    [
+     -95.08517,
+     39.86798
+    ],
+    [
+     -94.92655,
+     39.72538
+    ],
+    [
+     -94.9913,
+     39.44441
+    ],
+    [
+     -94.60479,
+     39.1397
+    ],
+    [
+     -92.99254,
+     39.27554
+    ],
+    [
+     -92.53158,
+     38.87688
+    ],
+    [
+     -92.04724,
+     38.61447
+    ],
+    [
+     -90.88538,
+     38.63506
+    ],
+    [
+     -90.35547,
+     38.80027
+    ],
+    [
+     -90.1446,
+     38.7943
+    ],
+    [
+     -90.2125,
+     38.58483
+    ],
+    [
+     -90.36972,
+     38.2634
+    ],
+    [
+     -90.03018,
+     37.97218
+    ],
+    [
+     -89.65496,
+     37.7486
+    ],
+    [
+     -89.47929,
+     37.47738
+    ],
+    [
+     -89.38831,
+     37.08146
+    ],
+    [
+     -89.10295,
+     36.95222
+    ],
+    [
+     -89.1151,
+     36.69456
+    ],
+    [
+     -89.4982,
+     36.5064
+    ],
+    [
+     -89.58535,
+     36.26688
+    ],
+    [
+     -89.68426,
+     36.02328
+    ],
+    [
+     -89.67142,
+     35.98172
+    ],
+    [
+     -89.77511,
+     35.79942
+    ],
+    [
+     -89.98897,
+     35.53646
+    ],
+    [
+     -90.13519,
+     35.11388
+    ],
+    [
+     -90.26808,
+     34.94149
+    ],
+    [
+     -90.45011,
+     34.72204
+    ],
+    [
+     -90.69973,
+     34.39754
+    ],
+    [
+     -90.98191,
+     34.05487
+    ],
+    [
+     -91.22342,
+     33.46907
+    ],
+    [
+     -91.15611,
+     33.00992
+    ],
+    [
+     -91.17564,
+     32.80854
+    ],
+    [
+     -91.07183,
+     32.4789
+    ],
+    [
+     -91.08162,
+     32.20468
+    ],
+    [
+     -91.32145,
+     31.85961
+    ],
+    [
+     -91.50216,
+     31.40863
+    ],
+    [
+     -91.58376,
+     31.04736
+    ],
+    [
+     -91.34036,
+     30.64686
+    ],
+    [
+     -90.99137,
+     30.13377
+    ],
+    [
+     -90.04589,
+     29.89572
+    ],
+    [
+     -89.88769,
+     29.6477
+    ],
+    [
+     -89.40387,
+     29.15721
+    ]
+   ],
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Baikal",
+   "name": "Lake Baikal",
+   "type": "lake",
+   "lat": 53.12941,
+   "lon": 107.21392,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     106.57999,
+     52.79998
+    ],
+    [
+     106.53999,
+     52.94
+    ],
+    [
+     107.08001,
+     53.18001
+    ],
+    [
+     107.29999,
+     53.38
+    ],
+    [
+     107.59998,
+     53.51999
+    ],
+    [
+     108.03995,
+     53.85997
+    ],
+    [
+     108.37998,
+     54.26
+    ],
+    [
+     109.0527,
+     55.0276
+    ],
+    [
+     109.19347,
+     55.5356
+    ],
+    [
+     109.50699,
+     55.73091
+    ],
+    [
+     109.92981,
+     55.71296
+    ],
+    [
+     109.7,
+     54.98
+    ],
+    [
+     109.66,
+     54.71999
+    ],
+    [
+     109.47996,
+     54.33999
+    ],
+    [
+     109.31997,
+     53.82
+    ],
+    [
+     109.22003,
+     53.61998
+    ],
+    [
+     108.99999,
+     53.78003
+    ],
+    [
+     108.60002,
+     53.43999
+    ],
+    [
+     108.8,
+     53.38
+    ],
+    [
+     108.76001,
+     53.20001
+    ],
+    [
+     108.45997,
+     53.14001
+    ],
+    [
+     108.17999,
+     52.79998
+    ],
+    [
+     107.79996,
+     52.57999
+    ],
+    [
+     107.31999,
+     52.42001
+    ],
+    [
+     106.64003,
+     52.32001
+    ],
+    [
+     106.10001,
+     52.03998
+    ],
+    [
+     105.74004,
+     51.75999
+    ],
+    [
+     105.24002,
+     51.52001
+    ],
+    [
+     104.81999,
+     51.46001
+    ],
+    [
+     104.30002,
+     51.50001
+    ],
+    [
+     103.76,
+     51.6
+    ],
+    [
+     103.62001,
+     51.74
+    ],
+    [
+     103.86,
+     51.85999
+    ],
+    [
+     104.39996,
+     51.85999
+    ],
+    [
+     105.05997,
+     52.00001
+    ],
+    [
+     105.48,
+     52.28001
+    ],
+    [
+     105.98002,
+     52.52
+    ],
+    [
+     106.26001,
+     52.61999
+    ],
+    [
+     106.57999,
+     52.79998
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Baikal"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Winnipeg",
+   "name": "Lake Winnipeg",
+   "type": "lake",
+   "lat": 52.48927,
+   "lon": -97.68902,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -98.9554,
+     53.92978
+    ],
+    [
+     -97.95799,
+     54.3371
+    ],
+    [
+     -97.80501,
+     54.05939
+    ],
+    [
+     -97.6438,
+     53.42522
+    ],
+    [
+     -96.39259,
+     51.3973
+    ],
+    [
+     -96.23789,
+     50.69102
+    ],
+    [
+     -96.72559,
+     50.44891
+    ],
+    [
+     -96.92111,
+     50.75406
+    ],
+    [
+     -97.23569,
+     51.49779
+    ],
+    [
+     -98.20098,
+     52.18457
+    ],
+    [
+     -99.23681,
+     53.21629
+    ],
+    [
+     -98.9554,
+     53.92978
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Winnipeg"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Great Slave Lake",
+   "name": "Great Slave Lake",
+   "type": "lake",
+   "lat": 62.05307,
+   "lon": -114.04091,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -115.0,
+     61.97239
+    ],
+    [
+     -115.8067,
+     62.54171
+    ],
+    [
+     -116.05859,
+     62.7788
+    ],
+    [
+     -115.84279,
+     62.7503
+    ],
+    [
+     -114.4526,
+     62.4282
+    ],
+    [
+     -113.35341,
+     62.04448
+    ],
+    [
+     -111.77891,
+     62.4436
+    ],
+    [
+     -111.04001,
+     62.92001
+    ],
+    [
+     -110.20001,
+     63.08
+    ],
+    [
+     -109.40001,
+     62.87818
+    ],
+    [
+     -109.09011,
+     62.8141
+    ],
+    [
+     -109.11651,
+     62.69281
+    ],
+    [
+     -110.1009,
+     62.51562
+    ],
+    [
+     -111.27599,
+     62.34911
+    ],
+    [
+     -112.63051,
+     61.55991
+    ],
+    [
+     -113.64001,
+     61.07999
+    ],
+    [
+     -115.34099,
+     60.8766
+    ],
+    [
+     -116.43999,
+     60.86001
+    ],
+    [
+     -118.06111,
+     61.31197
+    ],
+    [
+     -118.34747,
+     61.36137
+    ],
+    [
+     -118.38499,
+     61.5211
+    ],
+    [
+     -118.1796,
+     61.55629
+    ],
+    [
+     -116.80281,
+     61.3259
+    ],
+    [
+     -115.6788,
+     61.69179
+    ],
+    [
+     -115.0,
+     61.97239
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Great Slave"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Ontario",
+   "name": "Lake Ontario",
+   "type": "lake",
+   "lat": 43.65654,
+   "lon": -77.91201,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -79.05631,
+     43.2541
+    ],
+    [
+     -79.36169,
+     43.20238
+    ],
+    [
+     -79.76047,
+     43.2972
+    ],
+    [
+     -79.46116,
+     43.6392
+    ],
+    [
+     -79.15617,
+     43.75743
+    ],
+    [
+     -78.45053,
+     43.90319
+    ],
+    [
+     -77.60536,
+     44.03933
+    ],
+    [
+     -77.16149,
+     43.85014
+    ],
+    [
+     -76.88269,
+     44.06945
+    ],
+    [
+     -76.56555,
+     44.20802
+    ],
+    [
+     -76.35303,
+     44.13467
+    ],
+    [
+     -76.23927,
+     43.97915
+    ],
+    [
+     -76.18,
+     43.59
+    ],
+    [
+     -76.93,
+     43.26
+    ],
+    [
+     -77.74915,
+     43.34283
+    ],
+    [
+     -78.53499,
+     43.37999
+    ],
+    [
+     -79.05631,
+     43.2541
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Ontario",
+    "Great Lakes"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Erie",
+   "name": "Lake Erie",
+   "type": "lake",
+   "lat": 42.21576,
+   "lon": -81.38283,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -83.12001,
+     42.08002
+    ],
+    [
+     -82.57123,
+     42.01702
+    ],
+    [
+     -81.82919,
+     42.33553
+    ],
+    [
+     -81.39226,
+     42.61518
+    ],
+    [
+     -81.09497,
+     42.66076
+    ],
+    [
+     -80.54516,
+     42.56009
+    ],
+    [
+     -80.27918,
+     42.71566
+    ],
+    [
+     -79.79135,
+     42.84204
+    ],
+    [
+     -78.92001,
+     42.965
+    ],
+    [
+     -78.90058,
+     42.86671
+    ],
+    [
+     -79.76221,
+     42.26962
+    ],
+    [
+     -80.51645,
+     41.98033
+    ],
+    [
+     -81.0312,
+     41.84551
+    ],
+    [
+     -81.62351,
+     41.56894
+    ],
+    [
+     -82.34745,
+     41.43592
+    ],
+    [
+     -82.8461,
+     41.48711
+    ],
+    [
+     -83.46283,
+     41.69397
+    ],
+    [
+     -83.12001,
+     42.08002
+    ],
+    [
+     -83.12001,
+     42.08002
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Erie",
+    "Great Lakes"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Superior",
+   "name": "Lake Superior",
+   "type": "lake",
+   "lat": 47.45974,
+   "lon": -87.77191,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -89.6,
+     48.00999
+    ],
+    [
+     -89.19406,
+     48.40547
+    ],
+    [
+     -88.62642,
+     48.56251
+    ],
+    [
+     -88.40424,
+     48.80632
+    ],
+    [
+     -88.17895,
+     48.9367
+    ],
+    [
+     -87.24904,
+     48.73511
+    ],
+    [
+     -86.56001,
+     48.71108
+    ],
+    [
+     -86.32103,
+     48.57729
+    ],
+    [
+     -85.98653,
+     48.01035
+    ],
+    [
+     -84.86422,
+     47.86008
+    ],
+    [
+     -85.04062,
+     47.5757
+    ],
+    [
+     -84.64501,
+     47.2822
+    ],
+    [
+     -84.81528,
+     46.90233
+    ],
+    [
+     -84.39559,
+     46.77683
+    ],
+    [
+     -84.60491,
+     46.43959
+    ],
+    [
+     -84.91,
+     46.48001
+    ],
+    [
+     -85.11999,
+     46.76001
+    ],
+    [
+     -86.10262,
+     46.67265
+    ],
+    [
+     -86.99001,
+     46.45001
+    ],
+    [
+     -87.69428,
+     46.83104
+    ],
+    [
+     -88.26122,
+     46.95858
+    ],
+    [
+     -87.93992,
+     47.48591
+    ],
+    [
+     -88.82261,
+     47.1548
+    ],
+    [
+     -89.62499,
+     46.83084
+    ],
+    [
+     -90.39704,
+     46.57649
+    ],
+    [
+     -91.01,
+     46.92001
+    ],
+    [
+     -92.01192,
+     46.71167
+    ],
+    [
+     -92.00877,
+     46.85843
+    ],
+    [
+     -91.33,
+     47.28001
+    ],
+    [
+     -90.61999,
+     47.68001
+    ],
+    [
+     -89.6,
+     48.00999
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Superior",
+    "Great Lakes"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Victoria",
+   "name": "Lake Victoria",
+   "type": "lake",
+   "lat": -1.16907,
+   "lon": 32.96014,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     33.85037,
+     0.12816
+    ],
+    [
+     33.85037,
+     0.12816
+    ],
+    [
+     34.13624,
+     -0.31931
+    ],
+    [
+     34.07263,
+     -1.05983
+    ],
+    [
+     33.57943,
+     -1.50601
+    ],
+    [
+     33.25175,
+     -1.95797
+    ],
+    [
+     33.64718,
+     -2.30089
+    ],
+    [
+     33.07672,
+     -2.54713
+    ],
+    [
+     32.95177,
+     -2.43045
+    ],
+    [
+     32.37309,
+     -2.48992
+    ],
+    [
+     31.92656,
+     -2.71451
+    ],
+    [
+     31.64802,
+     -2.32921
+    ],
+    [
+     31.83602,
+     -1.62931
+    ],
+    [
+     31.8662,
+     -1.02738
+    ],
+    [
+     31.81514,
+     -0.64043
+    ],
+    [
+     32.27284,
+     -0.05612
+    ],
+    [
+     32.90614,
+     0.08676
+    ],
+    [
+     33.33185,
+     0.32499
+    ],
+    [
+     33.85037,
+     0.12816
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Nyanza"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Ladoga",
+   "name": "Lake Ladoga",
+   "type": "lake",
+   "lat": 60.67608,
+   "lon": 31.35288,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     29.83671,
+     61.22608
+    ],
+    [
+     29.83671,
+     61.22608
+    ],
+    [
+     30.852,
+     61.77504
+    ],
+    [
+     32.52688,
+     61.11751
+    ],
+    [
+     32.94432,
+     60.6426
+    ],
+    [
+     32.81575,
+     60.48189
+    ],
+    [
+     32.5999,
+     60.53352
+    ],
+    [
+     32.58388,
+     60.20893
+    ],
+    [
+     31.69944,
+     60.23565
+    ],
+    [
+     31.50974,
+     59.92035
+    ],
+    [
+     31.10625,
+     59.92769
+    ],
+    [
+     31.10893,
+     60.14646
+    ],
+    [
+     30.53388,
+     60.6301
+    ],
+    [
+     30.50205,
+     60.84321
+    ],
+    [
+     29.83671,
+     61.22608
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Ladoga"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Balkhash",
+   "name": "Lake Balkhash",
+   "type": "lake",
+   "lat": 46.36023,
+   "lon": 76.17636,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     78.99076,
+     46.74862
+    ],
+    [
+     78.99076,
+     46.74862
+    ],
+    [
+     79.24517,
+     46.64516
+    ],
+    [
+     78.88989,
+     46.36993
+    ],
+    [
+     78.44506,
+     46.29717
+    ],
+    [
+     77.20607,
+     46.39557
+    ],
+    [
+     75.61128,
+     46.50719
+    ],
+    [
+     75.46333,
+     46.67061
+    ],
+    [
+     75.40566,
+     46.47081
+    ],
+    [
+     74.91122,
+     46.40466
+    ],
+    [
+     74.77138,
+     46.10783
+    ],
+    [
+     74.27803,
+     46.00407
+    ],
+    [
+     74.09995,
+     44.98893
+    ],
+    [
+     73.43674,
+     45.60946
+    ],
+    [
+     73.43999,
+     45.80586
+    ],
+    [
+     73.73713,
+     46.01275
+    ],
+    [
+     73.67925,
+     46.18307
+    ],
+    [
+     74.02068,
+     46.20491
+    ],
+    [
+     74.09432,
+     46.42781
+    ],
+    [
+     74.93939,
+     46.81678
+    ],
+    [
+     76.20313,
+     46.78001
+    ],
+    [
+     77.18131,
+     46.64341
+    ],
+    [
+     77.85993,
+     46.64785
+    ],
+    [
+     78.29701,
+     46.46853
+    ],
+    [
+     78.39711,
+     46.65767
+    ],
+    [
+     78.99076,
+     46.74862
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Balkhash",
+    "Balqash Köli"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Tanganyika",
+   "name": "Lake Tanganyika",
+   "type": "lake",
+   "lat": -6.74202,
+   "lon": 30.09899,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     30.80601,
+     -8.57834
+    ],
+    [
+     30.46442,
+     -8.49819
+    ],
+    [
+     30.56685,
+     -8.11501
+    ],
+    [
+     30.27736,
+     -7.84836
+    ],
+    [
+     30.14703,
+     -7.29924
+    ],
+    [
+     29.53652,
+     -6.75416
+    ],
+    [
+     29.19318,
+     -6.03803
+    ],
+    [
+     29.37198,
+     -5.61645
+    ],
+    [
+     29.10172,
+     -5.05401
+    ],
+    [
+     29.28103,
+     -3.4555
+    ],
+    [
+     29.65259,
+     -4.42014
+    ],
+    [
+     29.60008,
+     -4.89639
+    ],
+    [
+     29.79196,
+     -5.04088
+    ],
+    [
+     29.75842,
+     -5.4669
+    ],
+    [
+     29.95123,
+     -5.86099
+    ],
+    [
+     29.72204,
+     -6.24411
+    ],
+    [
+     30.52804,
+     -6.92273
+    ],
+    [
+     30.60416,
+     -7.54192
+    ],
+    [
+     31.18903,
+     -8.72991
+    ],
+    [
+     31.02212,
+     -8.78654
+    ],
+    [
+     30.80601,
+     -8.57834
+    ],
+    [
+     30.80601,
+     -8.57834
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Tanganyika"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Malawi",
+   "name": "Lake Malawi",
+   "type": "lake",
+   "lat": -12.56604,
+   "lon": 34.61485,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     35.2602,
+     -14.27747
+    ],
+    [
+     35.23623,
+     -14.40129
+    ],
+    [
+     34.88121,
+     -14.01201
+    ],
+    [
+     34.70654,
+     -14.26202
+    ],
+    [
+     34.54676,
+     -14.04767
+    ],
+    [
+     34.5511,
+     -13.67208
+    ],
+    [
+     34.32093,
+     -13.37939
+    ],
+    [
+     34.32998,
+     -12.94458
+    ],
+    [
+     34.03253,
+     -12.20856
+    ],
+    [
+     34.32269,
+     -11.65298
+    ],
+    [
+     34.2599,
+     -10.44758
+    ],
+    [
+     33.90659,
+     -9.80173
+    ],
+    [
+     33.99558,
+     -9.49544
+    ],
+    [
+     34.52423,
+     -10.03014
+    ],
+    [
+     34.60789,
+     -11.08051
+    ],
+    [
+     34.93702,
+     -11.46343
+    ],
+    [
+     34.69388,
+     -12.42239
+    ],
+    [
+     34.86757,
+     -13.70113
+    ],
+    [
+     35.05598,
+     -13.74293
+    ],
+    [
+     35.2602,
+     -14.27747
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Malawi",
+    "Lake Nyasa"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Vänern",
+   "name": "Vänern",
+   "type": "lake",
+   "lat": 58.94975,
+   "lon": 13.28464,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     13.97928,
+     59.20491
+    ],
+    [
+     13.97928,
+     59.20491
+    ],
+    [
+     13.98445,
+     59.08621
+    ],
+    [
+     13.91892,
+     58.9025
+    ],
+    [
+     13.28268,
+     58.60867
+    ],
+    [
+     12.8301,
+     58.50904
+    ],
+    [
+     12.46015,
+     58.5062
+    ],
+    [
+     12.53777,
+     58.77595
+    ],
+    [
+     12.52216,
+     58.88028
+    ],
+    [
+     12.69709,
+     58.95384
+    ],
+    [
+     13.02704,
+     58.99353
+    ],
+    [
+     13.1953,
+     59.129
+    ],
+    [
+     13.59145,
+     59.33648
+    ],
+    [
+     13.97928,
+     59.20491
+    ]
+   ],
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Okeechobee",
+   "name": "Lake Okeechobee",
+   "type": "lake",
+   "lat": 26.88228,
+   "lon": -80.77753,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -80.70644,
+     26.78896
+    ],
+    [
+     -80.93245,
+     26.82327
+    ],
+    [
+     -80.91971,
+     27.06892
+    ],
+    [
+     -80.6937,
+     27.03463
+    ],
+    [
+     -80.70644,
+     26.78896
+    ],
+    [
+     -80.70644,
+     26.78896
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Okeechobee"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lago de Nicaragua",
+   "name": "Lago de Nicaragua",
+   "type": "lake",
+   "lat": 11.43646,
+   "lon": -85.26691,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -84.85549,
+     11.1479
+    ],
+    [
+     -85.29014,
+     11.17617
+    ],
+    [
+     -85.79132,
+     11.50974
+    ],
+    [
+     -85.88517,
+     11.9001
+    ],
+    [
+     -85.56534,
+     11.94033
+    ],
+    [
+     -85.03684,
+     11.52165
+    ],
+    [
+     -84.85549,
+     11.1479
+    ],
+    [
+     -84.85549,
+     11.1479
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Nicaragua"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Tana",
+   "name": "Lake Tana",
+   "type": "lake",
+   "lat": 11.94004,
+   "lon": 37.25332,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     37.14371,
+     11.8506
+    ],
+    [
+     37.01483,
+     12.0356
+    ],
+    [
+     37.24401,
+     12.23388
+    ],
+    [
+     37.51836,
+     12.1606
+    ],
+    [
+     37.48188,
+     11.82509
+    ],
+    [
+     37.33636,
+     11.71339
+    ],
+    [
+     37.14371,
+     11.8506
+    ],
+    [
+     37.14371,
+     11.8506
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Tana"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lago Titicaca",
+   "name": "Lago Titicaca",
+   "type": "lake",
+   "lat": -16.01848,
+   "lon": -69.36962,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -69.40674,
+     -16.1262
+    ],
+    [
+     -69.7291,
+     -15.92879
+    ],
+    [
+     -69.98366,
+     -15.73718
+    ],
+    [
+     -69.87702,
+     -15.66984
+    ],
+    [
+     -69.86798,
+     -15.54608
+    ],
+    [
+     -69.8856,
+     -15.35426
+    ],
+    [
+     -69.59675,
+     -15.41048
+    ],
+    [
+     -68.98697,
+     -15.8859
+    ],
+    [
+     -68.95969,
+     -15.91329
+    ],
+    [
+     -68.74624,
+     -16.356
+    ],
+    [
+     -68.90525,
+     -16.50664
+    ],
+    [
+     -69.00116,
+     -16.53641
+    ],
+    [
+     -69.09084,
+     -16.46199
+    ],
+    [
+     -69.18205,
+     -16.40117
+    ],
+    [
+     -69.25099,
+     -16.22754
+    ],
+    [
+     -69.40674,
+     -16.1262
+    ],
+    [
+     -69.40674,
+     -16.1262
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Titicaca"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Cedar Lake",
+   "name": "Cedar Lake",
+   "type": "lake",
+   "lat": 53.6191,
+   "lon": -99.97277,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -99.40377,
+     53.12585
+    ],
+    [
+     -99.54847,
+     53.12043
+    ],
+    [
+     -99.80499,
+     53.14291
+    ],
+    [
+     -100.43146,
+     53.28419
+    ],
+    [
+     -100.60685,
+     53.53162
+    ],
+    [
+     -100.33488,
+     53.74525
+    ],
+    [
+     -100.42673,
+     53.90741
+    ],
+    [
+     -100.40449,
+     53.94508
+    ],
+    [
+     -100.3263,
+     54.09401
+    ],
+    [
+     -100.23587,
+     54.23033
+    ],
+    [
+     -99.99549,
+     54.21586
+    ],
+    [
+     -100.04779,
+     54.10014
+    ],
+    [
+     -100.18357,
+     53.93035
+    ],
+    [
+     -99.87129,
+     53.92847
+    ],
+    [
+     -99.91067,
+     53.82131
+    ],
+    [
+     -100.0565,
+     53.44333
+    ],
+    [
+     -99.66551,
+     53.29582
+    ],
+    [
+     -99.39318,
+     53.26791
+    ],
+    [
+     -99.40377,
+     53.12585
+    ],
+    [
+     -99.40377,
+     53.12585
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Cedar"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Onega",
+   "name": "Lake Onega",
+   "type": "lake",
+   "lat": 61.93362,
+   "lon": 35.16325,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     35.71465,
+     62.28023
+    ],
+    [
+     36.05416,
+     61.71631
+    ],
+    [
+     36.3914,
+     61.27605
+    ],
+    [
+     36.10945,
+     61.01509
+    ],
+    [
+     35.35074,
+     60.94858
+    ],
+    [
+     34.86684,
+     61.11637
+    ],
+    [
+     35.20729,
+     61.11444
+    ],
+    [
+     35.57832,
+     61.08635
+    ],
+    [
+     35.16,
+     61.39429
+    ],
+    [
+     34.85733,
+     61.5518
+    ],
+    [
+     34.48692,
+     61.86697
+    ],
+    [
+     34.26502,
+     62.21915
+    ],
+    [
+     34.28983,
+     62.29775
+    ],
+    [
+     34.66562,
+     62.22979
+    ],
+    [
+     34.62613,
+     62.45224
+    ],
+    [
+     34.83563,
+     62.29677
+    ],
+    [
+     35.08027,
+     62.14119
+    ],
+    [
+     35.21659,
+     62.19328
+    ],
+    [
+     35.46371,
+     62.25602
+    ],
+    [
+     35.1397,
+     62.48776
+    ],
+    [
+     34.61435,
+     62.76245
+    ],
+    [
+     34.99542,
+     62.74847
+    ],
+    [
+     35.23395,
+     62.67535
+    ],
+    [
+     35.71465,
+     62.28023
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Onega"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Great Salt Lake",
+   "name": "Great Salt Lake",
+   "type": "lake",
+   "lat": 41.2808,
+   "lon": -112.41551,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -112.18405,
+     41.34125
+    ],
+    [
+     -112.13876,
+     41.14235
+    ],
+    [
+     -112.17193,
+     40.85146
+    ],
+    [
+     -112.67883,
+     41.13049
+    ],
+    [
+     -112.70549,
+     41.16754
+    ],
+    [
+     -112.87814,
+     41.62816
+    ],
+    [
+     -112.58956,
+     41.43892
+    ],
+    [
+     -112.40533,
+     41.33802
+    ],
+    [
+     -112.21901,
+     41.42856
+    ],
+    [
+     -112.18405,
+     41.34125
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Great Salt"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Great Bear Lake",
+   "name": "Great Bear Lake",
+   "type": "lake",
+   "lat": 65.83968,
+   "lon": -120.42541,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -117.75929,
+     66.22368
+    ],
+    [
+     -117.97375,
+     65.85489
+    ],
+    [
+     -118.1071,
+     65.76692
+    ],
+    [
+     -119.72005,
+     65.7348
+    ],
+    [
+     -119.74568,
+     65.65436
+    ],
+    [
+     -119.66481,
+     65.52742
+    ],
+    [
+     -119.7022,
+     65.36795
+    ],
+    [
+     -121.35509,
+     64.87999
+    ],
+    [
+     -121.3361,
+     64.99461
+    ],
+    [
+     -120.94527,
+     65.37774
+    ],
+    [
+     -121.05728,
+     65.44634
+    ],
+    [
+     -122.5645,
+     65.03107
+    ],
+    [
+     -123.23271,
+     65.18041
+    ],
+    [
+     -123.17963,
+     65.31937
+    ],
+    [
+     -122.32599,
+     65.79379
+    ],
+    [
+     -122.35622,
+     65.90184
+    ],
+    [
+     -124.95363,
+     66.04925
+    ],
+    [
+     -124.89754,
+     66.15116
+    ],
+    [
+     -119.48725,
+     66.9693
+    ],
+    [
+     -119.35744,
+     66.8752
+    ],
+    [
+     -120.17695,
+     66.46527
+    ],
+    [
+     -117.60545,
+     66.55935
+    ],
+    [
+     -117.61279,
+     66.41998
+    ],
+    [
+     -117.75929,
+     66.22368
+    ],
+    [
+     -117.75929,
+     66.22368
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Great Bear"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Athabasca",
+   "name": "Lake Athabasca",
+   "type": "lake",
+   "lat": 59.03127,
+   "lon": -109.39939,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -109.6533,
+     59.03764
+    ],
+    [
+     -111.08626,
+     58.56017
+    ],
+    [
+     -111.19949,
+     58.68556
+    ],
+    [
+     -111.16,
+     58.75985
+    ],
+    [
+     -109.09672,
+     59.55042
+    ],
+    [
+     -106.54517,
+     59.31969
+    ],
+    [
+     -106.54695,
+     59.29281
+    ],
+    [
+     -109.6533,
+     59.03764
+    ],
+    [
+     -109.6533,
+     59.03764
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Athabasca"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Reindeer Lake",
+   "name": "Reindeer Lake",
+   "type": "lake",
+   "lat": 57.26225,
+   "lon": -102.47965,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -101.89514,
+     58.01403
+    ],
+    [
+     -101.89514,
+     58.01403
+    ],
+    [
+     -101.54385,
+     57.8681
+    ],
+    [
+     -101.9709,
+     57.34867
+    ],
+    [
+     -101.93403,
+     57.23067
+    ],
+    [
+     -103.20416,
+     56.3454
+    ],
+    [
+     -103.2825,
+     56.40994
+    ],
+    [
+     -103.14874,
+     56.70411
+    ],
+    [
+     -103.07833,
+     56.7108
+    ],
+    [
+     -103.0144,
+     56.5651
+    ],
+    [
+     -102.57681,
+     56.93828
+    ],
+    [
+     -102.81323,
+     57.28715
+    ],
+    [
+     -102.81369,
+     57.46435
+    ],
+    [
+     -102.12875,
+     58.01915
+    ],
+    [
+     -101.89514,
+     58.01403
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Reindeer"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Huron",
+   "name": "Lake Huron",
+   "type": "lake",
+   "lat": 44.95984,
+   "lon": -82.63129,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -80.41056,
+     45.59014
+    ],
+    [
+     -79.76293,
+     44.8246
+    ],
+    [
+     -80.085,
+     44.49392
+    ],
+    [
+     -80.89769,
+     44.63164
+    ],
+    [
+     -81.40234,
+     45.25006
+    ],
+    [
+     -81.27568,
+     44.62017
+    ],
+    [
+     -81.75265,
+     44.06465
+    ],
+    [
+     -81.70018,
+     43.59005
+    ],
+    [
+     -81.78273,
+     43.31085
+    ],
+    [
+     -82.43,
+     42.98001
+    ],
+    [
+     -82.48,
+     43.39001
+    ],
+    [
+     -82.65999,
+     43.97
+    ],
+    [
+     -83.02999,
+     44.07
+    ],
+    [
+     -83.65,
+     43.63
+    ],
+    [
+     -83.8487,
+     43.63832
+    ],
+    [
+     -83.89999,
+     43.88998
+    ],
+    [
+     -83.35,
+     44.29001
+    ],
+    [
+     -83.25879,
+     44.74574
+    ],
+    [
+     -83.34,
+     45.20001
+    ],
+    [
+     -84.08,
+     45.58998
+    ],
+    [
+     -84.93,
+     45.79
+    ],
+    [
+     -84.75356,
+     45.92448
+    ],
+    [
+     -84.71999,
+     45.91999
+    ],
+    [
+     -83.83919,
+     46.01022
+    ],
+    [
+     -84.33671,
+     46.40877
+    ],
+    [
+     -84.14871,
+     46.55576
+    ],
+    [
+     -83.95257,
+     46.33428
+    ],
+    [
+     -83.20251,
+     46.21015
+    ],
+    [
+     -82.44199,
+     46.19964
+    ],
+    [
+     -81.63137,
+     46.09755
+    ],
+    [
+     -80.7368,
+     45.90381
+    ],
+    [
+     -80.41056,
+     45.59014
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Huron",
+    "Great Lakes"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-lake-Lake Michigan",
+   "name": "Lake Michigan",
+   "type": "lake",
+   "lat": 44.10249,
+   "lon": -86.64175,
+   "source": "Natural Earth 110m lakes v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -85.53999,
+     46.03001
+    ],
+    [
+     -84.75356,
+     45.92448
+    ],
+    [
+     -84.93,
+     45.79
+    ],
+    [
+     -85.07,
+     45.40999
+    ],
+    [
+     -85.29045,
+     45.30824
+    ],
+    [
+     -85.4671,
+     44.81458
+    ],
+    [
+     -85.55999,
+     45.15001
+    ],
+    [
+     -85.95984,
+     44.91059
+    ],
+    [
+     -86.20936,
+     44.5748
+    ],
+    [
+     -86.47027,
+     44.08423
+    ],
+    [
+     -86.52001,
+     43.66
+    ],
+    [
+     -86.18843,
+     43.0414
+    ],
+    [
+     -86.21605,
+     42.3817
+    ],
+    [
+     -86.62192,
+     41.89442
+    ],
+    [
+     -86.82444,
+     41.75619
+    ],
+    [
+     -87.09445,
+     41.64617
+    ],
+    [
+     -87.43422,
+     41.64071
+    ],
+    [
+     -87.52618,
+     41.70851
+    ],
+    [
+     -87.79569,
+     42.23412
+    ],
+    [
+     -87.80345,
+     42.494
+    ],
+    [
+     -87.77673,
+     42.74085
+    ],
+    [
+     -87.90215,
+     43.23051
+    ],
+    [
+     -87.71221,
+     43.7965
+    ],
+    [
+     -87.48636,
+     44.49336
+    ],
+    [
+     -86.96748,
+     45.26287
+    ],
+    [
+     -87.11806,
+     45.25933
+    ],
+    [
+     -87.85282,
+     44.61505
+    ],
+    [
+     -87.98832,
+     44.73332
+    ],
+    [
+     -87.59643,
+     45.09371
+    ],
+    [
+     -87.00001,
+     45.74
+    ],
+    [
+     -86.32,
+     45.82999
+    ],
+    [
+     -85.53999,
+     46.03001
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "Michigan",
+    "Great Lakes"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "ne-desert-Gobi Desert",
+   "name": "Gobi Desert",
+   "type": "desert",
+   "lat": 41.5273,
+   "lon": 104.57251,
+   "source": "Natural Earth 110m geography regions v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     117.52247,
+     44.50873
+    ],
+    [
+     117.34083,
+     44.07929
+    ],
+    [
+     117.30104,
+     43.91474
+    ],
+    [
+     117.24867,
+     43.22279
+    ],
+    [
+     117.19191,
+     43.01783
+    ],
+    [
+     117.10646,
+     42.83723
+    ],
+    [
+     116.99012,
+     42.6825
+    ],
+    [
+     116.84095,
+     42.55518
+    ],
+    [
+     116.65699,
+     42.45667
+    ],
+    [
+     116.43653,
+     42.38856
+    ],
+    [
+     113.69532,
+     42.3039
+    ],
+    [
+     113.07533,
+     42.14692
+    ],
+    [
+     112.50392,
+     41.86298
+    ],
+    [
+     111.70324,
+     41.23458
+    ],
+    [
+     111.63191,
+     41.17859
+    ],
+    [
+     111.54762,
+     41.11243
+    ],
+    [
+     111.43411,
+     41.0606
+    ],
+    [
+     111.13478,
+     40.9239
+    ],
+    [
+     110.69532,
+     40.8581
+    ],
+    [
+     107.41908,
+     41.34168
+    ],
+    [
+     107.35029,
+     41.33997
+    ],
+    [
+     107.27687,
+     41.33814
+    ],
+    [
+     107.16481,
+     41.2967
+    ],
+    [
+     107.08961,
+     41.20447
+    ],
+    [
+     106.99891,
+     40.81354
+    ],
+    [
+     106.85377,
+     40.64728
+    ],
+    [
+     106.64784,
+     40.53083
+    ],
+    [
+     105.90943,
+     40.29102
+    ],
+    [
+     105.70436,
+     40.18464
+    ],
+    [
+     105.56056,
+     40.03352
+    ],
+    [
+     105.40413,
+     39.55996
+    ],
+    [
+     105.37513,
+     39.47217
+    ],
+    [
+     105.33131,
+     39.39051
+    ],
+    [
+     105.25659,
+     39.29211
+    ],
+    [
+     105.14161,
+     39.14069
+    ],
+    [
+     104.8097,
+     38.48023
+    ],
+    [
+     104.66603,
+     38.32026
+    ],
+    [
+     104.45668,
+     38.1753
+    ],
+    [
+     104.20069,
+     38.04993
+    ],
+    [
+     103.65955,
+     37.88682
+    ],
+    [
+     103.62562,
+     37.87659
+    ],
+    [
+     103.09425,
+     37.8371
+    ],
+    [
+     102.5677,
+     38.09694
+    ],
+    [
+     102.37489,
+     38.19208
+    ],
+    [
+     102.28429,
+     38.21048
+    ],
+    [
+     102.01444,
+     38.26528
+    ],
+    [
+     101.59579,
+     38.3503
+    ],
+    [
+     100.9969,
+     38.47191
+    ],
+    [
+     100.95594,
+     38.48023
+    ],
+    [
+     100.6515,
+     38.68598
+    ],
+    [
+     100.44544,
+     38.87299
+    ],
+    [
+     100.3688,
+     38.94254
+    ],
+    [
+     99.92469,
+     39.34559
+    ],
+    [
+     99.65004,
+     39.49287
+    ],
+    [
+     99.36928,
+     39.54743
+    ],
+    [
+     99.2873,
+     39.56336
+    ],
+    [
+     99.24586,
+     39.57142
+    ],
+    [
+     99.10299,
+     39.63838
+    ],
+    [
+     98.96893,
+     39.70122
+    ],
+    [
+     98.83998,
+     39.76166
+    ],
+    [
+     98.69898,
+     39.80305
+    ],
+    [
+     98.12357,
+     39.87201
+    ],
+    [
+     96.81958,
+     40.0283
+    ],
+    [
+     96.45044,
+     40.07254
+    ],
+    [
+     96.4387,
+     40.07395
+    ],
+    [
+     95.92762,
+     40.1352
+    ],
+    [
+     95.61912,
+     40.24494
+    ],
+    [
+     95.36378,
+     40.33576
+    ],
+    [
+     95.10829,
+     40.4928
+    ],
+    [
+     94.88172,
+     40.6905
+    ],
+    [
+     94.693,
+     40.93085
+    ],
+    [
+     94.55043,
+     41.21583
+    ],
+    [
+     94.48658,
+     41.4333
+    ],
+    [
+     94.46205,
+     41.63862
+    ],
+    [
+     94.47364,
+     41.83301
+    ],
+    [
+     94.51832,
+     42.01722
+    ],
+    [
+     94.59303,
+     42.19245
+    ],
+    [
+     95.27858,
+     43.01935
+    ],
+    [
+     95.33143,
+     43.11793
+    ],
+    [
+     95.36231,
+     43.22248
+    ],
+    [
+     95.37342,
+     43.34162
+    ],
+    [
+     95.33985,
+     43.92133
+    ],
+    [
+     95.37761,
+     44.08633
+    ],
+    [
+     95.5055,
+     44.64521
+    ],
+    [
+     96.21119,
+     44.85688
+    ],
+    [
+     99.69508,
+     44.45386
+    ],
+    [
+     99.91208,
+     44.47438
+    ],
+    [
+     100.75145,
+     44.55373
+    ],
+    [
+     102.27638,
+     44.69788
+    ],
+    [
+     104.28517,
+     45.32996
+    ],
+    [
+     108.52906,
+     45.43287
+    ],
+    [
+     109.13331,
+     45.5998
+    ],
+    [
+     113.19923,
+     47.67304
+    ],
+    [
+     113.813,
+     47.78577
+    ],
+    [
+     114.74113,
+     47.75632
+    ],
+    [
+     115.71925,
+     47.72529
+    ],
+    [
+     117.57985,
+     47.34443
+    ],
+    [
+     117.6847,
+     47.2038
+    ],
+    [
+     117.72108,
+     46.92872
+    ],
+    [
+     117.52247,
+     44.50873
+    ]
+   ],
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "ne-desert-Sahara",
+   "name": "Sahara",
+   "type": "desert",
+   "lat": 18.9849,
+   "lon": 14.07887,
+   "source": "Natural Earth 110m geography regions v5.1.2. The dot is the polygon centroid, not a surveyed point.",
+   "source_url": "https://github.com/nvkelso/natural-earth-vector/tree/v5.1.2/geojson",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     17.90333,
+     29.55518
+    ],
+    [
+     22.06661,
+     30.33488
+    ],
+    [
+     30.96094,
+     30.07406
+    ],
+    [
+     32.27297,
+     30.62193
+    ],
+    [
+     32.47305,
+     29.92544
+    ],
+    [
+     32.63551,
+     29.10395
+    ],
+    [
+     32.89824,
+     28.56523
+    ],
+    [
+     33.55459,
+     27.77177
+    ],
+    [
+     33.84932,
+     27.18491
+    ],
+    [
+     34.6793,
+     25.44253
+    ],
+    [
+     35.47783,
+     24.15479
+    ],
+    [
+     35.48487,
+     23.6153
+    ],
+    [
+     35.8458,
+     22.78569
+    ],
+    [
+     36.86727,
+     22.02209
+    ],
+    [
+     37.11587,
+     21.28875
+    ],
+    [
+     37.18789,
+     20.39492
+    ],
+    [
+     37.50064,
+     18.78753
+    ],
+    [
+     37.71793,
+     17.84056
+    ],
+    [
+     37.87928,
+     14.57978
+    ],
+    [
+     37.15174,
+     13.94477
+    ],
+    [
+     36.55887,
+     15.22565
+    ],
+    [
+     35.18196,
+     12.9389
+    ],
+    [
+     33.44752,
+     11.40479
+    ],
+    [
+     32.37013,
+     9.5426
+    ],
+    [
+     29.82656,
+     9.57277
+    ],
+    [
+     29.28522,
+     9.37377
+    ],
+    [
+     26.71388,
+     9.76435
+    ],
+    [
+     25.39583,
+     10.01569
+    ],
+    [
+     23.46839,
+     10.35529
+    ],
+    [
+     21.95559,
+     10.19519
+    ],
+    [
+     20.64613,
+     10.51398
+    ],
+    [
+     19.97932,
+     9.96889
+    ],
+    [
+     19.87001,
+     11.11371
+    ],
+    [
+     17.16797,
+     11.49882
+    ],
+    [
+     17.44197,
+     10.3561
+    ],
+    [
+     15.6549,
+     11.16206
+    ],
+    [
+     15.68847,
+     10.04602
+    ],
+    [
+     13.94337,
+     11.02558
+    ],
+    [
+     11.03297,
+     12.89527
+    ],
+    [
+     5.37086,
+     14.11237
+    ],
+    [
+     0.74952,
+     13.91834
+    ],
+    [
+     -2.88415,
+     15.13538
+    ],
+    [
+     -2.67247,
+     15.69984
+    ],
+    [
+     -2.93633,
+     16.21725
+    ],
+    [
+     -1.34161,
+     16.8949
+    ],
+    [
+     -0.93889,
+     17.09333
+    ],
+    [
+     -3.59044,
+     16.40673
+    ],
+    [
+     -4.52848,
+     15.54915
+    ],
+    [
+     -10.72576,
+     15.00597
+    ],
+    [
+     -14.05503,
+     14.94947
+    ],
+    [
+     -16.4813,
+     16.45425
+    ],
+    [
+     -16.07046,
+     17.53626
+    ],
+    [
+     -16.21309,
+     19.00332
+    ],
+    [
+     -16.30527,
+     19.51265
+    ],
+    [
+     -16.33037,
+     20.41073
+    ],
+    [
+     -16.5627,
+     20.60415
+    ],
+    [
+     -16.97114,
+     21.07646
+    ],
+    [
+     -17.04949,
+     21.14448
+    ],
+    [
+     -15.06202,
+     24.53327
+    ],
+    [
+     -14.67065,
+     25.63616
+    ],
+    [
+     -13.63506,
+     26.64478
+    ],
+    [
+     -8.57581,
+     28.74367
+    ],
+    [
+     -5.24779,
+     30.21668
+    ],
+    [
+     8.69581,
+     34.21186
+    ],
+    [
+     12.18224,
+     31.77335
+    ],
+    [
+     17.90333,
+     29.55518
+    ]
+   ],
+   "place_note": "",
+   "aliases": [],
+   "group": "feature"
+  },
+  {
+   "id": "pb2002-NA-EU",
+   "name": "North America–Eurasia plate boundary",
+   "type": "plate",
+   "lat": 49.74553,
+   "lon": -30.422,
+   "source": "Mueller et al. [1987]; PB2002 plate boundaries (fraxen/tectonicplates GeoJSON). The dot is the line centroid, not a surveyed point.",
+   "source_url": "https://github.com/fraxen/tectonicplates",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -29.7698,
+     39.3996
+    ],
+    [
+     -29.5881,
+     40.1065
+    ],
+    [
+     -29.5984,
+     40.3835
+    ],
+    [
+     -29.346,
+     40.5699
+    ],
+    [
+     -29.242,
+     41.1261
+    ],
+    [
+     -29.2452,
+     41.52
+    ],
+    [
+     -29.2606,
+     41.9294
+    ],
+    [
+     -29.2226,
+     42.2891
+    ],
+    [
+     -29.3394,
+     42.613
+    ],
+    [
+     -29.3492,
+     42.8378
+    ],
+    [
+     -29.1736,
+     43.0796
+    ],
+    [
+     -28.8845,
+     43.6278
+    ],
+    [
+     -28.5131,
+     43.8448
+    ],
+    [
+     -28.4364,
+     44.1453
+    ],
+    [
+     -28.2825,
+     44.4046
+    ],
+    [
+     -28.1438,
+     44.8116
+    ],
+    [
+     -28.1385,
+     44.9685
+    ],
+    [
+     -27.9945,
+     45.0983
+    ],
+    [
+     -27.9721,
+     45.3441
+    ],
+    [
+     -27.9236,
+     45.4663
+    ],
+    [
+     -27.877,
+     45.5362
+    ],
+    [
+     -27.7592,
+     45.8293
+    ],
+    [
+     -27.6773,
+     45.9846
+    ],
+    [
+     -27.5649,
+     46.2131
+    ],
+    [
+     -27.4717,
+     46.485
+    ],
+    [
+     -27.3775,
+     46.7568
+    ],
+    [
+     -27.3819,
+     47.114
+    ],
+    [
+     -27.4585,
+     47.3929
+    ],
+    [
+     -27.4635,
+     47.6578
+    ],
+    [
+     -27.6351,
+     47.9942
+    ],
+    [
+     -27.7306,
+     48.421
+    ],
+    [
+     -28.0108,
+     48.605
+    ],
+    [
+     -28.2058,
+     48.9962
+    ],
+    [
+     -28.4262,
+     49.2858
+    ],
+    [
+     -28.5619,
+     49.6386
+    ],
+    [
+     -28.8952,
+     49.8148
+    ],
+    [
+     -29.0217,
+     50.1515
+    ],
+    [
+     -29.4266,
+     50.4159
+    ],
+    [
+     -29.768,
+     50.6941
+    ],
+    [
+     -29.9425,
+     50.9313
+    ],
+    [
+     -29.9961,
+     51.4236
+    ],
+    [
+     -30.0361,
+     51.9528
+    ],
+    [
+     -31.0579,
+     52.1048
+    ],
+    [
+     -31.2573,
+     52.4197
+    ],
+    [
+     -32.3589,
+     52.5564
+    ],
+    [
+     -33.3354,
+     52.6281
+    ],
+    [
+     -34.9248,
+     52.708
+    ],
+    [
+     -35.1561,
+     52.8611
+    ],
+    [
+     -35.3248,
+     53.238
+    ],
+    [
+     -35.4517,
+     53.5459
+    ],
+    [
+     -35.2012,
+     54.1105
+    ],
+    [
+     -35.4878,
+     54.3313
+    ],
+    [
+     -35.2739,
+     54.9127
+    ],
+    [
+     -35.1732,
+     55.3259
+    ],
+    [
+     -34.8774,
+     55.8485
+    ],
+    [
+     -34.5104,
+     56.2101
+    ],
+    [
+     -34.346,
+     56.502
+    ],
+    [
+     -34.0724,
+     56.7388
+    ],
+    [
+     -33.7961,
+     56.8833
+    ],
+    [
+     -33.5354,
+     57.088
+    ],
+    [
+     -33.2031,
+     57.2849
+    ],
+    [
+     -32.9177,
+     57.6671
+    ],
+    [
+     -32.4918,
+     57.9566
+    ],
+    [
+     -31.9835,
+     58.2492
+    ],
+    [
+     -31.556,
+     58.4466
+    ],
+    [
+     -31.0392,
+     58.8923
+    ],
+    [
+     -30.4527,
+     59.2383
+    ],
+    [
+     -29.8495,
+     59.7508
+    ],
+    [
+     -29.3717,
+     60.0827
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "NA-EU"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "pb2002-NA-EU",
+   "name": "North America–Eurasia plate boundary",
+   "type": "plate",
+   "lat": 79.35249,
+   "lon": 27.13025,
+   "source": "Mueller et al. [1987]; PB2002 plate boundaries (fraxen/tectonicplates GeoJSON). The dot is the line centroid, not a surveyed point.",
+   "source_url": "https://github.com/fraxen/tectonicplates",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -15.7156,
+     69.5499
+    ],
+    [
+     -14.7339,
+     70.3891
+    ],
+    [
+     -14.0364,
+     70.7261
+    ],
+    [
+     -12.9046,
+     70.6977
+    ],
+    [
+     -11.6689,
+     70.8763
+    ],
+    [
+     -12.3591,
+     71.2522
+    ],
+    [
+     -11.3695,
+     71.7744
+    ],
+    [
+     -7.94124,
+     71.2166
+    ],
+    [
+     -6.33268,
+     71.3872
+    ],
+    [
+     -5.15729,
+     71.431
+    ],
+    [
+     -4.07245,
+     71.4905
+    ],
+    [
+     -2.39894,
+     71.5917
+    ],
+    [
+     -0.39248,
+     71.9105
+    ],
+    [
+     1.99058,
+     72.3278
+    ],
+    [
+     4.2999,
+     72.697
+    ],
+    [
+     6.05514,
+     73.0188
+    ],
+    [
+     7.391,
+     73.2524
+    ],
+    [
+     8.38583,
+     73.4853
+    ],
+    [
+     8.95698,
+     73.7064
+    ],
+    [
+     9.20295,
+     73.9795
+    ],
+    [
+     9.13259,
+     74.3772
+    ],
+    [
+     8.63037,
+     74.9462
+    ],
+    [
+     7.94643,
+     75.3817
+    ],
+    [
+     7.59292,
+     75.9807
+    ],
+    [
+     7.55713,
+     76.4307
+    ],
+    [
+     7.62226,
+     76.9692
+    ],
+    [
+     7.88003,
+     77.7119
+    ],
+    [
+     7.78484,
+     78.2347
+    ],
+    [
+     4.69068,
+     78.8058
+    ],
+    [
+     3.90068,
+     79.228
+    ],
+    [
+     2.37761,
+     79.7797
+    ],
+    [
+     -0.25072,
+     80.1421
+    ],
+    [
+     -2.34079,
+     80.3704
+    ],
+    [
+     -3.36375,
+     80.7922
+    ],
+    [
+     -3.45411,
+     81.2505
+    ],
+    [
+     -3.90911,
+     81.6203
+    ],
+    [
+     -3.79607,
+     82.2903
+    ],
+    [
+     -5.86541,
+     82.6912
+    ],
+    [
+     -5.15419,
+     83.2491
+    ],
+    [
+     -2.36257,
+     83.6896
+    ],
+    [
+     0.40499,
+     84.1017
+    ],
+    [
+     3.02402,
+     84.4618
+    ],
+    [
+     4.50755,
+     84.5702
+    ],
+    [
+     8.13393,
+     84.8982
+    ],
+    [
+     10.6588,
+     85.067
+    ],
+    [
+     14.6662,
+     85.3797
+    ],
+    [
+     19.2845,
+     85.6842
+    ],
+    [
+     25.3828,
+     85.8591
+    ],
+    [
+     29.2294,
+     85.8101
+    ],
+    [
+     35.6067,
+     86.1607
+    ],
+    [
+     43.4795,
+     86.4958
+    ],
+    [
+     47.5235,
+     86.6406
+    ],
+    [
+     58.0178,
+     86.7875
+    ],
+    [
+     66.5438,
+     86.6549
+    ],
+    [
+     68.2081,
+     86.3058
+    ],
+    [
+     75.0293,
+     85.9885
+    ],
+    [
+     81.1027,
+     85.6388
+    ],
+    [
+     86.8021,
+     85.4175
+    ],
+    [
+     92.3129,
+     85.2292
+    ],
+    [
+     97.2727,
+     85.0279
+    ],
+    [
+     102.918,
+     84.6639
+    ],
+    [
+     106.759,
+     84.3686
+    ],
+    [
+     109.727,
+     84.1097
+    ],
+    [
+     112.843,
+     83.6744
+    ],
+    [
+     115.258,
+     83.1508
+    ],
+    [
+     117.171,
+     82.5394
+    ],
+    [
+     119.984,
+     81.5953
+    ],
+    [
+     122.639,
+     80.2061
+    ],
+    [
+     125.679,
+     78.1326
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "NA-EU"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "pb2002-AF-SA",
+   "name": "Africa–South America plate boundary",
+   "type": "plate",
+   "lat": -4.64747,
+   "lon": -22.61392,
+   "source": "Mueller et al. [1987]; PB2002 plate boundaries (fraxen/tectonicplates GeoJSON). The dot is the line centroid, not a surveyed point.",
+   "source_url": "https://github.com/fraxen/tectonicplates",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -46.7658,
+     15.4506
+    ],
+    [
+     -45.13,
+     15.2673
+    ],
+    [
+     -45.1423,
+     14.0261
+    ],
+    [
+     -45.0493,
+     13.3358
+    ],
+    [
+     -44.262,
+     12.6256
+    ],
+    [
+     -43.8845,
+     12.0854
+    ],
+    [
+     -43.9206,
+     10.927
+    ],
+    [
+     -42.9758,
+     10.8832
+    ],
+    [
+     -42.0313,
+     10.8365
+    ],
+    [
+     -41.0871,
+     10.7869
+    ],
+    [
+     -40.8615,
+     9.97269
+    ],
+    [
+     -40.6402,
+     9.37285
+    ],
+    [
+     -40.1196,
+     8.81526
+    ],
+    [
+     -39.6608,
+     8.19726
+    ],
+    [
+     -38.7009,
+     8.15934
+    ],
+    [
+     -38.2065,
+     7.70334
+    ],
+    [
+     -36.8648,
+     7.65432
+    ],
+    [
+     -36.0577,
+     7.36342
+    ],
+    [
+     -35.3665,
+     6.93495
+    ],
+    [
+     -34.4937,
+     6.61577
+    ],
+    [
+     -33.6203,
+     6.10421
+    ],
+    [
+     -33.5068,
+     5.64946
+    ],
+    [
+     -32.9198,
+     4.80377
+    ],
+    [
+     -32.387,
+     3.9859
+    ],
+    [
+     -31.4374,
+     4.03611
+    ],
+    [
+     -30.8868,
+     3.25477
+    ],
+    [
+     -30.7358,
+     1.64269
+    ],
+    [
+     -29.9203,
+     0.7974
+    ],
+    [
+     -28.3465,
+     0.95303
+    ],
+    [
+     -27.3153,
+     1.06184
+    ],
+    [
+     -26.2887,
+     0.49814
+    ],
+    [
+     -25.0294,
+     0.61413
+    ],
+    [
+     -24.6117,
+     -1.10331
+    ],
+    [
+     -23.4897,
+     -0.96432
+    ],
+    [
+     -22.3813,
+     -0.79639
+    ],
+    [
+     -21.0168,
+     -0.58849
+    ],
+    [
+     -19.6747,
+     -0.33338
+    ],
+    [
+     -18.3693,
+     -0.07275
+    ],
+    [
+     -17.3229,
+     0.1496
+    ],
+    [
+     -16.4982,
+     0.29895
+    ],
+    [
+     -16.0372,
+     -0.51963
+    ],
+    [
+     -15.5652,
+     -1.07324
+    ],
+    [
+     -14.6594,
+     -1.30094
+    ],
+    [
+     -13.158,
+     -0.91534
+    ],
+    [
+     -12.7014,
+     -2.09908
+    ],
+    [
+     -11.9989,
+     -2.40025
+    ],
+    [
+     -12.0293,
+     -3.01345
+    ],
+    [
+     -11.7655,
+     -3.97199
+    ],
+    [
+     -12.0386,
+     -4.58743
+    ],
+    [
+     -12.0185,
+     -5.02557
+    ],
+    [
+     -11.5161,
+     -5.41504
+    ],
+    [
+     -11.0222,
+     -5.93021
+    ],
+    [
+     -11.1805,
+     -6.75542
+    ],
+    [
+     -12.8068,
+     -7.16482
+    ],
+    [
+     -13.4894,
+     -7.88908
+    ],
+    [
+     -13.1911,
+     -8.37401
+    ],
+    [
+     -13.2482,
+     -9.27648
+    ],
+    [
+     -13.3151,
+     -9.82468
+    ],
+    [
+     -13.0313,
+     -11.4215
+    ],
+    [
+     -14.0177,
+     -11.6551
+    ],
+    [
+     -15.0058,
+     -11.8853
+    ],
+    [
+     -14.8611,
+     -12.3196
+    ],
+    [
+     -14.5501,
+     -12.577
+    ],
+    [
+     -14.5996,
+     -13.2655
+    ],
+    [
+     -14.4784,
+     -14.2077
+    ],
+    [
+     -13.4352,
+     -14.8494
+    ],
+    [
+     -13.3835,
+     -15.6882
+    ],
+    [
+     -13.7702,
+     -16.3229
+    ],
+    [
+     -14.2381,
+     -16.7645
+    ],
+    [
+     -14.2242,
+     -17.3859
+    ],
+    [
+     -13.5189,
+     -17.893
+    ],
+    [
+     -12.8598,
+     -18.2872
+    ],
+    [
+     -12.4772,
+     -18.7465
+    ],
+    [
+     -12.2626,
+     -19.9353
+    ],
+    [
+     -11.8522,
+     -20.2784
+    ],
+    [
+     -11.7632,
+     -21.1759
+    ],
+    [
+     -11.8495,
+     -21.7351
+    ],
+    [
+     -11.8192,
+     -22.1534
+    ],
+    [
+     -12.9102,
+     -22.379
+    ],
+    [
+     -13.3398,
+     -22.7302
+    ],
+    [
+     -13.6637,
+     -23.5442
+    ],
+    [
+     -13.4259,
+     -24.1458
+    ],
+    [
+     -13.8106,
+     -24.8874
+    ],
+    [
+     -14.0485,
+     -25.7376
+    ],
+    [
+     -13.6896,
+     -26.5644
+    ],
+    [
+     -13.2716,
+     -28.321
+    ],
+    [
+     -12.5326,
+     -28.9409
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "AF-SA"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "pb2002-EU-AF",
+   "name": "Eurasia–Africa plate boundary",
+   "type": "plate",
+   "lat": 37.50615,
+   "lon": -19.75553,
+   "source": "W part, by Peter Bird, 1999; PB2002 plate boundaries (fraxen/tectonicplates GeoJSON). The dot is the line centroid, not a surveyed point.",
+   "source_url": "https://github.com/fraxen/tectonicplates",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -29.7698,
+     39.3996
+    ],
+    [
+     -29.2971,
+     39.2554
+    ],
+    [
+     -29.1881,
+     39.2786
+    ],
+    [
+     -29.0904,
+     39.3232
+    ],
+    [
+     -28.9819,
+     39.3656
+    ],
+    [
+     -28.8946,
+     39.412
+    ],
+    [
+     -28.7812,
+     39.2993
+    ],
+    [
+     -28.6863,
+     39.2144
+    ],
+    [
+     -28.6192,
+     39.1208
+    ],
+    [
+     -28.4836,
+     39.1558
+    ],
+    [
+     -28.4204,
+     39.0927
+    ],
+    [
+     -28.3649,
+     39.0204
+    ],
+    [
+     -28.2919,
+     38.9394
+    ],
+    [
+     -28.1199,
+     38.9685
+    ],
+    [
+     -27.9546,
+     39.0041
+    ],
+    [
+     -27.7223,
+     38.9416
+    ],
+    [
+     -27.6061,
+     38.8635
+    ],
+    [
+     -27.4844,
+     38.7824
+    ],
+    [
+     -27.2033,
+     38.6999
+    ],
+    [
+     -27.129,
+     38.607
+    ],
+    [
+     -27.0289,
+     38.4911
+    ],
+    [
+     -26.9408,
+     38.4003
+    ],
+    [
+     -26.8299,
+     38.2782
+    ],
+    [
+     -26.6474,
+     38.3576
+    ],
+    [
+     -26.5323,
+     38.2554
+    ],
+    [
+     -26.4166,
+     38.1493
+    ],
+    [
+     -26.3021,
+     38.0468
+    ],
+    [
+     -26.0752,
+     37.9655
+    ],
+    [
+     -25.9162,
+     37.8386
+    ],
+    [
+     -25.7341,
+     37.8159
+    ],
+    [
+     -25.6332,
+     37.7225
+    ],
+    [
+     -25.4638,
+     37.7517
+    ],
+    [
+     -25.3547,
+     37.6633
+    ],
+    [
+     -25.1013,
+     37.6463
+    ],
+    [
+     -24.9315,
+     37.6091
+    ],
+    [
+     -24.8451,
+     37.5519
+    ],
+    [
+     -24.7748,
+     37.5001
+    ],
+    [
+     -24.6669,
+     37.411
+    ],
+    [
+     -24.7379,
+     37.2733
+    ],
+    [
+     -24.6805,
+     37.1267
+    ],
+    [
+     -24.5541,
+     37.0172
+    ],
+    [
+     -24.4337,
+     36.9105
+    ],
+    [
+     -24.3111,
+     36.7925
+    ],
+    [
+     -24.1461,
+     36.7885
+    ],
+    [
+     -23.5697,
+     36.6459
+    ],
+    [
+     -22.216,
+     36.7543
+    ],
+    [
+     -20.7973,
+     36.8809
+    ],
+    [
+     -19.6823,
+     37.0251
+    ],
+    [
+     -18.1244,
+     37.4657
+    ],
+    [
+     -16.742,
+     37.4354
+    ],
+    [
+     -15.3865,
+     37.2117
+    ],
+    [
+     -14.4109,
+     37.2101
+    ],
+    [
+     -12.9035,
+     36.8638
+    ],
+    [
+     -11.5854,
+     35.8512
+    ],
+    [
+     -10.4287,
+     36.3916
+    ],
+    [
+     -9.54521,
+     36.4296
+    ],
+    [
+     -8.03122,
+     35.6675
+    ],
+    [
+     -6.73029,
+     35.0633
+    ],
+    [
+     -6.03973,
+     34.5174
+    ],
+    [
+     -5.80797,
+     34.0191
+    ],
+    [
+     -5.07226,
+     34.0783
+    ],
+    [
+     -4.05645,
+     34.1993
+    ],
+    [
+     -3.74936,
+     35.5962
+    ],
+    [
+     -2.89332,
+     36.0184
+    ],
+    [
+     -1.99172,
+     35.8985
+    ],
+    [
+     -0.74776,
+     35.7757
+    ],
+    [
+     0.66703,
+     36.0723
+    ],
+    [
+     1.97018,
+     36.5026
+    ],
+    [
+     3.45358,
+     36.8509
+    ],
+    [
+     5.14204,
+     37.0821
+    ],
+    [
+     6.78405,
+     37.3219
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "EU-AF"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "pb2002-PA-AN",
+   "name": "Pacific–Antarctica plate boundary",
+   "type": "plate",
+   "lat": -53.70315,
+   "lon": -135.60893,
+   "source": "Mueller et al. [1987]; PB2002 plate boundaries (fraxen/tectonicplates GeoJSON). The dot is the line centroid, not a surveyed point.",
+   "source_url": "https://github.com/fraxen/tectonicplates",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -180.0,
+     -65.7494
+    ],
+    [
+     -178.793,
+     -66.1632
+    ],
+    [
+     -177.072,
+     -65.6069
+    ],
+    [
+     -175.07,
+     -65.505
+    ],
+    [
+     -173.709,
+     -65.5061
+    ],
+    [
+     -171.3,
+     -64.3564
+    ],
+    [
+     -169.839,
+     -64.7637
+    ],
+    [
+     -168.379,
+     -63.7303
+    ],
+    [
+     -166.608,
+     -62.49
+    ],
+    [
+     -165.149,
+     -63.007
+    ],
+    [
+     -163.001,
+     -62.9675
+    ],
+    [
+     -161.338,
+     -62.6144
+    ],
+    [
+     -159.888,
+     -62.5954
+    ],
+    [
+     -158.394,
+     -62.7885
+    ],
+    [
+     -156.717,
+     -63.324
+    ],
+    [
+     -155.254,
+     -62.4327
+    ],
+    [
+     -154.181,
+     -61.8361
+    ],
+    [
+     -152.943,
+     -60.8407
+    ],
+    [
+     -151.329,
+     -59.4694
+    ],
+    [
+     -149.809,
+     -59.3141
+    ],
+    [
+     -148.276,
+     -58.13
+    ],
+    [
+     -147.167,
+     -57.6379
+    ],
+    [
+     -145.979,
+     -56.6686
+    ],
+    [
+     -144.857,
+     -55.7842
+    ],
+    [
+     -143.324,
+     -56.2625
+    ],
+    [
+     -141.211,
+     -56.8392
+    ],
+    [
+     -140.041,
+     -56.7722
+    ],
+    [
+     -139.191,
+     -55.7249
+    ],
+    [
+     -139.253,
+     -55.2509
+    ],
+    [
+     -138.338,
+     -54.141
+    ],
+    [
+     -137.522,
+     -53.6878
+    ],
+    [
+     -136.18,
+     -53.3957
+    ],
+    [
+     -134.205,
+     -53.8871
+    ],
+    [
+     -132.126,
+     -54.4323
+    ],
+    [
+     -130.059,
+     -54.9314
+    ],
+    [
+     -128.624,
+     -55.3215
+    ],
+    [
+     -126.8,
+     -55.0641
+    ],
+    [
+     -125.077,
+     -55.4541
+    ],
+    [
+     -123.442,
+     -55.715
+    ],
+    [
+     -121.862,
+     -56.0262
+    ],
+    [
+     -121.228,
+     -55.2189
+    ],
+    [
+     -119.685,
+     -54.6416
+    ],
+    [
+     -118.313,
+     -54.3503
+    ],
+    [
+     -117.661,
+     -53.1241
+    ],
+    [
+     -118.875,
+     -52.7524
+    ],
+    [
+     -118.12,
+     -51.7718
+    ],
+    [
+     -117.522,
+     -50.8747
+    ],
+    [
+     -116.802,
+     -49.8934
+    ],
+    [
+     -115.233,
+     -49.5892
+    ],
+    [
+     -113.875,
+     -49.8489
+    ],
+    [
+     -113.528,
+     -48.841
+    ],
+    [
+     -113.131,
+     -47.7733
+    ],
+    [
+     -112.685,
+     -46.5385
+    ],
+    [
+     -112.675,
+     -45.8327
+    ],
+    [
+     -112.381,
+     -44.9378
+    ],
+    [
+     -111.971,
+     -43.7738
+    ],
+    [
+     -111.538,
+     -42.6833
+    ],
+    [
+     -110.954,
+     -42.2487
+    ],
+    [
+     -110.754,
+     -40.7597
+    ],
+    [
+     -110.533,
+     -39.5749
+    ],
+    [
+     -111.27,
+     -38.9785
+    ],
+    [
+     -111.067,
+     -38.276
+    ],
+    [
+     -110.668,
+     -37.0423
+    ],
+    [
+     -110.739,
+     -36.3578
+    ],
+    [
+     -110.579,
+     -35.8301
+    ],
+    [
+     -110.877,
+     -35.3191
+    ],
+    [
+     -110.827,
+     -35.0908
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "PA-AN"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "pb2002-PA-AN",
+   "name": "Pacific–Antarctica plate boundary",
+   "type": "plate",
+   "lat": -53.70315,
+   "lon": -135.60893,
+   "source": "Mueller et al. [1987]; PB2002 plate boundaries (fraxen/tectonicplates GeoJSON). The dot is the line centroid, not a surveyed point.",
+   "source_url": "https://github.com/fraxen/tectonicplates",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     -180.0,
+     -65.7494
+    ],
+    [
+     -178.793,
+     -66.1632
+    ],
+    [
+     -177.072,
+     -65.6069
+    ],
+    [
+     -175.07,
+     -65.505
+    ],
+    [
+     -173.709,
+     -65.5061
+    ],
+    [
+     -171.3,
+     -64.3564
+    ],
+    [
+     -169.839,
+     -64.7637
+    ],
+    [
+     -168.379,
+     -63.7303
+    ],
+    [
+     -166.608,
+     -62.49
+    ],
+    [
+     -165.149,
+     -63.007
+    ],
+    [
+     -163.001,
+     -62.9675
+    ],
+    [
+     -161.338,
+     -62.6144
+    ],
+    [
+     -159.888,
+     -62.5954
+    ],
+    [
+     -158.394,
+     -62.7885
+    ],
+    [
+     -156.717,
+     -63.324
+    ],
+    [
+     -155.254,
+     -62.4327
+    ],
+    [
+     -154.181,
+     -61.8361
+    ],
+    [
+     -152.943,
+     -60.8407
+    ],
+    [
+     -151.329,
+     -59.4694
+    ],
+    [
+     -149.809,
+     -59.3141
+    ],
+    [
+     -148.276,
+     -58.13
+    ],
+    [
+     -147.167,
+     -57.6379
+    ],
+    [
+     -145.979,
+     -56.6686
+    ],
+    [
+     -144.857,
+     -55.7842
+    ],
+    [
+     -143.324,
+     -56.2625
+    ],
+    [
+     -141.211,
+     -56.8392
+    ],
+    [
+     -140.041,
+     -56.7722
+    ],
+    [
+     -139.191,
+     -55.7249
+    ],
+    [
+     -139.253,
+     -55.2509
+    ],
+    [
+     -138.338,
+     -54.141
+    ],
+    [
+     -137.522,
+     -53.6878
+    ],
+    [
+     -136.18,
+     -53.3957
+    ],
+    [
+     -134.205,
+     -53.8871
+    ],
+    [
+     -132.126,
+     -54.4323
+    ],
+    [
+     -130.059,
+     -54.9314
+    ],
+    [
+     -128.624,
+     -55.3215
+    ],
+    [
+     -126.8,
+     -55.0641
+    ],
+    [
+     -125.077,
+     -55.4541
+    ],
+    [
+     -123.442,
+     -55.715
+    ],
+    [
+     -121.862,
+     -56.0262
+    ],
+    [
+     -121.228,
+     -55.2189
+    ],
+    [
+     -119.685,
+     -54.6416
+    ],
+    [
+     -118.313,
+     -54.3503
+    ],
+    [
+     -117.661,
+     -53.1241
+    ],
+    [
+     -118.875,
+     -52.7524
+    ],
+    [
+     -118.12,
+     -51.7718
+    ],
+    [
+     -117.522,
+     -50.8747
+    ],
+    [
+     -116.802,
+     -49.8934
+    ],
+    [
+     -115.233,
+     -49.5892
+    ],
+    [
+     -113.875,
+     -49.8489
+    ],
+    [
+     -113.528,
+     -48.841
+    ],
+    [
+     -113.131,
+     -47.7733
+    ],
+    [
+     -112.685,
+     -46.5385
+    ],
+    [
+     -112.675,
+     -45.8327
+    ],
+    [
+     -112.381,
+     -44.9378
+    ],
+    [
+     -111.971,
+     -43.7738
+    ],
+    [
+     -111.538,
+     -42.6833
+    ],
+    [
+     -110.954,
+     -42.2487
+    ],
+    [
+     -110.754,
+     -40.7597
+    ],
+    [
+     -110.533,
+     -39.5749
+    ],
+    [
+     -111.27,
+     -38.9785
+    ],
+    [
+     -111.067,
+     -38.276
+    ],
+    [
+     -110.668,
+     -37.0423
+    ],
+    [
+     -110.739,
+     -36.3578
+    ],
+    [
+     -110.579,
+     -35.8301
+    ],
+    [
+     -110.877,
+     -35.3191
+    ],
+    [
+     -110.827,
+     -35.0908
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "PA-AN"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "pb2002-AU-AN",
+   "name": "Australia–Antarctica plate boundary",
+   "type": "plate",
+   "lat": -38.74317,
+   "lon": 85.2395,
+   "source": "Mueller et al. [1987]; PB2002 plate boundaries (fraxen/tectonicplates GeoJSON). The dot is the line centroid, not a surveyed point.",
+   "source_url": "https://github.com/fraxen/tectonicplates",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     69.9595,
+     -25.6512
+    ],
+    [
+     70.4086,
+     -26.0604
+    ],
+    [
+     70.6654,
+     -25.9124
+    ],
+    [
+     70.9943,
+     -26.1873
+    ],
+    [
+     71.1354,
+     -26.0831
+    ],
+    [
+     71.58,
+     -26.4544
+    ],
+    [
+     71.7166,
+     -26.3857
+    ],
+    [
+     72.0656,
+     -26.656
+    ],
+    [
+     72.0084,
+     -26.7182
+    ],
+    [
+     72.4626,
+     -27.1462
+    ],
+    [
+     72.9202,
+     -27.5728
+    ],
+    [
+     73.1227,
+     -27.4458
+    ],
+    [
+     73.3995,
+     -27.655
+    ],
+    [
+     73.5342,
+     -27.5698
+    ],
+    [
+     73.9685,
+     -27.9442
+    ],
+    [
+     74.4058,
+     -28.3173
+    ],
+    [
+     74.1922,
+     -28.5413
+    ],
+    [
+     74.5917,
+     -28.9035
+    ],
+    [
+     74.994,
+     -29.2645
+    ],
+    [
+     74.9376,
+     -29.3284
+    ],
+    [
+     75.5539,
+     -29.8394
+    ],
+    [
+     75.3641,
+     -30.0058
+    ],
+    [
+     75.5149,
+     -30.1176
+    ],
+    [
+     75.3926,
+     -30.2401
+    ],
+    [
+     75.7972,
+     -30.5735
+    ],
+    [
+     76.2045,
+     -30.9057
+    ],
+    [
+     76.1481,
+     -30.9704
+    ],
+    [
+     76.6894,
+     -31.4649
+    ],
+    [
+     76.3948,
+     -31.7191
+    ],
+    [
+     76.8124,
+     -32.09
+    ],
+    [
+     77.2334,
+     -32.4595
+    ],
+    [
+     77.6578,
+     -32.8276
+    ],
+    [
+     78.0858,
+     -33.1942
+    ],
+    [
+     77.3518,
+     -33.8383
+    ],
+    [
+     77.9166,
+     -34.3238
+    ],
+    [
+     78.4879,
+     -34.8067
+    ],
+    [
+     78.4423,
+     -34.8423
+    ],
+    [
+     78.8035,
+     -35.1612
+    ],
+    [
+     78.2011,
+     -35.6831
+    ],
+    [
+     78.6899,
+     -36.098
+    ],
+    [
+     79.1839,
+     -36.5109
+    ],
+    [
+     78.6063,
+     -36.9983
+    ],
+    [
+     78.0213,
+     -37.4829
+    ],
+    [
+     78.7061,
+     -38.0006
+    ],
+    [
+     78.1815,
+     -38.3932
+    ],
+    [
+     78.5293,
+     -38.6592
+    ],
+    [
+     78.0731,
+     -39.0049
+    ],
+    [
+     78.3839,
+     -39.262
+    ],
+    [
+     78.0024,
+     -39.5385
+    ],
+    [
+     78.4254,
+     -39.9049
+    ],
+    [
+     77.8245,
+     -40.326
+    ],
+    [
+     78.4837,
+     -40.8664
+    ],
+    [
+     78.6586,
+     -40.8722
+    ],
+    [
+     79.3191,
+     -41.384
+    ],
+    [
+     79.99,
+     -41.8919
+    ],
+    [
+     80.4635,
+     -41.5119
+    ],
+    [
+     80.9315,
+     -41.1299
+    ],
+    [
+     81.752,
+     -41.7225
+    ],
+    [
+     82.5877,
+     -42.3091
+    ],
+    [
+     83.439,
+     -42.8896
+    ],
+    [
+     83.8533,
+     -42.5506
+    ],
+    [
+     84.2631,
+     -42.2101
+    ],
+    [
+     84.6686,
+     -41.8682
+    ],
+    [
+     85.0697,
+     -41.5249
+    ],
+    [
+     85.4665,
+     -41.1802
+    ],
+    [
+     85.8592,
+     -40.8341
+    ],
+    [
+     86.402,
+     -41.1288
+    ],
+    [
+     86.9497,
+     -41.421
+    ],
+    [
+     87.5023,
+     -41.7105
+    ],
+    [
+     88.0599,
+     -41.9974
+    ],
+    [
+     88.4884,
+     -41.6859
+    ],
+    [
+     89.0106,
+     -41.9442
+    ],
+    [
+     89.537,
+     -42.2002
+    ],
+    [
+     90.0677,
+     -42.4538
+    ],
+    [
+     90.6027,
+     -42.7049
+    ],
+    [
+     91.142,
+     -42.9534
+    ],
+    [
+     91.6857,
+     -43.1994
+    ],
+    [
+     92.2337,
+     -43.4428
+    ],
+    [
+     92.7862,
+     -43.6836
+    ],
+    [
+     93.3431,
+     -43.9217
+    ],
+    [
+     93.9044,
+     -44.1571
+    ],
+    [
+     94.4702,
+     -44.3897
+    ],
+    [
+     95.0405,
+     -44.6195
+    ],
+    [
+     94.9257,
+     -44.8053
+    ],
+    [
+     95.8064,
+     -45.1414
+    ],
+    [
+     96.6975,
+     -45.4707
+    ],
+    [
+     96.2738,
+     -45.9963
+    ],
+    [
+     95.842,
+     -46.5203
+    ],
+    [
+     96.458,
+     -46.7718
+    ],
+    [
+     97.0797,
+     -47.02
+    ],
+    [
+     97.7072,
+     -47.2648
+    ],
+    [
+     98.3404,
+     -47.5061
+    ],
+    [
+     98.9794,
+     -47.7439
+    ],
+    [
+     99.6243,
+     -47.9781
+    ],
+    [
+     100.202,
+     -47.2665
+    ],
+    [
+     100.817,
+     -47.4654
+    ],
+    [
+     101.436,
+     -47.661
+    ],
+    [
+     102.06,
+     -47.8533
+    ],
+    [
+     102.688,
+     -48.0421
+    ],
+    [
+     103.321,
+     -48.2275
+    ],
+    [
+     103.959,
+     -48.4093
+    ],
+    [
+     104.601,
+     -48.5877
+    ],
+    [
+     105.247,
+     -48.7624
+    ],
+    [
+     105.898,
+     -48.9335
+    ],
+    [
+     106.554,
+     -49.1009
+    ],
+    [
+     106.692,
+     -48.8414
+    ],
+    [
+     107.486,
+     -49.0146
+    ],
+    [
+     108.285,
+     -49.1823
+    ],
+    [
+     108.24,
+     -49.2587
+    ],
+    [
+     109.351,
+     -49.5235
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "AU-AN"
+   ],
+   "group": "feature"
+  },
+  {
+   "id": "pb2002-PA/AU",
+   "name": "Pacific–Australia plate boundary",
+   "type": "plate",
+   "lat": -10.58281,
+   "lon": 161.08293,
+   "source": "Mueller et al. [1987]; PB2002 plate boundaries (fraxen/tectonicplates GeoJSON). The dot is the line centroid, not a surveyed point.",
+   "source_url": "https://github.com/fraxen/tectonicplates",
+   "retrieved": "2026-09-25",
+   "record_year": null,
+   "record_property": null,
+   "line": [
+    [
+     156.296,
+     -8.17405
+    ],
+    [
+     156.467,
+     -8.3819
+    ],
+    [
+     156.706,
+     -8.5629
+    ],
+    [
+     156.782,
+     -8.60178
+    ],
+    [
+     156.858,
+     -8.61536
+    ],
+    [
+     156.935,
+     -8.64158
+    ],
+    [
+     157.049,
+     -8.70619
+    ],
+    [
+     157.177,
+     -8.74562
+    ],
+    [
+     157.241,
+     -8.7843
+    ],
+    [
+     157.317,
+     -8.82313
+    ],
+    [
+     157.419,
+     -8.9002
+    ],
+    [
+     157.572,
+     -8.96515
+    ],
+    [
+     157.648,
+     -9.00394
+    ],
+    [
+     157.724,
+     -9.06805
+    ],
+    [
+     157.827,
+     -9.10708
+    ],
+    [
+     157.916,
+     -9.15863
+    ],
+    [
+     157.992,
+     -9.21004
+    ],
+    [
+     158.056,
+     -9.24866
+    ],
+    [
+     158.145,
+     -9.31285
+    ],
+    [
+     158.273,
+     -9.39006
+    ],
+    [
+     158.388,
+     -9.44177
+    ],
+    [
+     158.478,
+     -9.48058
+    ],
+    [
+     158.58,
+     -9.50679
+    ],
+    [
+     158.709,
+     -9.54586
+    ],
+    [
+     158.773,
+     -9.55904
+    ],
+    [
+     158.85,
+     -9.58499
+    ],
+    [
+     158.926,
+     -9.6236
+    ],
+    [
+     159.003,
+     -9.64952
+    ],
+    [
+     159.068,
+     -9.68801
+    ],
+    [
+     159.119,
+     -9.72641
+    ],
+    [
+     159.17,
+     -9.7648
+    ],
+    [
+     159.221,
+     -9.82854
+    ],
+    [
+     159.285,
+     -9.87969
+    ],
+    [
+     159.362,
+     -9.93092
+    ],
+    [
+     159.439,
+     -9.96945
+    ],
+    [
+     159.503,
+     -10.0206
+    ],
+    [
+     159.58,
+     -10.0844
+    ],
+    [
+     159.644,
+     -10.1229
+    ],
+    [
+     159.708,
+     -10.1739
+    ],
+    [
+     159.772,
+     -10.1997
+    ],
+    [
+     159.837,
+     -10.2507
+    ],
+    [
+     159.914,
+     -10.2765
+    ],
+    [
+     159.978,
+     -10.3149
+    ],
+    [
+     160.068,
+     -10.3787
+    ],
+    [
+     160.132,
+     -10.417
+    ],
+    [
+     160.21,
+     -10.4681
+    ],
+    [
+     160.287,
+     -10.5192
+    ],
+    [
+     160.364,
+     -10.5702
+    ],
+    [
+     160.493,
+     -10.6341
+    ],
+    [
+     160.544,
+     -10.6723
+    ],
+    [
+     160.622,
+     -10.7233
+    ],
+    [
+     160.725,
+     -10.787
+    ],
+    [
+     160.776,
+     -10.8379
+    ],
+    [
+     160.867,
+     -10.9142
+    ],
+    [
+     160.931,
+     -10.9651
+    ],
+    [
+     160.996,
+     -11.0287
+    ],
+    [
+     161.06,
+     -11.0541
+    ],
+    [
+     161.125,
+     -11.1304
+    ],
+    [
+     161.202,
+     -11.1685
+    ],
+    [
+     161.306,
+     -11.194
+    ],
+    [
+     161.384,
+     -11.2321
+    ],
+    [
+     161.461,
+     -11.2448
+    ],
+    [
+     161.552,
+     -11.2829
+    ],
+    [
+     161.72,
+     -11.3209
+    ],
+    [
+     161.798,
+     -11.3589
+    ],
+    [
+     161.901,
+     -11.3968
+    ],
+    [
+     162.018,
+     -11.422
+    ],
+    [
+     162.109,
+     -11.4345
+    ],
+    [
+     162.225,
+     -11.4216
+    ],
+    [
+     162.354,
+     -11.4212
+    ],
+    [
+     162.484,
+     -11.4208
+    ],
+    [
+     162.626,
+     -11.3823
+    ],
+    [
+     162.833,
+     -11.356
+    ],
+    [
+     163.053,
+     -11.3106
+    ],
+    [
+     163.195,
+     -11.2908
+    ],
+    [
+     163.311,
+     -11.2647
+    ],
+    [
+     163.505,
+     -11.2381
+    ],
+    [
+     163.699,
+     -11.1987
+    ],
+    [
+     163.854,
+     -11.1848
+    ],
+    [
+     163.996,
+     -11.1583
+    ],
+    [
+     164.151,
+     -11.1443
+    ],
+    [
+     164.267,
+     -11.1179
+    ],
+    [
+     164.409,
+     -11.0913
+    ],
+    [
+     164.512,
+     -11.0903
+    ],
+    [
+     164.641,
+     -11.1143
+    ],
+    [
+     164.758,
+     -11.1637
+    ],
+    [
+     164.901,
+     -11.2002
+    ],
+    [
+     165.07,
+     -11.2869
+    ],
+    [
+     165.252,
+     -11.4113
+    ],
+    [
+     165.396,
+     -11.5487
+    ],
+    [
+     165.514,
+     -11.6864
+    ],
+    [
+     165.621,
+     -11.8875
+    ],
+    [
+     165.715,
+     -12.1266
+    ],
+    [
+     165.77,
+     -12.3157
+    ],
+    [
+     165.838,
+     -12.5171
+    ],
+    [
+     165.894,
+     -12.744
+    ],
+    [
+     165.909,
+     -12.8703
+    ],
+    [
+     165.952,
+     -13.0721
+    ],
+    [
+     166.02,
+     -13.2608
+    ],
+    [
+     166.09,
+     -13.5126
+    ],
+    [
+     166.132,
+     -13.6763
+    ],
+    [
+     166.154,
+     -13.7794
+    ]
+   ],
+   "place_note": "",
+   "aliases": [
+    "PA/AU"
+   ],
+   "group": "feature"
+  }
+ ]
+}

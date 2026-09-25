@@ -1,0 +1,20 @@
+{
+  "format": "shadowlock-links-1",
+  "links": [
+    {
+      "slug": "azmail",
+      "kind": "plain",
+      "input_id": "inbox/sample",
+      "linked_at": "2026-09-24T14:00:00Z",
+      "label": "Morning intake"
+    },
+    {
+      "slug": "peacelock",
+      "kind": "lock",
+      "input_id": "hold/sample",
+      "input_path": "samples/hold.json",
+      "linked_at": "2026-09-24T16:30:00Z",
+      "label": "Hold review"
+    }
+  ]
+}

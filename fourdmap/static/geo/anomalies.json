@@ -1,0 +1,29 @@
+{
+  "retrieved": "2026-09-25",
+  "features": [
+    {
+      "id": "aoi-bermuda-triangle",
+      "name": "Bermuda Triangle",
+      "type": "aoi",
+      "group": "anomaly",
+      "lat": 25.519814814814815,
+      "lon": -70.35009259259259,
+      "ring": [
+        [-64.74, 32.32],
+        [-80.19361111111111, 25.774166666666666],
+        [-66.11666666666666, 18.46527777777778]
+      ],
+      "vertices": [
+        {"name": "Bermuda", "qid": "Q23635", "lat": 32.32, "lon": -64.74},
+        {"name": "Miami", "qid": "Q8652", "lat": 25.774166666666666, "lon": -80.19361111111111},
+        {"name": "San Juan", "qid": "Q41211", "lat": 18.46527777777778, "lon": -66.11666666666666}
+      ],
+      "source": "Commonly published corners: Bermuda, Miami, and San Juan. Coordinates copied from Wikidata P625 (Q23635, Q8652, Q41211), Earth globe Q2.",
+      "source_url": "https://www.wikidata.org/wiki/Q23635",
+      "place_note": "Geographic area of interest joining those published points. Not a surveyed boundary and not a physical phenomenon.",
+      "era_names": {},
+      "extents": [],
+      "aliases": ["Bermuda"]
+    }
+  ]
+}

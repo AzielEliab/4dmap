@@ -1,0 +1,14 @@
+{
+  "fixture": true,
+  "records": [
+    {
+      "fixture": true,
+      "event": "River gauge",
+      "date": "1914-06-02",
+      "time": "07:40",
+      "who": ["Ned Brooks"],
+      "location": "Cairo",
+      "surface": "MOCK"
+    }
+  ]
+}

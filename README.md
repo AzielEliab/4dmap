@@ -1,6 +1,6 @@
 # 4DMap
 
-Four-axis inspection coordinate frame (T Clock, Δ Interval, Γ Trajectory, Π Pattern). Receipts are not truth. Not Lumen. Not certified forensics. Not GIS 4D. Not a Node Gate.
+Place inspection cards on four axes: T Clock, Δ Interval, Γ Trajectory, and Π Pattern.
 
 **Author:** Aziel Eliab
 **Date:** 10 September 2026
@@ -8,7 +8,7 @@ Four-axis inspection coordinate frame (T Clock, Δ Interval, Γ Trajectory, Π P
 **Version:** 0.3.0
 **Spec:** `4DM-WP-1.0`
 **Paper:** [docs/4DM-WP-1.0.md](docs/4DM-WP-1.0.md) · [PDF companion note](docs/PDF-COMPANION.md)
-**Softwares bucket:** **Plain** (name 4DMap — not Gate, not Lock)
+**Softwares bucket:** **Plain**
 
 **Forks are welcome and always allowed.**
 
@@ -16,17 +16,17 @@ Four-axis inspection coordinate frame (T Clock, Δ Interval, Γ Trajectory, Π P
 
 1. Install: `curl -fsSL https://4dmap-download-tracker.vibelock.workers.dev/install.sh | bash`
 2. Run `4dmap ui` and open http://127.0.0.1:8844 (this computer only).
-3. Pin a clock, span an interval, or join two cards. Read the board. **Doctor** if you want a self-check.
+3. Press **Pin**. Run `4dmap doctor` for a self-check.
 
-Those cards are inspection coordinates. They do not certify facts, name people, or backdate a clock from a pattern.
+## Notes
 
-## Honest scope
+4DMap is an inspection coordinate frame over TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock evidence. Cards are 4DM-CARD receipts with fail-closed SHA-256. Forks are kept. The ZionPattern cap is 75%. A silent lens returns Π-EMPTY.
 
-**THIS IS:** an inspection coordinate frame over TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock evidence. 4DM-CARD receipts. Fail-closed SHA-256. Forks kept. ZionPattern cap 75%. Π-EMPTY when the lens is silent.
+Receipts are not a truth engine, Lumen, GIS 4D, a Node Gate, or certified forensics. Cards do not store a legal name, home, or county, and they do not certify facts, name people, or backdate a clock from a pattern.
 
-**THIS IS NOT:** a truth engine; Lumen; GIS 4D; a Node Gate; certified forensics; an identity store. No legal name, home, or county on cards. QNS/QNM do not carry 4DMap photons.
+Author: **Aziel Eliab**.
 
-Public identity **Aziel Eliab** only. GodLock is a sibling product name elsewhere. Never attach a GodLock-plus-AZ identity label.
+**ShadowLock is a separate Softwares.** It has its own download and desk. 4DMap does not install it and does not edit its links.
 
 ## Pipeline placement
 
@@ -78,17 +78,25 @@ Open http://127.0.0.1:8844. No CDN, no telemetry.
 ## CLI
 
 ```bash
-python3 4dmap.py pin --t 2026-09-10T00:00:00Z --src synthetic
-python3 4dmap.py demo -o result.json
+4dmap
 4dmap ui
+4dmap pin --t 2026-09-10T00:00:00Z --src synthetic
+4dmap pin --json --t 2026-09-10T00:00:00Z --src synthetic
 4dmap doctor
+4dmap shadow
 ```
+
+A person gets a short summary. `--json` prints the machine object. `-o` still writes that object to a file. Advanced commands stay available; `4dmap --help` lists them after the common ones. `4dmap shadow` reads the ShadowLock link file.
 
 ## Local UI
 
-`4dmap ui` serves a loopback board at http://127.0.0.1:8844
+`4dmap ui` prints `Open http://127.0.0.1:8844/` and serves the workbench on this computer only.
 
-Four axes, a card list, pin / span / join / walk_trace / export. Binds `127.0.0.1` only.
+The first screen is a globe and **Pin**. Drag the globe to turn it. Scroll or pinch to zoom. A pin is a paper date, an event, and a reported place. Opening a pin shades an approximate area and says why, in plain words. It does not draw an exact point. Search takes an event, a time, a place, or a person. Layers (blank earth, estimated era borders, satellite, topography, oceanography, street view, LiDAR, anomaly boundaries, and Softwares · Shadow) each turn on and off on their own. Estimated country borders follow the era and say “estimated borders; source year …”. A missing year uses the nearest public set. The anomaly layer draws a cited geographic outline only. The Bermuda Triangle joins the published Bermuda, Miami, and San Juan points and says “modern cited outline; no era outline in source” when no dated outline is in the source. Satellite, topography, ocean, street, and LiDAR fetch only after you turn that layer on. Topography is separate from LiDAR. Major geo features sits above Subsurface in the layer panel. Those markers are cited public locations, not event pins. A place with no public subsurface map says “no public subsurface map here.” Major geo features and subsurface sites follow that same era. A source with no historical extent keeps its modern geometry and says “modern catalog shape; no historical extent in source.” Enough cited pins that share the place and the era can tighten the displayed disc; the chip then says “recalibrated from N pins,” and the catalog name stays beside it. Fewer pins stay “catalog only; not enough pins to recalibrate.” That refinement is cited receipts on the same lattice. Posterior ≠ truth. The era, or the open pin's date, picks the public time slice. Place labels use the bundled era basemap name, and a city with no era label in that source keeps its modern name and says so. A missing slice says the nearest public frame and does not wear the historical year. Connected pins draw a thin tether and a pattern matrix on the same lattice. Corpus sync reads every reachable corpus file, not one sample. Each record maps onto geo, date, time, person, and location, and a dated pin shows on its era slice. A record with no date stays in “undated / era unknown” and is not given a year. Search can combine a person, a year, and a place. A corpus mention or an upload can propose a pin and say why; a thin match waits for Pin. The page follows the system light or dark theme. Span, join, walk, import, and uploads sit under **Advanced**. **Notes** holds the inspection scope.
+
+Pins from the page, the CLI, and `--json` append to the same hash chain: `~/.4dmap/lattice.json` (or `FOURDMAP_LATTICE`). The ops are the existing `library_pin`, `lattice_tip`, and `verify_chain`.
+
+**Softwares · Shadow** is one read-only layer. ShadowLock is a separate Softwares. The file is `~/.shadowlock/links.json`, or the path in `SHADOWLOCK_LINKS`. The shape is [docs/SHADOWLOCK-LINKS.md](docs/SHADOWLOCK-LINKS.md). When the file is empty, the page says “No ShadowLock links yet” and points to the ShadowLock package.
 
 ## iPhone & Android
 

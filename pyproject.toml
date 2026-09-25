@@ -48,7 +48,7 @@ Paper = "https://github.com/AzielEliab/4dmap/blob/main/docs/4DM-WP-1.0.md"
 include = ["fourdmap*"]
 
 [tool.setuptools.package-data]
-fourdmap = ["static/*"]
+fourdmap = ["static/*", "static/*/*", "static/*/*/*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
