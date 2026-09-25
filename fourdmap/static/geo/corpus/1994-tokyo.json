@@ -1,0 +1,13 @@
+{
+  "fixture": true,
+  "records": [
+    {
+      "fixture": true,
+      "event": "Harbor list",
+      "date": "1994-11-08",
+      "who": ["Ada Quill"],
+      "location": "Tokyo",
+      "surface": "MOCK"
+    }
+  ]
+}

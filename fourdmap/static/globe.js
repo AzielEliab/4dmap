@@ -589,7 +589,11 @@ function rebuildPins() {
   }
   const list = $("pin-list");
   list.innerHTML = "";
-  for (const pin of pins) {
+  const shown = pins.filter((pin) => {
+    const match = String(pin.clock || "").match(/(\d{4})/);
+    return match ? nearestEra(Number(match[1])) === nearestEra(eraYear) : false;
+  });
+  for (const pin of shown) {
     if (pin.lat == null || pin.lon == null) continue;
     const score = scoreOf(pin);
     const fresh = !opened.has(pin.id);
@@ -783,7 +787,13 @@ function fillCard(pin, area) {
   $("card-date").textContent = pin.clock || "";
   $("card-place").textContent = pin.placeLine || pin.place || "No place words on this pin.";
   const people = Array.isArray(pin.who) ? pin.who.filter(Boolean) : [];
-  $("card-who").textContent = people.length ? people.join(", ") : "No person label on this pin.";
+  $("card-time").textContent = pin.time || "no time in source";
+  const geo = pin.lat != null && pin.lon != null
+    ? `${pin.lat}, ${pin.lon}${String(pin.note || "").includes("place estimated") ? " · place estimated" : ""}`
+    : "no geo in source";
+  $("card-geo").textContent = geo;
+  $("card-who").textContent = people.length ? people.join(", ") : "no person in source";
+  $("card-reason").textContent = pin.note || "";
   const possibility = pin.possibility;
   $("card-possibility").textContent = possibility
     ? `possibility ${Number(possibility.value).toFixed(2)} — time × place, not truth`
@@ -858,6 +868,7 @@ function showEraForPin(year) {
   refreshFrames();
   refreshPlaceLabels();
   loadBorderNote();
+  rebuildPins();
 }
 
 async function openPin(id) {
@@ -938,11 +949,12 @@ async function search(query) {
   list.innerHTML = "";
   const q = query.trim().toLowerCase();
   if (!q) return;
-  const hits = pins.filter((pin) => {
+  const tokens = q.split(/\s+/).filter(Boolean);
+  const hits = pins.filter((pin) => tokens.every((token) => {
     const people = Array.isArray(pin.who) ? pin.who.join(" ") : "";
-    const blob = `${pin.event || ""} ${people} ${pin.place || ""} ${pin.clock || ""} ${(pin.eraTerms || []).join(" ")}`.toLowerCase();
-    return blob.includes(q) || timeHit(pin, q) || placeAliasHit(pin, q);
-  });
+    const blob = `${pin.event || ""} ${people} ${pin.place || ""} ${pin.clock || ""} ${pin.time || ""} ${(pin.eraTerms || []).join(" ")}`.toLowerCase();
+    return blob.includes(token) || timeHit(pin, token) || placeAliasHit(pin, token);
+  }));
   const featureHits = [...featureRows, ...subsurfaceRows].filter((row) => {
     const blob = `${row.name || ""} ${(row.aliases || []).join(" ")} ${row.type || ""}`.toLowerCase();
     return blob.includes(q);
@@ -1590,10 +1602,16 @@ async function loadPattern() {
 function renderCandidates(candidates) {
   const list = $("candidate-list");
   const empty = $("candidate-empty");
+  const undatedList = $("undated-list");
+  const undatedEmpty = $("undated-empty");
   list.innerHTML = "";
+  if (undatedList) undatedList.innerHTML = "";
   const rows = candidates || [];
-  empty.hidden = rows.length > 0;
-  for (const row of rows) {
+  const undated = rows.filter((row) => !row.date || row.era === "undated / era unknown");
+  const dated = rows.filter((row) => row.date && row.era !== "undated / era unknown");
+  empty.hidden = dated.length > 0;
+  if (undatedEmpty) undatedEmpty.hidden = undated.length > 0;
+  for (const row of dated) {
     const item = document.createElement("li");
     const badge = document.createElement("span");
     badge.className = "badge";
@@ -1614,6 +1632,7 @@ function renderCandidates(candidates) {
         if (row.event) $("event").value = row.event;
         if (row.date) $("date").value = row.date;
         if (row.place) $("place").value = row.place;
+        if (Array.isArray(row.who) && row.who.length) $("who").value = row.who.join(", ");
         if (row.lat != null) $("lat").value = String(row.lat);
         if (row.lon != null) $("lon").value = String(row.lon);
         $("status").textContent = "This match is not sealed yet. Press Pin to confirm it.";
@@ -1622,6 +1641,16 @@ function renderCandidates(candidates) {
       item.append(button);
     }
     list.append(item);
+  }
+  for (const row of undated) {
+    const item = document.createElement("li");
+    const badge = document.createElement("span");
+    badge.className = "badge";
+    badge.textContent = "undated / era unknown";
+    const reason = document.createElement("p");
+    reason.textContent = row.reason || "";
+    item.append(badge, reason);
+    if (undatedList) undatedList.append(item);
   }
 }
 
@@ -1686,7 +1715,9 @@ async function sealCandidate(row) {
     lat: row.lat,
     lon: row.lon,
     place: row.place,
-    surface: "MOCK",
+    who: row.who || [],
+    time: row.time || undefined,
+    surface: row.surface === "REAL" ? "REAL" : "MOCK",
     src: "aziel-corpus",
     note: `from corpus/upload · ${row.reason}`,
   });
@@ -1909,6 +1940,7 @@ $("era").addEventListener("input", () => {
   refreshPlaceLabels();
   loadBorderNote();
   loadCatalogs();
+  rebuildPins();
 });
 for (const [id, key] of [
   ["layer-land", "land"],
@@ -1995,6 +2027,8 @@ $("corpus-sync").addEventListener("click", async () => {
   const response = await fetch("/v1/corpus");
   const data = await response.json();
   await takeCandidates(data.candidates || []);
+  const files = Array.isArray(data.files) ? data.files.length : 0;
+  if (files) $("status").textContent = data.message || `Read ${files} corpus files.`;
   if (!data.candidates || !data.candidates.length) {
     $("candidate-empty").hidden = false;
     $("candidate-empty").textContent = data.message || "No corpus or upload match yet.";

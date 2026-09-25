@@ -14,7 +14,7 @@ from .chainfile import load_cards, save_cards
 from .earth import describe_frame
 from .features import list_features, list_subsurface
 from .layers import fetch_satellite, fetch_topography, lidar_lookup, street_lookup
-from .ling import load_corpus_text, propose
+from .ling import collect_corpus, propose
 from .names import border_note, era_label, label_cards
 from .ops import dispatch
 from .pattern import pattern_matrix
@@ -152,11 +152,7 @@ def make_server(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> ThreadingHTTP
                 self._json(200, matrix)
                 return
             if path == "/v1/corpus":
-                text = load_corpus_text()
-                if not text.strip():
-                    self._json(200, {"ok": True, "candidates": [], "n": 0, "message": "No local corpus mention is on this computer."})
-                    return
-                self._json(200, propose(text, source="corpus", name="corpus-mention.txt", cards=load_cards()))
+                self._json(200, collect_corpus(load_cards()))
                 return
             if path == "/v1/tiles/topography":
                 qs = parse_qs(parsed.query)

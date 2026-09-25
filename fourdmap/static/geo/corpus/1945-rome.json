@@ -1,0 +1,14 @@
+{
+  "fixture": true,
+  "records": [
+    {
+      "fixture": true,
+      "event": "Station count",
+      "date": "1945-05-01",
+      "time": "16:00",
+      "who": ["Mara Quill"],
+      "location": "Rome",
+      "surface": "MOCK"
+    }
+  ]
+}

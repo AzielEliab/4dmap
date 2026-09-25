@@ -355,6 +355,9 @@ def parse_ingest(payload: dict[str, Any], cards: list[dict[str, Any]] | None = N
         "place": place,
         "uploads": uploads,
     }
+    clock_time = str(raw.get("time") or "").strip()
+    if re.fullmatch(r"\d{2}:\d{2}", clock_time):
+        t["time"] = clock_time
     if cause:
         t["cause"] = cause
     if isinstance(hooks.get("bayesian"), dict) and hooks["bayesian"].get("value") is not None:
@@ -482,6 +485,7 @@ def plot_model(cards: list[dict[str, Any]]) -> dict[str, Any]:
                     "axis": "T",
                     "who": frame.get("who") or [],
                     "place": frame.get("place") or "",
+                    "time": frame.get("time") or "",
                     "uploads": frame.get("uploads") or [],
                     "cause": frame.get("cause") or "",
                     "note": card.get("note") or "",
