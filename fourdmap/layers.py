@@ -12,7 +12,7 @@ from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
-from .earth import satellite_slice
+from .earth import satellite_slice, topo_slice
 
 SATELLITE_URL = (
     "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi"
@@ -79,6 +79,46 @@ def fetch_satellite(year: int | None = None, day: str | None = None) -> dict[str
         "exact": exact,
         "note": slice_note,
         "event_date_imagery": bool(exact),
+    }
+
+
+def fetch_topography(year: int | None = None) -> dict[str, Any]:
+    chosen = topo_slice(year if year is not None else 1914)
+    try:
+        body, ctype = _get(chosen["url"])
+    except (HTTPError, URLError, TimeoutError, OSError) as exc:
+        return {
+            "ok": False,
+            "available": False,
+            "layer": "topography",
+            "message": "Topography did not load from NASA SRTM. No substitute relief is drawn.",
+            "reason": str(exc.__class__.__name__),
+            "note": chosen["note"],
+            "source": chosen["source"],
+            "frame_year": chosen["frame_year"],
+        }
+    if not body or not ctype.startswith("image/"):
+        return {
+            "ok": False,
+            "available": False,
+            "layer": "topography",
+            "message": "Topography did not load from NASA SRTM. No substitute relief is drawn.",
+            "reason": ctype or "empty",
+            "note": chosen["note"],
+            "source": chosen["source"],
+            "frame_year": chosen["frame_year"],
+        }
+    return {
+        "ok": True,
+        "available": True,
+        "layer": "topography",
+        "content_type": ctype,
+        "body": body,
+        "label": chosen["note"],
+        "source": chosen["source"],
+        "frame_year": chosen["frame_year"],
+        "exact": False,
+        "note": chosen["note"],
     }
 
 

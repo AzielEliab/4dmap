@@ -7,7 +7,8 @@ import threading
 from pathlib import Path
 from urllib.request import urlopen
 
-from fourdmap.earth import lidar_slice, ocean_slice, satellite_slice
+from fourdmap.earth import lidar_slice, ocean_slice, satellite_slice, topo_slice
+from fourdmap.names import NO_ERA_LABEL, era_label
 from fourdmap.ling import BADGE, load_corpus_text, propose
 from fourdmap.ops import dispatch
 from fourdmap.pattern import pattern_matrix
@@ -172,6 +173,43 @@ def test_corpus_match_seals_folds_and_waits() -> None:
     assert row["existing_id"] == pinned["id"]
 
 
+def test_topography_is_separate_from_lidar_and_names_the_dem() -> None:
+    early = topo_slice(1914)
+    later = topo_slice(2010)
+    assert early["layer"] == "topography"
+    assert early["image"] is True
+    assert "SRTM_Color_Index" in early["url"]
+    assert "modern topography; no era sheet for this year." in early["note"]
+    assert "not a 1914 topographic sheet" in early["note"]
+    assert "NASA SRTM" in early["note"]
+    assert "2000-02-11" in early["note"]
+    assert "not a 2010 topographic sheet" in later["note"]
+    assert "no LiDAR" not in early["note"]
+    lidar = lidar_slice(1914)
+    assert lidar["layer"] == "lidar"
+    assert early["source"] != lidar["source"]
+
+
+def test_era_names_come_from_the_basemap_and_are_not_invented() -> None:
+    anatolia = era_label(38.9, 35.4, 1914, "inland")
+    assert anatolia["era_name"] == "Ottoman Empire"
+    assert anatolia["modern_name"] == "Turkey"
+    assert anatolia["place_line"].startswith("Ottoman Empire")
+    assert "Modern name: Turkey" in anatolia["place_line"]
+    assert "Ottoman Empire" in anatolia["terms"]
+    assert "Turkey" in anatolia["terms"]
+    assert anatolia["era_name"] != "Constantinople"
+    today = era_label(38.9, 35.4, 2010, "inland")
+    assert today["era_name"] == "Turkey"
+    assert "Modern name:" not in today["place_line"]
+    istanbul = era_label(41.01, 28.98, 1914, "Istanbul")
+    assert istanbul["era_name"] == ""
+    assert istanbul["city"] == "Istanbul"
+    assert NO_ERA_LABEL in istanbul["place_line"]
+    assert "constantinople" in [term.casefold() for term in istanbul["terms"]]
+    assert istanbul["city_era"] is None
+
+
 def test_page_lists_ocean_pattern_and_corpus() -> None:
     html = (ROOT / "fourdmap" / "static" / "index.html").read_text(encoding="utf-8")
     script = (ROOT / "fourdmap" / "static" / "globe.js").read_text(encoding="utf-8")
@@ -183,6 +221,10 @@ def test_page_lists_ocean_pattern_and_corpus() -> None:
     assert "No connected pattern yet." in html
     assert "from corpus/upload" in html
     assert "Event, year, or place" in html
+    assert "Topography" in html
+    assert 'id="chip-topo"' in html
+    assert 'id="layer-topo"' in html
+    assert "refreshPlaceLabels" in script
     assert "why tethered" in script
     assert "timeHit" in script
     for op in ("library_pin", "lattice_tip", "verify_chain"):
@@ -197,6 +239,13 @@ def test_frame_and_pattern_routes_do_not_invent_tiles(tmp_path, monkeypatch) -> 
     thread.start()
     port = httpd.server_address[1]
     try:
+        with urlopen(f"http://127.0.0.1:{port}/v1/layers/frame?layer=topography&year=1914") as response:
+            topo = json.loads(response.read().decode("utf-8"))
+        assert "modern topography; no era sheet for this year." in topo["note"]
+        with urlopen(f"http://127.0.0.1:{port}/v1/places/era?lat=38.9&lon=35.4&year=1914") as response:
+            place = json.loads(response.read().decode("utf-8"))
+        assert place["era_name"] == "Ottoman Empire"
+        assert place["modern_name"] == "Turkey"
         with urlopen(f"http://127.0.0.1:{port}/v1/layers/frame?layer=satellite&year=1914") as response:
             frame = json.loads(response.read().decode("utf-8"))
         assert frame["frame_year"] == 2000

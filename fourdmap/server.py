@@ -11,8 +11,9 @@ from urllib.parse import parse_qs, urlparse
 from .card import CardError
 from .chainfile import load_cards, save_cards
 from .earth import describe_frame
-from .layers import fetch_satellite, lidar_lookup, street_lookup
+from .layers import fetch_satellite, fetch_topography, lidar_lookup, street_lookup
 from .ling import load_corpus_text, propose
+from .names import era_label, label_cards
 from .ops import dispatch
 from .pattern import pattern_matrix
 from .scope import AUTHOR, DEFAULT_PORT, LIVE_OPS, LOOPBACK, __version__
@@ -95,6 +96,21 @@ def make_server(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> ThreadingHTTP
                 day = (qs.get("day") or [""])[0]
                 self._json(200, {"ok": True, **describe_frame(layer, year, product or None, day or None)})
                 return
+            if path == "/v1/places/era":
+                qs = parse_qs(parsed.query)
+                year = (qs.get("year") or ["1914"])[0]
+                if (qs.get("lat") or [""])[0] and (qs.get("lon") or [""])[0]:
+                    try:
+                        lat = float((qs.get("lat") or [""])[0])
+                        lon = float((qs.get("lon") or [""])[0])
+                    except ValueError:
+                        self._json(400, {"ok": False, "message": "Latitude and longitude must be numbers."})
+                        return
+                    place = (qs.get("place") or [""])[0]
+                    self._json(200, era_label(lat, lon, year, place))
+                    return
+                self._json(200, {"ok": True, "year": year, "pins": label_cards(load_cards(), year), "source": "aourednik/historical-basemaps"})
+                return
             if path == "/v1/pattern":
                 links = load_shadow_links()
                 matrix = pattern_matrix(load_cards(), links.get("links") if isinstance(links, dict) else None)
@@ -106,6 +122,17 @@ def make_server(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> ThreadingHTTP
                     self._json(200, {"ok": True, "candidates": [], "n": 0, "message": "No local corpus mention is on this computer."})
                     return
                 self._json(200, propose(text, source="corpus", name="corpus-mention.txt", cards=load_cards()))
+                return
+            if path == "/v1/tiles/topography":
+                qs = parse_qs(parsed.query)
+                year_text = (qs.get("year") or [""])[0]
+                year = int(year_text) if year_text.isdigit() else None
+                fetched = fetch_topography(year)
+                if not fetched.get("available"):
+                    fetched.pop("body", None)
+                    self._json(502, fetched)
+                    return
+                self._send(200, fetched["body"], fetched.get("content_type") or "image/jpeg")
                 return
             if path == "/v1/tiles/satellite":
                 qs = parse_qs(parsed.query)

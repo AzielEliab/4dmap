@@ -12,7 +12,7 @@ const DIST_MAX = 14;
 const view = { lon: 10, lat: 18, dist: 4.6 };
 let userMoved = false;
 const layers = {
-  land: true, borders: true, satellite: false, street: false, lidar: false, shadow: false,
+  land: true, borders: true, satellite: false, street: false, lidar: false, topo: false, shadow: false,
   bathy: false, sst: false, ice: false, coast: false,
 };
 let spin = true;
@@ -27,6 +27,8 @@ const sealedPairs = new Set();
 let satelliteImage = null;
 let satelliteNote = "";
 let satelliteStamp = "";
+let topoImage = null;
+let topoStamp = "";
 let matrixEdges = [];
 let focusId = null;
 let areaRing = null;
@@ -467,7 +469,8 @@ function paintEarth() {
   }
   syncStars();
   const sat = layers.satellite && satelliteImage ? `sat:${satelliteStamp}` : "plain";
-  const key = `${night}|${layers.land}|${sat}`;
+  const topo = layers.topo && topoImage && !(layers.satellite && satelliteImage) ? `topo:${topoStamp}` : "notopo";
+  const key = `${night}|${layers.land}|${sat}|${topo}`;
   if (key !== surfaceKey) {
     surfaceKey = key;
     const w = 4096;
@@ -478,6 +481,8 @@ function paintEarth() {
     const ctx = plate.getContext("2d");
     if (layers.satellite && satelliteImage) {
       ctx.drawImage(satelliteImage, 0, 0, w, h);
+    } else if (layers.topo && topoImage) {
+      ctx.drawImage(topoImage, 0, 0, w, h);
     } else {
       const ocean = ctx.createLinearGradient(0, 0, 0, h);
       ocean.addColorStop(0, colors.oceanTop);
@@ -680,6 +685,7 @@ async function loadPins() {
   pins = (plotted.pins || []).filter((pin) => pin.lat != null && pin.lon != null);
   rebuildPins();
   await loadPattern();
+  await refreshPlaceLabels();
 }
 
 function rememberOpened(id) {
@@ -690,7 +696,7 @@ function rememberOpened(id) {
 function fillCard(pin, area) {
   $("card-event").textContent = pin.event || "Pin";
   $("card-date").textContent = pin.clock || "";
-  $("card-place").textContent = pin.place || "No place words on this pin.";
+  $("card-place").textContent = pin.placeLine || pin.place || "No place words on this pin.";
   const people = Array.isArray(pin.who) ? pin.who.filter(Boolean) : [];
   $("card-who").textContent = people.length ? people.join(", ") : "No person label on this pin.";
   const possibility = pin.possibility;
@@ -765,6 +771,7 @@ function showEraForPin(year) {
     : `Showing ${bundled} borders, the nearest bundled era to this pin's date (${year}). ${source}`;
   paintEarth();
   refreshFrames();
+  refreshPlaceLabels();
 }
 
 async function openPin(id) {
@@ -845,8 +852,8 @@ async function search(query) {
   if (!q) return;
   const hits = pins.filter((pin) => {
     const people = Array.isArray(pin.who) ? pin.who.join(" ") : "";
-    const blob = `${pin.event || ""} ${people} ${pin.place || ""} ${pin.clock || ""}`.toLowerCase();
-    return blob.includes(q) || timeHit(pin, q);
+    const blob = `${pin.event || ""} ${people} ${pin.place || ""} ${pin.clock || ""} ${(pin.eraTerms || []).join(" ")}`.toLowerCase();
+    return blob.includes(q) || timeHit(pin, q) || placeAliasHit(pin, q);
   });
   if (!hits.length) {
     const item = document.createElement("li");
@@ -859,7 +866,8 @@ async function search(query) {
     const button = document.createElement("button");
     button.type = "button";
     const when = pin.clock ? ` · ${pin.clock.slice(0, 10)}` : "";
-    const where = pin.place ? ` · ${pin.place}` : "";
+    const whereName = pin.eraName || pin.place || "";
+    const where = whereName ? ` · ${whereName}` : "";
     button.textContent = `${pin.event || pin.id}${when}${where}`;
     button.addEventListener("click", () => {
       list.innerHTML = "";
@@ -869,6 +877,36 @@ async function search(query) {
     });
     item.append(button);
     list.append(item);
+  }
+}
+
+function placeAliasHit(pin, q) {
+  if (!q || q.length < 4) return false;
+  for (const place of places) {
+    const names = [place.name, ...(place.aliases || [])].map((item) => String(item).toLowerCase());
+    if (!names.some((name) => name.includes(q))) continue;
+    const modern = String(place.name).toLowerCase();
+    if (String(pin.place || "").toLowerCase().includes(modern)) return true;
+    if (pin.lat != null && Math.abs(pin.lat - place.lat) < 0.6 && Math.abs(pin.lon - place.lon) < 0.6) return true;
+  }
+  return false;
+}
+
+async function refreshPlaceLabels() {
+  const response = await fetch(`/v1/places/era?year=${encodeURIComponent(eraYear)}`);
+  const data = await response.json();
+  const byId = new Map((data.pins || []).map((row) => [row.id, row]));
+  for (const pin of pins) {
+    const row = byId.get(pin.id);
+    if (!row) continue;
+    pin.eraTerms = row.terms || [];
+    pin.eraName = row.era_name || "";
+    pin.placeLine = row.place_line || "";
+    pin.modernName = row.modern_name || "";
+  }
+  if (focusId && !$("pin-card").hidden) {
+    const pin = pins.find((item) => item.id === focusId);
+    if (pin) $("card-place").textContent = pin.placeLine || pin.place || "No place words on this pin.";
   }
 }
 
@@ -984,6 +1022,44 @@ async function refreshFrames() {
   if (layers.ice) ocean.push(await frameNote("ocean", "seaice"));
   if (layers.coast) ocean.push(await frameNote("ocean", "coast"));
   showChip("chip-ocean", ocean.map((row) => row.note).filter(Boolean).join(" "), ocean.length > 0);
+  if (layers.topo) await loadTopography();
+  else showChip("chip-topo", "", false);
+}
+
+async function loadTopography() {
+  const year = activeYear();
+  const frame = await frameNote("topography");
+  let note = frame.note || "";
+  if (layers.satellite && satelliteImage) {
+    note = `${note} Satellite is on, so this relief image is not painted over it.`.trim();
+  }
+  topoStamp = String(frame.frame_date || frame.frame_year || year);
+  showChip("chip-topo", note, true);
+  const response = await fetch(`/v1/tiles/topography?year=${encodeURIComponent(year)}`);
+  if (!response.ok) {
+    topoImage = null;
+    let message = note;
+    try {
+      const data = await response.json();
+      if (data.note) message = data.message ? `${data.note} ${data.message}` : data.note;
+      else if (data.message) message = `${note} ${data.message}`.trim();
+    } catch (_err) {
+      /* keep the frame note */
+    }
+    showChip("chip-topo", message, true);
+    paintEarth();
+    return;
+  }
+  const blob = await response.blob();
+  if (!blob.type.startsWith("image/")) {
+    topoImage = null;
+    showChip("chip-topo", `${note} Topography did not load. No substitute relief is drawn.`.trim(), true);
+    paintEarth();
+    return;
+  }
+  topoImage = await createImageBitmap(blob);
+  showChip("chip-topo", note, true);
+  paintEarth();
 }
 
 async function loadSatellite() {
@@ -1354,6 +1430,7 @@ $("era").addEventListener("input", () => {
   $("era-note").textContent = eraCopy(eraYear);
   paintEarth();
   refreshFrames();
+  refreshPlaceLabels();
 });
 for (const [id, key] of [
   ["layer-land", "land"],
@@ -1361,6 +1438,7 @@ for (const [id, key] of [
   ["layer-satellite", "satellite"],
   ["layer-street", "street"],
   ["layer-lidar", "lidar"],
+  ["layer-topo", "topo"],
   ["layer-shadow", "shadow"],
   ["layer-bathy", "bathy"],
   ["layer-sst", "sst"],
@@ -1369,10 +1447,15 @@ for (const [id, key] of [
 ]) {
   $(id).addEventListener("change", async () => {
     layers[key] = $(id).checked;
-    if (key === "satellite" || key === "lidar" || key === "bathy" || key === "sst" || key === "ice" || key === "coast") {
+    if (key === "satellite" || key === "lidar" || key === "topo" || key === "bathy" || key === "sst" || key === "ice" || key === "coast") {
       if (key === "satellite" && !layers.satellite) {
         satelliteImage = null;
         satelliteStamp = "";
+        paintEarth();
+      }
+      if (key === "topo" && !layers.topo) {
+        topoImage = null;
+        topoStamp = "";
         paintEarth();
       }
       await refreshFrames();

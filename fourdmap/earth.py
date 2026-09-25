@@ -13,6 +13,7 @@ MODIS_START = "2000-02-24"
 OISST_START = "1981-09-01"
 SEAICE_START = "1978-10-01"
 GEBCO_YEAR = 2023
+SRTM_DATE = "2000-02-11"
 BUNDLED_ERAS = (1914, 1945, 1994, 2010)
 
 GIBS = "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi"
@@ -108,6 +109,26 @@ def lidar_slice(year: Any) -> dict[str, Any]:
             "Source: USGS 3DEP. This sample is present-day, not "
             f"{wanted}."
         ),
+    }
+
+
+def topo_slice(year: Any) -> dict[str, Any]:
+    """SRTM is a 2000 elevation model. No historical topo sheet is fetched."""
+    wanted = _year(year)
+    source = "NASA SRTM Color Index"
+    return {
+        "layer": "topography",
+        "exact": False,
+        "frame_year": 2000,
+        "frame_date": SRTM_DATE,
+        "source": source,
+        "image": True,
+        "note": (
+            "modern topography; no era sheet for this year. "
+            f"Source: {source} ({SRTM_DATE}). "
+            f"This is not a {wanted} topographic sheet."
+        ),
+        "url": _wms("SRTM_Color_Index"),
     }
 
 
@@ -214,6 +235,8 @@ def describe_frame(layer: str, year: Any, product: str | None = None, day: str |
     name = str(layer or "").strip().lower()
     if name == "lidar":
         return lidar_slice(year)
+    if name in {"topo", "topography"}:
+        return topo_slice(year)
     if name == "ocean":
         return ocean_slice(product or "bathymetry", year)
     if name == "street":

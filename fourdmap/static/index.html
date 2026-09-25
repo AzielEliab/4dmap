@@ -175,6 +175,7 @@
     #pin-card dl { display: grid; grid-template-columns: 6.4rem minmax(0, 1fr); gap: 0.35rem 0.6rem; margin: 0; font-size: 0.88rem; }
     #pin-card dt { color: var(--muted); }
     #pin-card dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+    #card-place { white-space: pre-line; }
     #why-details { background: transparent; border: 0; padding: 0.55rem 0 0; margin: 0.35rem 0 0; }
     #why { font-size: 0.9rem; line-height: 1.45; margin: 0.4rem 0 0; }
     #hash-copy { padding: 0.12rem 0.5rem; font-size: 0.75rem; margin-left: 0.35rem; }
@@ -322,6 +323,8 @@
     <label class="layer"><input id="layer-street" type="checkbox"> Street view, where a frame exists</label>
     <label class="layer"><input id="layer-lidar" type="checkbox"> LiDAR / elevation, where a sample exists</label>
     <p id="chip-lidar" class="chip" hidden></p>
+    <label class="layer"><input id="layer-topo" type="checkbox"> Topography (shaded relief)</label>
+    <p id="chip-topo" class="chip" hidden></p>
     <fieldset id="ocean">
       <legend>Oceanography</legend>
       <label class="layer"><input id="layer-bathy" type="checkbox"> Bathymetry (GEBCO)</label>
