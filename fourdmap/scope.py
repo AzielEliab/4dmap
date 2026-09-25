@@ -8,6 +8,12 @@ SCHEMA = "4DM-CARD"
 PRODUCT = "4dmap"
 PRODUCT_NAME = "4DMap"
 AUTHOR = "Aziel Eliab"
+LAMB_LENS = "Service → Clarity → Peace"
+SOFTWARES_ROSTER_HERE = False
+SOFTWARES_NOTE = (
+    "The Softwares suite count is published elsewhere. "
+    "4DMap does not add catalog rows and does not merge ShadowLock."
+)
 BUCKET = "Plain"
 HOST = "https://4dmap-download-tracker.vibelock.workers.dev"
 GITHUB = "https://github.com/AzielEliab/4dmap"
@@ -298,7 +304,8 @@ LIMITATION = (
     "confidence is capped at 75%. A silent lens returns Π-EMPTY. "
     "THIS IS NOT: a truth engine; Lumen; GIS 4D; a Node Gate; certified forensics; "
     "an identity store. Receipts are not truth. No legal name, home, or county "
-    "on cards. QNS/QNM do not carry 4DMap photons. Author: Aziel Eliab only."
+    "on cards. QNS/QNM do not carry 4DMap photons. Author: Aziel Eliab only. "
+    f"Lamb Lens: {LAMB_LENS}."
 )
 
 GUARDRAIL = (

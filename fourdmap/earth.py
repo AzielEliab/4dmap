@@ -132,10 +132,6 @@ def topo_slice(year: Any) -> dict[str, Any]:
     }
 
 
-def _nearest_bundled(year: int) -> int:
-    return min(BUNDLED_ERAS, key=lambda item: abs(item - year))
-
-
 def ocean_slice(product: str, year: Any) -> dict[str, Any]:
     wanted = _year(year)
     kind = str(product or "bathymetry").strip().lower()
@@ -151,7 +147,8 @@ def ocean_slice(product: str, year: Any) -> dict[str, Any]:
             "note": (
                 f"nearest public frame: {GEBCO_YEAR}. "
                 "Source: GEBCO 2023 bathymetry. "
-                f"This is a present-day compilation, not {wanted} ocean depth."
+                f"This is a present-day compilation, not {wanted} ocean depth. "
+                "No public image is drawn."
             ),
         }
     if kind in {"sst", "temperature"}:
@@ -167,7 +164,8 @@ def ocean_slice(product: str, year: Any) -> dict[str, Any]:
                 "note": (
                     "nearest public frame: 1981. "
                     "Source: NOAA Optimum Interpolation Sea Surface Temperature. "
-                    f"This is not {wanted} sea temperature."
+                    f"This is not {wanted} sea temperature. "
+                    "No public image is drawn."
                 ),
             }
         date = OISST_START if wanted == 1981 else f"{wanted:04d}-07-01"
@@ -181,7 +179,8 @@ def ocean_slice(product: str, year: Any) -> dict[str, Any]:
             "image": False,
             "note": (
                 f"Public frame {date}. "
-                "Source: NOAA Optimum Interpolation Sea Surface Temperature."
+                "Source: NOAA Optimum Interpolation Sea Surface Temperature. "
+                "No public image is drawn."
             ),
         }
     if kind in {"seaice", "ice", "sea-ice"}:
@@ -197,7 +196,8 @@ def ocean_slice(product: str, year: Any) -> dict[str, Any]:
                 "note": (
                     "nearest public frame: 1978. "
                     "Source: NSIDC / NOAA sea-ice concentration. "
-                    f"This is not {wanted} sea ice."
+                    f"This is not {wanted} sea ice. "
+                    "No public image is drawn."
                 ),
             }
         date = SEAICE_START if wanted == 1978 else f"{wanted:04d}-09-15"
@@ -209,25 +209,25 @@ def ocean_slice(product: str, year: Any) -> dict[str, Any]:
             "frame_date": date,
             "source": "NSIDC / NOAA sea ice",
             "image": False,
-            "note": f"Public frame {date}. Source: NSIDC / NOAA sea-ice concentration.",
+            "note": (
+                f"Public frame {date}. Source: NSIDC / NOAA sea-ice concentration. "
+                "No public image is drawn."
+            ),
         }
-    bundled = _nearest_bundled(wanted)
-    exact = bundled == wanted
-    note = (
-        f"Coastline for {bundled} from the bundled basemap "
-        "(aourednik/historical-basemaps, simplified offline subset)."
-    )
-    if not exact:
-        note = f"nearest public frame: {bundled}. {note} This is not a {wanted} survey."
+    del wanted
     return {
         "layer": "ocean",
         "product": "coast",
-        "exact": exact,
-        "frame_year": bundled,
-        "frame_date": str(bundled),
-        "source": "aourednik/historical-basemaps",
+        "exact": False,
+        "frame_year": None,
+        "frame_date": None,
+        "source": "Natural Earth 110m land",
         "image": False,
-        "note": note,
+        "note": (
+            "no public coastline-change survey in this package. "
+            "Natural Earth land is a modern coast outline, not an era change map. "
+            "No public image is drawn."
+        ),
     }
 
 

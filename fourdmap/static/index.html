@@ -147,7 +147,19 @@
       overflow: auto;
     }
     #layers[hidden] { display: none; }
-    #layers h2 { margin: 0 0 0.35rem; font-size: 1.05rem; }
+    #layers h2 { margin: 0; font-size: 1.05rem; }
+    .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-bottom: 0.35rem; }
+    #pin-scores { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+    .pin-score {
+      position: absolute;
+      transform: translate(-50%, -160%);
+      font-size: 0.72rem;
+      font-weight: 700;
+      white-space: nowrap;
+      color: var(--ink);
+      text-shadow: 0 1px 2px var(--bg);
+    }
+    .pin-score.is-new { color: #8a6a10; }
     .layer { display: flex; gap: 0.5rem; align-items: flex-start; margin: 0.45rem 0; font-size: 0.92rem; }
     .layer input { width: auto; margin-top: 0.2rem; }
     #era { width: 100%; border-radius: 999px; }
@@ -292,8 +304,8 @@
   <header>
     <p class="brand">4DMap<small>Local workbench · 0.3.0</small></p>
     <form id="search-form" role="search">
-      <label for="search">Search event, time, or place</label>
-      <input id="search" type="search" placeholder="Event, year, or place" autocomplete="off">
+      <label for="search">Search event, person, time, or place</label>
+      <input id="search" type="search" placeholder="Event, person, time, or place" autocomplete="off">
       <ul id="search-results"></ul>
     </form>
     <button type="button" class="ghost" id="layers-toggle" aria-expanded="false" aria-controls="layers">Layers</button>
@@ -304,6 +316,7 @@
   <div id="stage">
     <canvas id="globe" aria-label="Rotating globe"></canvas>
     <div id="labels"></div>
+    <div id="pin-scores"></div>
     <p id="globe-fallback" hidden>WebGL is off on this computer, so the globe cannot turn.</p>
   </div>
   <form id="pin-form" class="sheet">
@@ -332,7 +345,10 @@
     <p id="status" role="status">Waiting for a pin.</p>
   </form>
   <aside id="layers" class="sheet" hidden>
-    <h2>Layers</h2>
+    <div class="sheet-head">
+      <h2>Layers</h2>
+      <button type="button" class="ghost" id="layers-close">Close</button>
+    </div>
     <p id="layer-note">Each layer turns on and off by itself. Tiles load only after a network layer is on.</p>
     <label class="layer"><input id="layer-land" type="checkbox" checked> Blank earth, continents only</label>
     <label class="layer"><input id="layer-borders" type="checkbox" checked> Estimated country borders and names</label>
@@ -348,6 +364,14 @@
     <p id="chip-lidar" class="chip" hidden></p>
     <label class="layer"><input id="layer-topo" type="checkbox"> Topography (shaded relief)</label>
     <p id="chip-topo" class="chip" hidden></p>
+    <fieldset id="ocean">
+      <legend>Oceanography</legend>
+      <label class="layer"><input id="layer-bathy" type="checkbox"> Bathymetry (GEBCO)</label>
+      <label class="layer"><input id="layer-sst" type="checkbox"> Sea surface temperature (NOAA)</label>
+      <label class="layer"><input id="layer-ice" type="checkbox"> Sea ice (NSIDC / NOAA)</label>
+      <label class="layer"><input id="layer-coast" type="checkbox"> Coastline change</label>
+      <p id="chip-ocean" class="chip" hidden></p>
+    </fieldset>
     <fieldset id="geo-features">
       <legend>Major geo features</legend>
       <label class="layer"><input id="layer-features" type="checkbox"> Major geo features</label>
@@ -385,14 +409,6 @@
       <label class="layer"><input id="sub-other" type="checkbox" checked> Other</label>
       </div>
       <p id="chip-sub" class="chip" hidden></p>
-    </fieldset>
-    <fieldset id="ocean">
-      <legend>Oceanography</legend>
-      <label class="layer"><input id="layer-bathy" type="checkbox"> Bathymetry (GEBCO)</label>
-      <label class="layer"><input id="layer-sst" type="checkbox"> Sea surface temperature (NOAA)</label>
-      <label class="layer"><input id="layer-ice" type="checkbox"> Sea ice (NSIDC / NOAA)</label>
-      <label class="layer"><input id="layer-coast" type="checkbox"> Coastline change</label>
-      <p id="chip-ocean" class="chip" hidden></p>
     </fieldset>
     <label class="layer"><input id="layer-shadow" type="checkbox"> Softwares · Shadow</label>
     <section id="shadow" data-endpoint="/v1/shadow_links">
@@ -497,6 +513,7 @@
       <summary>Notes</summary>
       <p>4DMap is an inspection coordinate frame (4DM-WP-1.0). Possibility is time × place. Bayesian is a cited belief, kept separate. Posterior ≠ truth. Receipts are not a truth engine, Lumen, GIS, certified forensics, or a Node Gate.</p>
       <p>ShadowLock is a separate Softwares, with its own download and desk. This page only reads its link file.</p>
+      <p>Lamb Lens: Service → Clarity → Peace.</p>
       <p>Author: Aziel Eliab.</p>
     </details>
   </div>

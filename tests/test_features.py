@@ -86,6 +86,7 @@ def test_subsurface_cites_survey_year_and_empty_places() -> None:
 def test_panel_lists_geo_features_above_subsurface() -> None:
     html = (ROOT / "fourdmap" / "static" / "index.html").read_text(encoding="utf-8")
     script = (ROOT / "fourdmap" / "static" / "globe.js").read_text(encoding="utf-8")
+    assert html.index("<legend>Oceanography</legend>") < html.index("<legend>Major geo features</legend>")
     assert html.index("<legend>Major geo features</legend>") < html.index("<legend>Subsurface</legend>")
     assert 'id="layer-features"' in html
     assert 'id="layer-sub"' in html

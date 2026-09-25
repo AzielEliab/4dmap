@@ -231,6 +231,66 @@ export function libraryCite() {
   };
 }
 
+export function citesPair(card) {
+  for (const field of ["delta", "gamma", "pi"]) {
+    const body = card && card[field];
+    if (body && typeof body === "object" && body.left && body.right) return true;
+  }
+  return false;
+}
+
+export function triadView(hooks, pin = {}) {
+  const possibility = hooks && hooks.possibility;
+  const bayesian = hooks && hooks.bayesian;
+  const anchor = pin.lat != null || Boolean(String(pin.gazetteer_id || "").trim());
+  const ePresent = Boolean(String(pin.event || "").trim() && String(pin.clock || "").trim() && anchor);
+  const cPresent = Boolean(possibility && typeof possibility === "object" && possibility.value != null);
+  const bPresent = Boolean(bayesian && typeof bayesian === "object" && bayesian.value != null);
+  const slots = [
+    {
+      slot: "E",
+      name: "evidence",
+      present: ePresent,
+      note: ePresent
+        ? "The pin has an event, a paper date, and an anchor."
+        : "Evidence slot stays empty until the pin has an event, a paper date, and an anchor.",
+    },
+    {
+      slot: "C",
+      name: "consistency",
+      present: cPresent,
+      value: cPresent ? possibility.value : null,
+      note: "Consistency here is the labeled possibility (time × place). It is not a posterior.",
+    },
+    {
+      slot: "P",
+      name: "prior",
+      present: false,
+      note: "No prior was cited on this pin.",
+    },
+    {
+      slot: "B",
+      name: "bayesian",
+      present: bPresent,
+      value: bPresent ? bayesian.value : null,
+      note: bPresent ? "A Bayesian value was cited." : "No Bayesian value was cited. This slot stays empty.",
+    },
+  ];
+  const filled = slots.filter((slot) => slot.present).length;
+  return {
+    spec: "AKM-TRIAD-1.0",
+    rule: "3-of-4",
+    slots,
+    filled,
+    met: filled >= 3,
+    posterior_is_truth: false,
+    possibility: possibility || null,
+    bayesian: bayesian || null,
+    collapsed: false,
+    note: "Possibility and Bayesian stay separate. Posterior ≠ truth. A triad score is not proof.",
+  };
+}
+
 export function pinFrameOf(card) {
   const t = card && card.t;
   if (t && typeof t === "object" && (t.kind === PIN_FRAME_KIND || t.lat != null || t.gazetteer_id || t.event)) return t;
@@ -405,8 +465,16 @@ export async function runPlot(cards) {
   const trajectories = [];
   for (const card of cards || []) {
     await verifyCard(card);
-    const frame = pinFrameOf(card);
+    const frame = citesPair(card) ? null : pinFrameOf(card);
     if (frame && (frame.lat != null || frame.gazetteer_id)) {
+      const hooks = possibilityHooks({
+        clock: frame.clock,
+        event: frame.event,
+        lat: frame.lat,
+        lon: frame.lon,
+        gazetteer_id: frame.gazetteer_id,
+        bayesian: frame.bayesian,
+      });
       pins.push({
         id: card.id,
         h: card.h,
@@ -420,6 +488,13 @@ export async function runPlot(cards) {
         feature_h: frame.feature_h,
         src: card.src,
         axis: "T",
+        who: frame.who || [],
+        place: frame.place || "",
+        time: frame.time || "",
+        possibility: hooks.possibility,
+        bayesian: hooks.bayesian,
+        triad: triadView(hooks, frame),
+        exact_point: false,
       });
     }
     if (card.gamma && typeof card.gamma === "object" && Array.isArray(card.gamma.stack)) {

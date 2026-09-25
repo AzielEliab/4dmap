@@ -134,7 +134,8 @@ export function renderHomepage({ views, downloads, breakdown, github, asset }) {
     </div>
   </header>
   <h1>4DMap</h1>
-  <p class="byline">Aziel Eliab only</p>
+      <p class="byline">Aziel Eliab only</p>
+  <p class="motto">Lamb Lens: Service → Clarity → Peace.</p>
   <p class="motto">Four-axis inspection coordinate frame. T Clock · Δ Interval · Γ Trajectory · Π Pattern. Not a truth engine.</p>
   <p class="banner" role="note">${escapeHtml(LIMITATION)}</p>
   <p class="note">Pipeline strip — 4DMap sits in the Internal Domain Layer as a read-side inspection frame (domains_are_doors:false), not a hop gate.</p>
@@ -455,7 +456,7 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
             : "<b>bayesian</b> (cited) — none. Not collapsed into possibility.";
         }
       }
-      function paintPlot(pins) {
+      function paintPlot(pins, trajectories) {
         var svg = $("pin-plot");
         if (!svg) return;
         while (svg.firstChild) svg.removeChild(svg.firstChild);
@@ -468,7 +469,7 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
           svg.appendChild(empty);
           return;
         }
-        geo.forEach(function (p, i) {
+        geo.forEach(function (p) {
           var x = 20 + ((Number(p.lon) + 180) / 360) * 520;
           var y = 20 + ((90 - Number(p.lat)) / 180) * 180;
           var c = document.createElementNS("http://www.w3.org/2000/svg", "circle");
@@ -478,18 +479,21 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
           var t = document.createElementNS("http://www.w3.org/2000/svg", "text");
           t.setAttribute("x", String(x + 7)); t.setAttribute("y", String(y + 3)); t.setAttribute("fill", "#e8e0d0");
           t.setAttribute("font-size", "10");
-          t.textContent = (p.surface || "MOCK") + " " + String(p.event || p.id || "").slice(0, 22);
+          var surface = p.surface === "REAL" || p.surface === "MOCK" ? p.surface : "not labeled";
+          t.textContent = surface + " " + String(p.event || p.id || "").slice(0, 22);
           svg.appendChild(t);
-          if (i > 0) {
-            var prev = geo[i - 1];
-            var x0 = 20 + ((Number(prev.lon) + 180) / 360) * 520;
-            var y0 = 20 + ((90 - Number(prev.lat)) / 180) * 180;
-            var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-            line.setAttribute("x1", String(x0)); line.setAttribute("y1", String(y0));
-            line.setAttribute("x2", String(x)); line.setAttribute("y2", String(y));
-            line.setAttribute("stroke", "#3d3420");
-            svg.appendChild(line);
-          }
+        });
+        (trajectories || []).forEach(function (traj) {
+          if (!traj || !traj.from_xy || !traj.to_xy) return;
+          var x0 = 20 + ((Number(traj.from_xy.lon) + 180) / 360) * 520;
+          var y0 = 20 + ((90 - Number(traj.from_xy.lat)) / 180) * 180;
+          var x1 = 20 + ((Number(traj.to_xy.lon) + 180) / 360) * 520;
+          var y1 = 20 + ((90 - Number(traj.to_xy.lat)) / 180) * 180;
+          var line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", String(x0)); line.setAttribute("y1", String(y0));
+          line.setAttribute("x2", String(x1)); line.setAttribute("y2", String(y1));
+          line.setAttribute("stroke", "#3d3420");
+          svg.appendChild(line);
         });
       }
       function showReceipt(inner) {
@@ -517,7 +521,7 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
         }
         showReceipt(inner);
         paintScores(inner);
-        if (inner && Array.isArray(inner.pins)) paintPlot(inner.pins);
+        if (inner && Array.isArray(inner.pins)) paintPlot(inner.pins, inner.trajectories);
         else {
           var frames = cards.map(function (c) { return c.t && typeof c.t === "object" ? Object.assign({ id: c.id, src: c.src }, c.t) : null; }).filter(Boolean);
           paintPlot(frames);

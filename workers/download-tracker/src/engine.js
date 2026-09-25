@@ -18,7 +18,7 @@ export const PI_EMPTY = "Π-EMPTY";
 export const GENESIS_PREV = "0".repeat(64);
 
 export const LIMITATION =
-  "THIS IS: an inspection coordinate frame (4DM-WP-1.0) over TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock evidence. Cards are 4DM-CARD receipts with fail-closed SHA-256. Forks are kept. ZionPattern confidence is capped at 75%. A silent lens returns Π-EMPTY. THIS IS NOT: a truth engine; Lumen; GIS 4D; a Node Gate; certified forensics; an identity store. Receipts are not truth. No legal name, home, or county on cards. QNS/QNM do not carry 4DMap photons. Author: Aziel Eliab only.";
+  "THIS IS: an inspection coordinate frame (4DM-WP-1.0) over TemporalLock / StaticClock / ChronoLock / TrajectoryLock / SpectralLock evidence. Cards are 4DM-CARD receipts with fail-closed SHA-256. Forks are kept. ZionPattern confidence is capped at 75%. A silent lens returns Π-EMPTY. THIS IS NOT: a truth engine; Lumen; GIS 4D; a Node Gate; certified forensics; an identity store. Receipts are not truth. No legal name, home, or county on cards. QNS/QNM do not carry 4DMap photons. Author: Aziel Eliab only. Lamb Lens: Service → Clarity → Peace.";
 
 export const GUARDRAIL =
   "4DMap stamps inspection coordinates. It does not certify facts, solve cases, name people, infer intent, or backdate a clock from a pattern. P(pattern | cards) is capped at 0.75 and is not P(the world is true). Synthetic examples must never be presented as real-case findings.";
