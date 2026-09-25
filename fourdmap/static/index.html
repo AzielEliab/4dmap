@@ -155,6 +155,12 @@
     .chip { margin: 0.35rem 0; }
     #ocean, #geo-features, #subsurface { border: 1px solid var(--line); border-radius: 12px; margin: 0.6rem 0; padding: 0.35rem 0.6rem 0.5rem; }
     #ocean legend, #geo-features legend, #subsurface legend { padding: 0 0.3rem; font-size: 0.86rem; }
+    #geo-features .type-filters, #subsurface .type-filters {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      column-gap: 0.45rem;
+    }
+    #geo-features .type-filters .layer, #subsurface .type-filters .layer { margin: 0.22rem 0; }
     #feature-card {
       top: 4.2rem;
       left: 1rem;
@@ -340,6 +346,7 @@
     <fieldset id="geo-features">
       <legend>Major geo features</legend>
       <label class="layer"><input id="layer-features" type="checkbox"> Major geo features</label>
+      <div class="type-filters">
       <label class="layer"><input id="feat-volcano" type="checkbox" checked> Volcanoes</label>
       <label class="layer"><input id="feat-deep" type="checkbox" checked> Marine deeps</label>
       <label class="layer"><input id="feat-region" type="checkbox" checked> Regions, including Bermuda</label>
@@ -354,16 +361,19 @@
       <label class="layer"><input id="feat-desert" type="checkbox" checked> Deserts</label>
       <label class="layer"><input id="feat-ice" type="checkbox" checked> Ice sheets</label>
       <label class="layer"><input id="feat-plate" type="checkbox" checked> Plate boundaries</label>
+      </div>
       <p id="chip-features" class="chip" hidden></p>
     </fieldset>
     <fieldset id="subsurface">
       <legend>Subsurface</legend>
       <label class="layer"><input id="layer-sub" type="checkbox"> Subsurface</label>
+      <div class="type-filters">
       <label class="layer"><input id="sub-cave" type="checkbox" checked> Caves</label>
       <label class="layer"><input id="sub-cavern" type="checkbox" checked> Caverns</label>
       <label class="layer"><input id="sub-tunnel" type="checkbox" checked> Tunnels</label>
       <label class="layer"><input id="sub-mine" type="checkbox" checked> Mines</label>
       <label class="layer"><input id="sub-other" type="checkbox" checked> Other</label>
+      </div>
       <p id="chip-sub" class="chip" hidden></p>
     </fieldset>
     <fieldset id="ocean">

@@ -39,7 +39,7 @@ def _wanted(types) -> set[str] | None:
 def era_note(row: dict, year) -> str:
     """Plain era sentence. Dated names are used only when the catalog stored them."""
     wanted = _year(year)
-    source = row.get("source") or "public catalog"
+    source = (row.get("source") or "public catalog").rstrip(".")
     extra = (row.get("place_note") or "").strip()
     dated = row.get("era_names") if isinstance(row.get("era_names"), dict) else {}
     if str(wanted) in dated and dated[str(wanted)]:
