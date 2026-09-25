@@ -497,6 +497,7 @@ def _build_parser() -> MapParser:
     p_lib.add_argument("--note", default=None, help="Short note")
     p_lib.add_argument("--who", default=None, help="Person labels, separated by commas")
     p_lib.add_argument("--place", default=None, help="Place words from the report")
+    p_lib.add_argument("--cause", default=None, help="Named cause, when the report gives one")
     p_lib.add_argument("--uploads", default=None, help="SHA-256 hashes, separated by commas")
     add_cards(p_lib)
 

@@ -308,7 +308,10 @@ def parse_ingest(payload: dict[str, Any], cards: list[dict[str, Any]] | None = N
     if not event:
         raise CardError("EVENT_REFUSE", "library pin needs an event descriptor")
     who, place, uploads = _pin_labels(raw)
-    _poison_text(event, raw.get("note"), raw.get("gazetteer_id"), place, " ".join(who))
+    cause = str(raw.get("cause") or "").strip()
+    if len(cause) > 240:
+        raise CardError("CAUSE_REFUSE", "cause words must be 240 characters or fewer")
+    _poison_text(event, raw.get("note"), raw.get("gazetteer_id"), place, " ".join(who), cause)
     nested_t = raw.get("t") if isinstance(raw.get("t"), dict) else {}
     anchor = validate_anchor(
         raw.get("lat") if raw.get("lat") is not None else nested_t.get("lat"),
@@ -352,6 +355,8 @@ def parse_ingest(payload: dict[str, Any], cards: list[dict[str, Any]] | None = N
         "place": place,
         "uploads": uploads,
     }
+    if cause:
+        t["cause"] = cause
     if isinstance(hooks.get("bayesian"), dict) and hooks["bayesian"].get("value") is not None:
         t["bayesian"] = {
             "label": "bayesian",
@@ -382,6 +387,15 @@ def pin_frame_of(card: dict[str, Any]) -> dict[str, Any] | None:
     if isinstance(t, dict) and (t.get("kind") == PIN_FRAME_KIND or t.get("lat") is not None or t.get("gazetteer_id") or t.get("event")):
         return t
     return None
+
+
+def cites_pair(card: dict[str, Any]) -> bool:
+    """A join card may copy a pin frame. It is not a second pin."""
+    for field in ("delta", "gamma", "pi"):
+        body = card.get(field)
+        if isinstance(body, dict) and body.get("left") and body.get("right"):
+            return True
+    return False
 
 
 def emit_pin_frame(card: dict[str, Any], hooks: dict[str, Any] | None = None) -> dict[str, Any]:
@@ -442,7 +456,7 @@ def plot_model(cards: list[dict[str, Any]]) -> dict[str, Any]:
     trajectories = []
     for card in cards or []:
         verify_card(card)
-        frame = pin_frame_of(card)
+        frame = None if cites_pair(card) else pin_frame_of(card)
         if frame and (frame.get("lat") is not None or frame.get("gazetteer_id")):
             hooks = possibility_hooks(
                 clock=frame.get("clock"),
@@ -469,6 +483,8 @@ def plot_model(cards: list[dict[str, Any]]) -> dict[str, Any]:
                     "who": frame.get("who") or [],
                     "place": frame.get("place") or "",
                     "uploads": frame.get("uploads") or [],
+                    "cause": frame.get("cause") or "",
+                    "note": card.get("note") or "",
                     "possibility": hooks.get("possibility"),
                     "bayesian": hooks.get("bayesian"),
                     "exact_point": False,

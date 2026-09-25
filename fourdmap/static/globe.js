@@ -11,15 +11,23 @@ const DIST_MIN = 1.55;
 const DIST_MAX = 14;
 const view = { lon: 10, lat: 18, dist: 4.6 };
 let userMoved = false;
-const layers = { land: true, borders: true, satellite: false, street: false, lidar: false, shadow: false };
+const layers = {
+  land: true, borders: true, satellite: false, street: false, lidar: false, shadow: false,
+  bathy: false, sst: false, ice: false, coast: false,
+};
 let spin = true;
 let pins = [];
 let places = [];
 let land = null;
 let borders = {};
 let eraYear = 1914;
+let sliderOwnsYear = false;
+let sealingPattern = false;
+const sealedPairs = new Set();
 let satelliteImage = null;
 let satelliteNote = "";
+let satelliteStamp = "";
+let matrixEdges = [];
 let focusId = null;
 let areaRing = null;
 const opened = new Set(JSON.parse(localStorage.getItem(OPENED_KEY) || "[]"));
@@ -78,6 +86,8 @@ const areaGroup = new THREE.Group();
 globe.add(areaGroup);
 const lineGroup = new THREE.Group();
 globe.add(lineGroup);
+const tetherGroup = new THREE.Group();
+globe.add(tetherGroup);
 const geoCache = new Map();
 const labelNodes = [];
 let labelCatalog = [];
@@ -456,7 +466,7 @@ function paintEarth() {
     atmosphere.material.needsUpdate = true;
   }
   syncStars();
-  const sat = layers.satellite && satelliteImage ? "sat" : "plain";
+  const sat = layers.satellite && satelliteImage ? `sat:${satelliteStamp}` : "plain";
   const key = `${night}|${layers.land}|${sat}`;
   if (key !== surfaceKey) {
     surfaceKey = key;
@@ -669,6 +679,7 @@ async function loadPins() {
   const plotted = await post("plot", {});
   pins = (plotted.pins || []).filter((pin) => pin.lat != null && pin.lon != null);
   rebuildPins();
+  await loadPattern();
 }
 
 function rememberOpened(id) {
@@ -702,8 +713,21 @@ function fillCard(pin, area) {
   copy.textContent = "Copy";
   $("why").textContent = area && area.why ? area.why : "The shaded region is an estimate, not an exact point.";
   $("why-details").open = false;
+  const neighbors = matrixEdges.filter((edge) => edge.from === pin.id || edge.to === pin.id);
+  if (!neighbors.length) {
+    $("pattern-card").textContent = "No connected pattern yet.";
+  } else {
+    $("pattern-card").textContent = neighbors.map((edge) => {
+      const other = edge.from === pin.id ? edge.to_event : edge.from_event;
+      return `${other}. ${edge.reason}. ${edge.delta}. ${edge.distance}.`;
+    }).join(" ");
+  }
+  const badge = $("card-badge");
+  const fromMatch = String(pin.note || "").includes("from corpus/upload");
+  badge.hidden = !fromMatch;
   $("pin-card").hidden = false;
   document.body.classList.add("card-open");
+  drawTethers(pin.id);
 }
 
 async function coverage(pin) {
@@ -714,7 +738,7 @@ async function coverage(pin) {
     lines.push(data.available ? data.message : `Street view: ${data.message || "not available here"}`);
   }
   if (layers.lidar) {
-    const response = await fetch(`/v1/tiles/lidar?lat=${encodeURIComponent(pin.lat)}&lon=${encodeURIComponent(pin.lon)}`);
+    const response = await fetch(`/v1/tiles/lidar?lat=${encodeURIComponent(pin.lat)}&lon=${encodeURIComponent(pin.lon)}&year=${encodeURIComponent(activeYear())}`);
     const data = await response.json();
     lines.push(data.available ? data.message : `LiDAR: ${data.message || "no LiDAR here"}`);
   }
@@ -731,6 +755,7 @@ function pinYear(pin) {
 
 function showEraForPin(year) {
   const bundled = nearestEra(year);
+  sliderOwnsYear = false;
   eraYear = bundled;
   $("era").value = String(bundled);
   $("era-value").textContent = String(bundled);
@@ -739,6 +764,7 @@ function showEraForPin(year) {
     ? `Showing ${bundled} borders for this pin's date. ${source}`
     : `Showing ${bundled} borders, the nearest bundled era to this pin's date (${year}). ${source}`;
   paintEarth();
+  refreshFrames();
 }
 
 async function openPin(id) {
@@ -794,6 +820,24 @@ function flyTo(pin) {
   requestAnimationFrame(step);
 }
 
+const MONTHS = {
+  january: "01", february: "02", march: "03", april: "04", may: "05", june: "06",
+  july: "07", august: "08", september: "09", october: "10", november: "11", december: "12",
+};
+
+function timeHit(pin, q) {
+  const clock = String(pin.clock || "");
+  const year = (clock.match(/(\d{4})/) || [])[1];
+  const month = (clock.match(/\d{4}-(\d{2})/) || [])[1];
+  if (!year) return false;
+  if (/^\d{4}$/.test(q) && (year === q || String(nearestEra(Number(year))) === q)) return true;
+  for (const [name, num] of Object.entries(MONTHS)) {
+    if (!q.includes(name) || month !== num) continue;
+    if (!/\d{4}/.test(q) || q.includes(year)) return true;
+  }
+  return false;
+}
+
 async function search(query) {
   const list = $("search-results");
   list.innerHTML = "";
@@ -801,11 +845,12 @@ async function search(query) {
   if (!q) return;
   const hits = pins.filter((pin) => {
     const people = Array.isArray(pin.who) ? pin.who.join(" ") : "";
-    return `${pin.event || ""} ${people} ${pin.place || ""}`.toLowerCase().includes(q);
+    const blob = `${pin.event || ""} ${people} ${pin.place || ""} ${pin.clock || ""}`.toLowerCase();
+    return blob.includes(q) || timeHit(pin, q);
   });
   if (!hits.length) {
     const item = document.createElement("li");
-    item.textContent = "No pin matches that event or person label.";
+    item.textContent = "No pin matches that event, time, or place.";
     list.append(item);
     return;
   }
@@ -813,8 +858,9 @@ async function search(query) {
     const item = document.createElement("li");
     const button = document.createElement("button");
     button.type = "button";
-    const people = Array.isArray(pin.who) && pin.who.length ? ` · ${pin.who.join(", ")}` : "";
-    button.textContent = `${pin.event || pin.id}${people}`;
+    const when = pin.clock ? ` · ${pin.clock.slice(0, 10)}` : "";
+    const where = pin.place ? ` · ${pin.place}` : "";
+    button.textContent = `${pin.event || pin.id}${when}${where}`;
     button.addEventListener("click", () => {
       list.innerHTML = "";
       $("search").value = "";
@@ -866,6 +912,7 @@ async function onPin(event) {
     status.textContent = `Using the local name list for ${found.name}. The dot is that name's anchor, not a surveyed point.`;
   }
   const who = $("who").value.trim();
+  const cause = $("cause").value.trim();
   const uploads = [...document.querySelectorAll("#attach-uploads input:checked")].map((box) => box.value);
   try {
     const result = await post("library_pin", {
@@ -875,6 +922,7 @@ async function onPin(event) {
       lon: Number(lon),
       place,
       who: who ? who.split(",").map((part) => part.trim()).filter(Boolean) : [],
+      cause: cause || undefined,
       uploads,
       surface: $("surface").value,
       src: "operator",
@@ -896,31 +944,242 @@ async function onPin(event) {
   }
 }
 
+function activeYear() {
+  if (!sliderOwnsYear && focusId) {
+    const pin = pins.find((item) => item.id === focusId);
+    if (pin) return pinYear(pin);
+  }
+  return eraYear;
+}
+
+async function frameNote(layer, product) {
+  const year = activeYear();
+  const query = new URLSearchParams({ layer, year: String(year) });
+  if (product) query.set("product", product);
+  const response = await fetch(`/v1/layers/frame?${query}`);
+  return response.json();
+}
+
+function showChip(id, text, on) {
+  const node = $(id);
+  if (!node) return;
+  node.hidden = !on;
+  node.textContent = on ? text : "";
+}
+
+async function refreshFrames() {
+  if (layers.satellite) await loadSatellite();
+  else showChip("chip-satellite", "", false);
+  if (layers.lidar) {
+    const frame = await frameNote("lidar");
+    showChip("chip-lidar", frame.note || "", true);
+    if (focusId) {
+      const pin = pins.find((item) => item.id === focusId);
+      if (pin) coverage(pin);
+    }
+  } else showChip("chip-lidar", "", false);
+  const ocean = [];
+  if (layers.bathy) ocean.push(await frameNote("ocean", "bathymetry"));
+  if (layers.sst) ocean.push(await frameNote("ocean", "sst"));
+  if (layers.ice) ocean.push(await frameNote("ocean", "seaice"));
+  if (layers.coast) ocean.push(await frameNote("ocean", "coast"));
+  showChip("chip-ocean", ocean.map((row) => row.note).filter(Boolean).join(" "), ocean.length > 0);
+}
+
 async function loadSatellite() {
   satelliteNote = "";
   satelliteImage = null;
-  const response = await fetch("/v1/tiles/satellite");
+  const year = activeYear();
+  const frame = await frameNote("satellite");
+  satelliteStamp = String(frame.frame_date || frame.frame_year || year);
+  showChip("chip-satellite", frame.note || "", true);
+  const response = await fetch(`/v1/tiles/satellite?year=${encodeURIComponent(year)}`);
   if (!response.ok) {
-    let message = "Satellite imagery did not load from NASA GIBS. No substitute image is drawn.";
+    let message = frame.note || "Satellite imagery did not load from NASA GIBS. No substitute image is drawn.";
     try {
       const data = await response.json();
-      if (data.message) message = data.message;
+      if (data.note) message = data.note;
+      else if (data.message) message = `${frame.note || ""} ${data.message}`.trim();
     } catch (_err) {
-      /* keep the honest fallback sentence */
+      /* keep the frame note */
     }
     satelliteNote = message;
-    $("layer-note").textContent = message;
+    showChip("chip-satellite", message, true);
+    paintEarth();
     return;
   }
   const blob = await response.blob();
   if (!blob.type.startsWith("image/")) {
-    satelliteNote = "Satellite imagery did not load from NASA GIBS. No substitute image is drawn.";
-    $("layer-note").textContent = satelliteNote;
+    satelliteNote = `${frame.note || ""} Satellite imagery did not load. No substitute image is drawn.`.trim();
+    showChip("chip-satellite", satelliteNote, true);
+    paintEarth();
     return;
   }
   satelliteImage = await createImageBitmap(blob);
-  satelliteNote = "NASA GIBS Blue Marble shaded relief. This is a base image, not a photograph from the event date.";
-  $("layer-note").textContent = satelliteNote;
+  satelliteNote = frame.note || "";
+  paintEarth();
+}
+
+function drawTethers(focus) {
+  while (tetherGroup.children.length) {
+    const child = tetherGroup.children[0];
+    tetherGroup.remove(child);
+    if (child.geometry) child.geometry.dispose();
+    if (child.material) child.material.dispose();
+  }
+  for (const edge of matrixEdges) {
+    const hot = !focus || edge.from === focus || edge.to === focus;
+    const start = latLonToVector3(edge.from_lat, edge.from_lon, 1.02);
+    const end = latLonToVector3(edge.to_lat, edge.to_lon, 1.02);
+    const points = [];
+    const steps = 32;
+    for (let i = 0; i <= steps; i += 1) {
+      const t = i / steps;
+      const point = new THREE.Vector3().lerpVectors(start, end, t);
+      point.normalize().multiplyScalar(1.03 + Math.sin(Math.PI * t) * 0.22);
+      points.push(point);
+    }
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const line = new THREE.Line(
+      geometry,
+      new THREE.LineBasicMaterial({
+        color: hot ? 0xc9a227 : 0x8a7340,
+        transparent: true,
+        opacity: hot ? 0.95 : 0.35,
+        depthWrite: false,
+      })
+    );
+    line.renderOrder = 3;
+    tetherGroup.add(line);
+  }
+}
+
+async function loadPattern() {
+  const response = await fetch("/v1/pattern");
+  const data = await response.json();
+  matrixEdges = data.edges || [];
+  const empty = $("pattern-empty");
+  const board = $("pattern-matrix");
+  if (!matrixEdges.length) {
+    empty.hidden = false;
+    empty.textContent = data.message || "No connected pattern yet.";
+    board.innerHTML = "";
+  } else {
+    empty.hidden = true;
+    const rows = data.rows || [];
+    const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[ch]));
+    const body = rows.map((row) => (
+      `<tr><td>${esc(row.event)}</td><td>${esc(row.time)}</td><td>${esc(row.place)}</td><td>${(row.tethered || []).map(esc).join("<br>")}</td></tr>`
+    )).join("");
+    board.innerHTML = `<table><thead><tr><th>Event</th><th>Time</th><th>Place</th><th>Tether</th></tr></thead><tbody>${body}</tbody></table>`;
+  }
+  drawTethers(focusId);
+  sealOpenTethers();
+  if (focusId) {
+    const pin = pins.find((item) => item.id === focusId);
+    if (pin && !$("pin-card").hidden) {
+      const neighbors = matrixEdges.filter((edge) => edge.from === pin.id || edge.to === pin.id);
+      $("pattern-card").textContent = neighbors.length
+        ? neighbors.map((edge) => {
+          const other = edge.from === pin.id ? edge.to_event : edge.from_event;
+          return `${other}. ${edge.reason}. ${edge.delta}. ${edge.distance}.`;
+        }).join(" ")
+        : "No connected pattern yet.";
+    }
+  }
+}
+
+function renderCandidates(candidates) {
+  const list = $("candidate-list");
+  const empty = $("candidate-empty");
+  list.innerHTML = "";
+  const rows = candidates || [];
+  empty.hidden = rows.length > 0;
+  for (const row of rows) {
+    const item = document.createElement("li");
+    const badge = document.createElement("span");
+    badge.className = "badge";
+    badge.textContent = row.badge || "from corpus/upload";
+    const reason = document.createElement("p");
+    reason.textContent = row.reason || "";
+    item.append(badge, reason);
+    if (row.seal) {
+      const placed = document.createElement("p");
+      placed.textContent = "High confidence. Sealing onto the lattice.";
+      item.append(placed);
+    } else if (!row.folded) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "ghost";
+      button.textContent = "Confirm";
+      button.addEventListener("click", () => {
+        if (row.event) $("event").value = row.event;
+        if (row.date) $("date").value = row.date;
+        if (row.place) $("place").value = row.place;
+        if (row.lat != null) $("lat").value = String(row.lat);
+        if (row.lon != null) $("lon").value = String(row.lon);
+        $("status").textContent = "This match is not sealed yet. Press Pin to confirm it.";
+        $("event").focus();
+      });
+      item.append(button);
+    }
+    list.append(item);
+  }
+}
+
+function pairKey(edge) {
+  return [String(edge.from), String(edge.to)].sort().join("|");
+}
+
+async function sealOpenTethers() {
+  if (sealingPattern) return;
+  const open = matrixEdges.filter((edge) => (
+    edge && edge.on_lattice === false && edge.from && edge.to && !sealedPairs.has(pairKey(edge))
+  ));
+  if (!open.length) return;
+  sealingPattern = true;
+  try {
+    for (const edge of open) {
+      await post("join", {
+        left: edge.from,
+        right: edge.to,
+        join_type: "T-PI",
+        note: `why tethered: ${edge.reason}`,
+        src: "4dmap",
+      });
+      sealedPairs.add(pairKey(edge));
+    }
+    await loadPins();
+  } catch (err) {
+    $("receipt").textContent = err.message;
+  } finally {
+    sealingPattern = false;
+  }
+}
+
+async function sealCandidate(row) {
+  if (!row || !row.seal) return null;
+  return post("library_pin", {
+    event: row.event,
+    date: row.date,
+    lat: row.lat,
+    lon: row.lon,
+    place: row.place,
+    surface: "MOCK",
+    src: "aziel-corpus",
+    note: `from corpus/upload · ${row.reason}`,
+  });
+}
+
+async function takeCandidates(candidates) {
+  renderCandidates(candidates);
+  let sealed = false;
+  for (const row of candidates || []) {
+    if (!row.seal) continue;
+    await sealCandidate(row);
+    sealed = true;
+  }
+  if (sealed) await loadPins();
 }
 
 function syncShadow() {
@@ -1089,10 +1348,12 @@ $("hash-copy").addEventListener("click", async () => {
   if (copied) setTimeout(() => { $("hash-copy").textContent = "Copy"; }, 1200);
 });
 $("era").addEventListener("input", () => {
+  sliderOwnsYear = true;
   eraYear = Number($("era").value);
   $("era-value").textContent = String(eraYear);
   $("era-note").textContent = eraCopy(eraYear);
   paintEarth();
+  refreshFrames();
 });
 for (const [id, key] of [
   ["layer-land", "land"],
@@ -1101,12 +1362,20 @@ for (const [id, key] of [
   ["layer-street", "street"],
   ["layer-lidar", "lidar"],
   ["layer-shadow", "shadow"],
+  ["layer-bathy", "bathy"],
+  ["layer-sst", "sst"],
+  ["layer-ice", "ice"],
+  ["layer-coast", "coast"],
 ]) {
   $(id).addEventListener("change", async () => {
     layers[key] = $(id).checked;
-    if (key === "satellite") {
-      if (layers.satellite) await loadSatellite();
-      else $("layer-note").textContent = "Satellite is off. No imagery is fetched.";
+    if (key === "satellite" || key === "lidar" || key === "bathy" || key === "sst" || key === "ice" || key === "coast") {
+      if (key === "satellite" && !layers.satellite) {
+        satelliteImage = null;
+        satelliteStamp = "";
+        paintEarth();
+      }
+      await refreshFrames();
     }
     if (key === "shadow") syncShadow();
     if ((key === "street" || key === "lidar") && focusId) {
@@ -1138,7 +1407,19 @@ $("upload-file").addEventListener("change", async () => {
   });
   const data = await response.json();
   $("receipt").textContent = data.message || (data.upload ? `logged ${data.upload.sha256}` : "upload refused");
-  if (response.ok) await loadUploads();
+  if (response.ok) {
+    await loadUploads();
+    if (data.candidates) await takeCandidates(data.candidates);
+  }
+});
+$("corpus-sync").addEventListener("click", async () => {
+  const response = await fetch("/v1/corpus");
+  const data = await response.json();
+  await takeCandidates(data.candidates || []);
+  if (!data.candidates || !data.candidates.length) {
+    $("candidate-empty").hidden = false;
+    $("candidate-empty").textContent = data.message || "No corpus or upload match yet.";
+  }
 });
 
 async function advanced(op, payload) {
@@ -1152,6 +1433,12 @@ async function advanced(op, payload) {
 }
 $("act-span").addEventListener("click", () => advanced("span", { from_id: $("from-id").value, to_id: $("to-id").value }));
 $("act-join").addEventListener("click", () => advanced("join", { left: $("from-id").value, right: $("to-id").value, join_type: $("join-type").value }));
+$("act-tether").addEventListener("click", () => advanced("join", {
+  left: $("from-id").value,
+  right: $("to-id").value,
+  join_type: "T-PI",
+  note: "why tethered",
+}));
 $("act-walk").addEventListener("click", () => advanced("walk", { tip: $("from-id").value || $("to-id").value }));
 $("act-tip").addEventListener("click", () => advanced("lattice_tip", {}));
 $("act-verify").addEventListener("click", () => advanced("verify_chain", { tip: $("from-id").value || $("to-id").value }));

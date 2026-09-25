@@ -10,8 +10,11 @@ from urllib.parse import parse_qs, urlparse
 
 from .card import CardError
 from .chainfile import load_cards, save_cards
+from .earth import describe_frame
 from .layers import fetch_satellite, lidar_lookup, street_lookup
+from .ling import load_corpus_text, propose
 from .ops import dispatch
+from .pattern import pattern_matrix
 from .scope import AUTHOR, DEFAULT_PORT, LIVE_OPS, LOOPBACK, __version__
 from .shadowlinks import load_shadow_links
 from .uploads import list_uploads, log_upload
@@ -84,10 +87,37 @@ def make_server(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> ThreadingHTTP
                     return
                 self._json(200, {"ok": True, "op": "uploads", "uploads": rows, "n": len(rows)})
                 return
+            if path == "/v1/layers/frame":
+                qs = parse_qs(parsed.query)
+                year = (qs.get("year") or ["1914"])[0]
+                layer = (qs.get("layer") or ["satellite"])[0]
+                product = (qs.get("product") or [""])[0]
+                day = (qs.get("day") or [""])[0]
+                self._json(200, {"ok": True, **describe_frame(layer, year, product or None, day or None)})
+                return
+            if path == "/v1/pattern":
+                links = load_shadow_links()
+                matrix = pattern_matrix(load_cards(), links.get("links") if isinstance(links, dict) else None)
+                self._json(200, matrix)
+                return
+            if path == "/v1/corpus":
+                text = load_corpus_text()
+                if not text.strip():
+                    self._json(200, {"ok": True, "candidates": [], "n": 0, "message": "No local corpus mention is on this computer."})
+                    return
+                self._json(200, propose(text, source="corpus", name="corpus-mention.txt", cards=load_cards()))
+                return
             if path == "/v1/tiles/satellite":
-                fetched = fetch_satellite()
+                qs = parse_qs(parsed.query)
+                year_text = (qs.get("year") or [""])[0]
+                day = (qs.get("day") or [""])[0]
+                year = int(year_text) if year_text.isdigit() else None
+                fetched = fetch_satellite(year, day or None)
                 if not fetched.get("available"):
                     fetched.pop("body", None)
+                    frame = describe_frame("satellite", year or 1914, day=day or None) if year or day else {}
+                    fetched.setdefault("note", frame.get("note"))
+                    fetched.setdefault("frame_year", frame.get("frame_year"))
                     self._json(502, fetched)
                     return
                 self._send(200, fetched["body"], fetched.get("content_type") or "image/jpeg")
@@ -102,6 +132,12 @@ def make_server(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> ThreadingHTTP
                     self._json(200, {"ok": True, "available": False, "message": message, "reason": "A pin anchor is required."})
                     return
                 result = street_lookup(lat, lon) if path.endswith("street") else lidar_lookup(lat, lon)
+                if path.endswith("lidar"):
+                    year_text = (qs.get("year") or ["1914"])[0]
+                    frame = describe_frame("lidar", year_text)
+                    result["era_note"] = frame["note"]
+                    result["source"] = frame["source"]
+                    result["message"] = f"{frame['note']} {result.get('message') or ''}".strip()
                 self._json(200, result)
                 return
             if path == "/v1/health":
@@ -175,7 +211,14 @@ def make_server(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> ThreadingHTTP
             except CardError as err:
                 self._json(400, err.as_dict())
                 return
-            self._json(200, {"ok": True, "op": "upload", "upload": entry})
+            candidates: list = []
+            try:
+                text = content.decode("utf-8")
+            except UnicodeDecodeError:
+                text = ""
+            if text.strip():
+                candidates = propose(text, source="upload", name=entry["name"], cards=load_cards()).get("candidates") or []
+            self._json(200, {"ok": True, "op": "upload", "upload": entry, "candidates": candidates})
 
     return ThreadingHTTPServer((host, port), Handler)
 

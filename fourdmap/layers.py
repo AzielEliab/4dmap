@@ -12,6 +12,8 @@ from typing import Any
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
 
+from .earth import satellite_slice
+
 SATELLITE_URL = (
     "https://gibs.earthdata.nasa.gov/wms/epsg4326/best/wms.cgi"
     "?SERVICE=WMS&REQUEST=GetMap&VERSION=1.3.0"
@@ -33,9 +35,22 @@ def _get(url: str, timeout: float = 8.0) -> tuple[bytes, str]:
         return response.read(), ctype.split(";")[0].strip()
 
 
-def fetch_satellite() -> dict[str, Any]:
+def fetch_satellite(year: int | None = None, day: str | None = None) -> dict[str, Any]:
+    if year is None and not day:
+        slice_note = SATELLITE_LABEL
+        source = "NASA GIBS BlueMarble_ShadedRelief_Bathymetry"
+        url = SATELLITE_URL
+        frame_year = None
+        exact = False
+    else:
+        chosen = satellite_slice(year or day or 1914, day)
+        slice_note = chosen["note"]
+        source = chosen["source"]
+        url = chosen["url"]
+        frame_year = chosen["frame_year"]
+        exact = chosen["exact"]
     try:
-        body, ctype = _get(SATELLITE_URL)
+        body, ctype = _get(url)
     except (HTTPError, URLError, TimeoutError, OSError) as exc:
         return {
             "ok": False,
@@ -58,9 +73,12 @@ def fetch_satellite() -> dict[str, Any]:
         "layer": "satellite",
         "content_type": ctype,
         "body": body,
-        "label": SATELLITE_LABEL,
-        "source": "NASA GIBS BlueMarble_ShadedRelief_Bathymetry",
-        "event_date_imagery": False,
+        "label": slice_note,
+        "source": source,
+        "frame_year": frame_year,
+        "exact": exact,
+        "note": slice_note,
+        "event_date_imagery": bool(exact),
     }
 
 
