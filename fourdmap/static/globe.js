@@ -794,6 +794,7 @@ function fillCard(pin, area) {
   $("card-geo").textContent = geo;
   $("card-who").textContent = people.length ? people.join(", ") : "no person in source";
   $("card-reason").textContent = pin.note || "";
+  $("card-surface").textContent = pin.surface === "REAL" || pin.surface === "MOCK" ? pin.surface : "not labeled";
   const possibility = pin.possibility;
   $("card-possibility").textContent = possibility
     ? `possibility ${Number(possibility.value).toFixed(2)} — time × place, not truth`
@@ -1616,9 +1617,12 @@ function renderCandidates(candidates) {
     const badge = document.createElement("span");
     badge.className = "badge";
     badge.textContent = row.badge || "from corpus/upload";
+    const surface = document.createElement("span");
+    surface.className = "badge";
+    surface.textContent = row.surface === "REAL" ? "REAL" : "MOCK";
     const reason = document.createElement("p");
     reason.textContent = row.reason || "";
-    item.append(badge, reason);
+    item.append(badge, surface, reason);
     if (row.seal) {
       const placed = document.createElement("p");
       placed.textContent = "High confidence. Sealing onto the lattice.";
@@ -1647,9 +1651,12 @@ function renderCandidates(candidates) {
     const badge = document.createElement("span");
     badge.className = "badge";
     badge.textContent = "undated / era unknown";
+    const surface = document.createElement("span");
+    surface.className = "badge";
+    surface.textContent = row.surface === "REAL" ? "REAL" : "MOCK";
     const reason = document.createElement("p");
     reason.textContent = row.reason || "";
-    item.append(badge, reason);
+    item.append(badge, surface, reason);
     if (undatedList) undatedList.append(item);
   }
 }
