@@ -51,6 +51,8 @@ def test_every_shipped_corpus_file_is_read_and_dated_pins_keep_their_era() -> No
     assert undated["era"] == UNDATED
     assert undated["seal"] is False
     assert UNDATED in undated["reason"]
+    assert "invented. no time in source." in undated["reason"]
+    assert ".." not in undated["reason"]
     assert NO_GEO not in undated["reason"]
     assert NO_PERSON not in undated["reason"]
     thin = next(row for row in found["candidates"] if row.get("date") == "1916-01-01")

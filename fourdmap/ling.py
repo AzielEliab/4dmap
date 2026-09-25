@@ -267,7 +267,8 @@ def _candidate(
     if not date:
         reason += f". {UNDATED}. A year is not invented."
     if not clock:
-        reason += f". {NO_TIME}."
+        sep = " " if reason.endswith(".") else ". "
+        reason += f"{sep}{NO_TIME}."
     if place:
         reason += f" {PLACE_ESTIMATED}."
     else:
