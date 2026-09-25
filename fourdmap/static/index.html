@@ -153,8 +153,20 @@
     #era { width: 100%; border-radius: 999px; }
     #era-note, #layer-note, .chip { color: var(--muted); font-size: 0.8rem; }
     .chip { margin: 0.35rem 0; }
-    #ocean { border: 1px solid var(--line); border-radius: 12px; margin: 0.6rem 0; padding: 0.35rem 0.6rem 0.5rem; }
-    #ocean legend { padding: 0 0.3rem; font-size: 0.86rem; }
+    #ocean, #geo-features, #subsurface { border: 1px solid var(--line); border-radius: 12px; margin: 0.6rem 0; padding: 0.35rem 0.6rem 0.5rem; }
+    #ocean legend, #geo-features legend, #subsurface legend { padding: 0 0.3rem; font-size: 0.86rem; }
+    #feature-card {
+      top: 4.2rem;
+      left: 1rem;
+      width: min(26rem, calc(100% - 2rem));
+      max-height: calc(100% - 5.4rem);
+      overflow: auto;
+    }
+    #feature-card[hidden] { display: none; }
+    #feature-card h2 { margin: 0 0 0.35rem; font-size: 1.2rem; }
+    #feature-card dl { display: grid; grid-template-columns: 6.4rem minmax(0, 1fr); gap: 0.35rem 0.6rem; margin: 0; font-size: 0.88rem; }
+    #feature-card dt { color: var(--muted); }
+    #feature-card dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
     .badge { display: inline-block; border: 1px solid #c9a227; color: var(--ink); border-radius: 999px; padding: 0.05rem 0.45rem; font-size: 0.75rem; font-weight: 700; }
     #pattern-matrix { overflow-x: auto; }
     #pattern-matrix table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
@@ -260,7 +272,7 @@
       .author { margin-left: 0; }
       #pin-form { max-height: 42vh; overflow: auto; }
       #legend { display: none; }
-      #layers, #pin-card { top: auto; bottom: 0.6rem; max-height: 46vh; }
+      #layers, #pin-card, #feature-card { top: auto; bottom: 0.6rem; max-height: 46vh; }
       body.card-open #pin-form { display: none; }
       #hint { top: 7.4rem; }
     }
@@ -325,6 +337,35 @@
     <p id="chip-lidar" class="chip" hidden></p>
     <label class="layer"><input id="layer-topo" type="checkbox"> Topography (shaded relief)</label>
     <p id="chip-topo" class="chip" hidden></p>
+    <fieldset id="geo-features">
+      <legend>Major geo features</legend>
+      <label class="layer"><input id="layer-features" type="checkbox"> Major geo features</label>
+      <label class="layer"><input id="feat-volcano" type="checkbox" checked> Volcanoes</label>
+      <label class="layer"><input id="feat-deep" type="checkbox" checked> Marine deeps</label>
+      <label class="layer"><input id="feat-region" type="checkbox" checked> Regions, including Bermuda</label>
+      <label class="layer"><input id="feat-crater" type="checkbox" checked> Craters</label>
+      <label class="layer"><input id="feat-waterfall" type="checkbox" checked> Waterfalls</label>
+      <label class="layer"><input id="feat-river" type="checkbox" checked> Rivers</label>
+      <label class="layer"><input id="feat-lake" type="checkbox" checked> Lakes</label>
+      <label class="layer"><input id="feat-peak" type="checkbox" checked> Peaks</label>
+      <label class="layer"><input id="feat-canyon" type="checkbox" checked> Canyons</label>
+      <label class="layer"><input id="feat-reef" type="checkbox" checked> Reefs</label>
+      <label class="layer"><input id="feat-strait" type="checkbox" checked> Straits</label>
+      <label class="layer"><input id="feat-desert" type="checkbox" checked> Deserts</label>
+      <label class="layer"><input id="feat-ice" type="checkbox" checked> Ice sheets</label>
+      <label class="layer"><input id="feat-plate" type="checkbox" checked> Plate boundaries</label>
+      <p id="chip-features" class="chip" hidden></p>
+    </fieldset>
+    <fieldset id="subsurface">
+      <legend>Subsurface</legend>
+      <label class="layer"><input id="layer-sub" type="checkbox"> Subsurface</label>
+      <label class="layer"><input id="sub-cave" type="checkbox" checked> Caves</label>
+      <label class="layer"><input id="sub-cavern" type="checkbox" checked> Caverns</label>
+      <label class="layer"><input id="sub-tunnel" type="checkbox" checked> Tunnels</label>
+      <label class="layer"><input id="sub-mine" type="checkbox" checked> Mines</label>
+      <label class="layer"><input id="sub-other" type="checkbox" checked> Other</label>
+      <p id="chip-sub" class="chip" hidden></p>
+    </fieldset>
     <fieldset id="ocean">
       <legend>Oceanography</legend>
       <label class="layer"><input id="layer-bathy" type="checkbox"> Bathymetry (GEBCO)</label>
@@ -362,6 +403,16 @@
       <p id="coverage"></p>
     </details>
     <button type="button" class="ghost" id="card-close">Close</button>
+  </article>
+  <article id="feature-card" class="sheet" hidden>
+    <h2 id="feature-name"></h2>
+    <dl>
+      <dt>Type</dt><dd id="feature-type"></dd>
+      <dt>Source</dt><dd id="feature-source"></dd>
+      <dt>Era</dt><dd id="feature-era"></dd>
+    </dl>
+    <p id="feature-note"></p>
+    <button type="button" class="ghost" id="feature-close">Close</button>
   </article>
   <aside id="legend">
     <strong>Score</strong>

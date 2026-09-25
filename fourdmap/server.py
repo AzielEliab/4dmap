@@ -11,6 +11,7 @@ from urllib.parse import parse_qs, urlparse
 from .card import CardError
 from .chainfile import load_cards, save_cards
 from .earth import describe_frame
+from .features import list_features, list_subsurface
 from .layers import fetch_satellite, fetch_topography, lidar_lookup, street_lookup
 from .ling import load_corpus_text, propose
 from .names import era_label, label_cards
@@ -110,6 +111,28 @@ def make_server(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> ThreadingHTTP
                     self._json(200, era_label(lat, lon, year, place))
                     return
                 self._json(200, {"ok": True, "year": year, "pins": label_cards(load_cards(), year), "source": "aourednik/historical-basemaps"})
+                return
+            if path == "/v1/features":
+                qs = parse_qs(parsed.query)
+                year = (qs.get("year") or ["1914"])[0]
+                types = (qs.get("types") or [""])[0]
+                self._json(200, list_features(year, types))
+                return
+            if path == "/v1/subsurface":
+                qs = parse_qs(parsed.query)
+                year = (qs.get("year") or ["1914"])[0]
+                types = (qs.get("types") or [""])[0]
+                lat_text = (qs.get("lat") or [""])[0]
+                lon_text = (qs.get("lon") or [""])[0]
+                lat = lon = None
+                if lat_text or lon_text:
+                    try:
+                        lat = float(lat_text)
+                        lon = float(lon_text)
+                    except ValueError:
+                        self._json(400, {"ok": False, "message": "Latitude and longitude must be numbers."})
+                        return
+                self._json(200, list_subsurface(year, types, lat, lon))
                 return
             if path == "/v1/pattern":
                 links = load_shadow_links()

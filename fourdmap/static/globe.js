@@ -14,6 +14,7 @@ let userMoved = false;
 const layers = {
   land: true, borders: true, satellite: false, street: false, lidar: false, topo: false, shadow: false,
   bathy: false, sst: false, ice: false, coast: false,
+  features: false, subsurface: false,
 };
 let spin = true;
 let pins = [];
@@ -31,6 +32,10 @@ let topoImage = null;
 let topoStamp = "";
 let earthReq = 0;
 let placeReq = 0;
+let catalogReq = 0;
+let featureRows = [];
+let subsurfaceRows = [];
+let focusFeatureId = "";
 let matrixEdges = [];
 let focusId = null;
 let areaRing = null;
@@ -86,6 +91,9 @@ sun.position.set(4.2, 1.6, 5);
 scene.add(sun);
 const pinGroup = new THREE.Group();
 globe.add(pinGroup);
+const catalogGroup = new THREE.Group();
+globe.add(catalogGroup);
+const FEATURE_DOT = new THREE.SphereGeometry(0.0065, 12, 10);
 const areaGroup = new THREE.Group();
 globe.add(areaGroup);
 const lineGroup = new THREE.Group();
@@ -779,6 +787,7 @@ function showEraForPin(year) {
 async function openPin(id) {
   const pin = pins.find((item) => item.id === id);
   if (!pin) return;
+  $("feature-card").hidden = true;
   focusId = id;
   rememberOpened(id);
   rebuildPins();
@@ -857,9 +866,13 @@ async function search(query) {
     const blob = `${pin.event || ""} ${people} ${pin.place || ""} ${pin.clock || ""} ${(pin.eraTerms || []).join(" ")}`.toLowerCase();
     return blob.includes(q) || timeHit(pin, q) || placeAliasHit(pin, q);
   });
-  if (!hits.length) {
+  const featureHits = [...featureRows, ...subsurfaceRows].filter((row) => {
+    const blob = `${row.name || ""} ${(row.aliases || []).join(" ")} ${row.type || ""}`.toLowerCase();
+    return blob.includes(q);
+  });
+  if (!hits.length && !featureHits.length) {
     const item = document.createElement("li");
-    item.textContent = "No pin matches that event, time, or place.";
+    item.textContent = "No pin or public feature matches that.";
     list.append(item);
     return;
   }
@@ -880,6 +893,28 @@ async function search(query) {
     item.append(button);
     list.append(item);
   }
+  for (const row of featureHits) {
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = `Feature · ${row.name} · ${typeLabel(row.type)}`;
+    button.addEventListener("click", () => {
+      list.innerHTML = "";
+      $("search").value = "";
+      if (row.group === "subsurface") {
+        layers.subsurface = true;
+        $("layer-sub").checked = true;
+      } else {
+        layers.features = true;
+        $("layer-features").checked = true;
+      }
+      drawCatalog();
+      flyTo(row);
+      showFeature(row);
+    });
+    item.append(button);
+    list.append(item);
+  }
 }
 
 function placeAliasHit(pin, q) {
@@ -892,6 +927,170 @@ function placeAliasHit(pin, q) {
     if (pin.lat != null && Math.abs(pin.lat - place.lat) < 0.6 && Math.abs(pin.lon - place.lon) < 0.6) return true;
   }
   return false;
+}
+
+const TYPE_LABELS = {
+  volcano: "Volcano",
+  deep: "Marine deep",
+  region: "Region",
+  crater: "Crater",
+  waterfall: "Waterfall",
+  river: "River",
+  lake: "Lake",
+  peak: "Peak",
+  canyon: "Canyon",
+  reef: "Reef",
+  strait: "Strait",
+  desert: "Desert",
+  ice: "Ice sheet",
+  plate: "Plate boundary",
+  cave: "Cave",
+  cavern: "Cavern",
+  tunnel: "Tunnel",
+  mine: "Mine",
+};
+
+function typeLabel(type) {
+  return TYPE_LABELS[type] || type || "Feature";
+}
+
+function checkedTypes(prefix, ids) {
+  const chosen = new Set();
+  for (const [id, type] of ids) {
+    const box = $(id);
+    if (box && box.checked) chosen.add(type);
+  }
+  return chosen;
+}
+
+const FEATURE_TYPE_IDS = [
+  ["feat-volcano", "volcano"], ["feat-deep", "deep"], ["feat-region", "region"],
+  ["feat-crater", "crater"], ["feat-waterfall", "waterfall"], ["feat-river", "river"],
+  ["feat-lake", "lake"], ["feat-peak", "peak"], ["feat-canyon", "canyon"],
+  ["feat-reef", "reef"], ["feat-strait", "strait"], ["feat-desert", "desert"],
+  ["feat-ice", "ice"], ["feat-plate", "plate"],
+];
+const SUB_TYPE_IDS = [
+  ["sub-cave", "cave"], ["sub-cavern", "cavern"], ["sub-tunnel", "tunnel"],
+  ["sub-mine", "mine"], ["sub-other", "other"],
+];
+
+function visibleFeatures() {
+  const chosen = checkedTypes("feat", FEATURE_TYPE_IDS);
+  return featureRows.filter((row) => chosen.has(row.type));
+}
+
+function visibleSubsurface() {
+  const chosen = checkedTypes("sub", SUB_TYPE_IDS);
+  const known = new Set(["cave", "cavern", "tunnel", "mine"]);
+  return subsurfaceRows.filter((row) => chosen.has(row.type) || (chosen.has("other") && !known.has(row.type)));
+}
+
+function showFeature(row) {
+  $("pin-card").hidden = true;
+  document.body.classList.remove("card-open");
+  const card = $("feature-card");
+  if (!row) {
+    focusFeatureId = "";
+    $("feature-name").textContent = "Subsurface";
+    $("feature-type").textContent = "";
+    $("feature-source").textContent = "";
+    $("feature-era").textContent = "no public subsurface map here.";
+    $("feature-note").textContent = "No entrance or survey plate from the public catalog is at this click.";
+    card.hidden = false;
+    return;
+  }
+  focusFeatureId = row.id || "";
+  $("feature-name").textContent = row.name || "";
+  $("feature-type").textContent = typeLabel(row.type);
+  $("feature-source").textContent = row.source || "";
+  $("feature-era").textContent = row.era_note || "";
+  $("feature-note").textContent = "This marker is a catalog location. It is not an event pin.";
+  card.hidden = false;
+}
+
+function addCatalogLine(line, color) {
+  const positions = [];
+  for (let i = 0; i < line.length - 1; i += 1) {
+    const a = line[i];
+    const b = line[i + 1];
+    if (!a || !b || Math.abs(a[0] - b[0]) > 180) continue;
+    const va = latLonToVector3(a[1], a[0], 1.012);
+    const vb = latLonToVector3(b[1], b[0], 1.012);
+    positions.push(va.x, va.y, va.z, vb.x, vb.y, vb.z);
+  }
+  if (!positions.length) return;
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  const material = new THREE.LineBasicMaterial({ color, transparent: true, opacity: 0.9, depthWrite: false });
+  const lines = new THREE.LineSegments(geometry, material);
+  lines.renderOrder = 3;
+  catalogGroup.add(lines);
+}
+
+function addCatalogDot(row, color) {
+  const mesh = new THREE.Mesh(
+    FEATURE_DOT,
+    new THREE.MeshBasicMaterial({ color, depthTest: false, depthWrite: false, transparent: true, opacity: 0.95 })
+  );
+  mesh.position.copy(latLonToVector3(row.lat, row.lon, 1.025));
+  mesh.userData.feature = row;
+  mesh.renderOrder = 4;
+  catalogGroup.add(mesh);
+}
+
+function drawCatalog() {
+  while (catalogGroup.children.length) {
+    const child = catalogGroup.children[0];
+    catalogGroup.remove(child);
+    if (child.geometry && child.geometry !== FEATURE_DOT) child.geometry.dispose();
+    if (child.material) child.material.dispose();
+  }
+  if (layers.features) {
+    for (const row of visibleFeatures()) {
+      if (row.line) addCatalogLine(row.line, 0x1f6f78);
+      if (row.lat != null && row.lon != null) addCatalogDot(row, 0x1f6f78);
+    }
+  }
+  if (layers.subsurface) {
+    for (const row of visibleSubsurface()) {
+      if (row.line) addCatalogLine(row.line, 0x8a5a32);
+      if (row.lat != null && row.lon != null) addCatalogDot(row, 0x8a5a32);
+    }
+  }
+  const featureCount = layers.features ? visibleFeatures().length : 0;
+  const subCount = layers.subsurface ? visibleSubsurface().length : 0;
+  if (layers.features) {
+    const note = featureCount
+      ? `${featureCount} public features. modern catalog name; no era name in source.`
+      : "No public feature of that type is in this catalog.";
+    showChip("chip-features", note, true);
+  } else showChip("chip-features", "", false);
+  if (layers.subsurface) {
+    const rows = visibleSubsurface();
+    const dated = rows.find((row) => (row.era_note || "").includes("Survey year"));
+    const note = rows.length
+      ? `${rows.length} public entrances. ${(dated || rows[0]).era_note}`
+      : "no public subsurface map here.";
+    showChip("chip-sub", note, true);
+  } else showChip("chip-sub", "", false);
+}
+
+async function loadCatalogs() {
+  const ticket = ++catalogReq;
+  const year = eraYear;
+  const [features, subsurface] = await Promise.all([
+    fetch(`/v1/features?year=${encodeURIComponent(year)}`).then((response) => response.json()),
+    fetch(`/v1/subsurface?year=${encodeURIComponent(year)}`).then((response) => response.json()),
+  ]);
+  if (ticket !== catalogReq) return;
+  featureRows = features.features || [];
+  subsurfaceRows = subsurface.features || [];
+  drawCatalog();
+  if (focusFeatureId && !$("feature-card").hidden) {
+    const row = [...featureRows, ...subsurfaceRows].find((item) => item.id === focusFeatureId);
+    if (row) showFeature(row);
+  }
 }
 
 async function refreshPlaceLabels() {
@@ -1380,7 +1579,24 @@ function endPointer(event) {
   const ray = new THREE.Raycaster();
   ray.setFromCamera(mouse, camera);
   const hits = ray.intersectObjects(pinGroup.children, true);
-  if (hits[0] && hits[0].object.userData.pin) openPin(hits[0].object.userData.pin.id);
+  if (hits[0] && hits[0].object.userData.pin) {
+    openPin(hits[0].object.userData.pin.id);
+    return;
+  }
+  if (layers.features || layers.subsurface) {
+    const marks = ray.intersectObjects(catalogGroup.children, true);
+    const mark = marks.find((hit) => hit.object.userData.feature);
+    if (mark) {
+      const row = mark.object.userData.feature;
+      flyTo(row);
+      showFeature(row);
+      return;
+    }
+  }
+  if (layers.subsurface) {
+    const ground = ray.intersectObject(earth, false);
+    if (ground.length) showFeature(null);
+  }
 }
 canvas.addEventListener("pointerup", endPointer);
 canvas.addEventListener("pointercancel", (event) => pointers.delete(event.pointerId));
@@ -1455,6 +1671,7 @@ $("era").addEventListener("input", () => {
   paintEarth();
   refreshFrames();
   refreshPlaceLabels();
+  loadCatalogs();
 });
 for (const [id, key] of [
   ["layer-land", "land"],
@@ -1468,6 +1685,8 @@ for (const [id, key] of [
   ["layer-sst", "sst"],
   ["layer-ice", "ice"],
   ["layer-coast", "coast"],
+  ["layer-features", "features"],
+  ["layer-sub", "subsurface"],
 ]) {
   $(id).addEventListener("change", async () => {
     layers[key] = $(id).checked;
@@ -1484,6 +1703,7 @@ for (const [id, key] of [
       }
       await refreshFrames();
     }
+    if (key === "features" || key === "subsurface") drawCatalog();
     if (key === "shadow") syncShadow();
     if ((key === "street" || key === "lidar") && focusId) {
       const pin = pins.find((item) => item.id === focusId);
@@ -1498,6 +1718,13 @@ for (const [id, key] of [
     paintEarth();
   });
 }
+for (const [id] of [...FEATURE_TYPE_IDS, ...SUB_TYPE_IDS]) {
+  $(id).addEventListener("change", drawCatalog);
+}
+$("feature-close").addEventListener("click", () => {
+  $("feature-card").hidden = true;
+  focusFeatureId = "";
+});
 $("shadow-refresh").addEventListener("click", loadShadow);
 $("upload-file").addEventListener("change", async () => {
   const file = $("upload-file").files && $("upload-file").files[0];
@@ -1585,6 +1812,10 @@ function frame() {
     if (child.userData.pulse) scale *= 1 + 0.08 * Math.sin(t * 3.2);
     child.scale.setScalar(scale);
   }
+  const featureScale = view.dist / 2.4;
+  for (const child of catalogGroup.children) {
+    if (child.userData.feature) child.scale.setScalar(featureScale);
+  }
   placeLabels();
   renderer.render(scene, camera);
   requestAnimationFrame(frame);
@@ -1616,6 +1847,11 @@ async function boot() {
     await loadPins();
   } catch (err) {
     $("status").textContent = err.message;
+  }
+  try {
+    await loadCatalogs();
+  } catch (_err) {
+    /* A missing catalog does not invent features. */
   }
   loadShadow();
   loadUploads();
