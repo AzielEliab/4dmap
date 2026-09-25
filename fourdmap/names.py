@@ -219,6 +219,126 @@ def era_label(lat: Any, lon: Any, year: Any, place: str = "") -> dict[str, Any]:
     }
 
 
+_SUCCESSORS: dict[int, dict[str, str]] = {}
+MAJORITY = 0.8
+MIN_SAMPLES = 8
+
+
+def border_note(year: Any) -> dict[str, Any]:
+    """Coarse historical borders. A missing year uses the nearest bundled set."""
+    wanted = _year(year)
+    shown = bundled_year(wanted)
+    source = f"Source: {SOURCE}, simplified offline subset."
+    estimate = f"estimated borders; source year {shown}."
+    coarse = "These lines are a coarse public estimate, not a surveyed boundary."
+    if shown == wanted:
+        note = f"{estimate} {coarse} {source}"
+    else:
+        note = (
+            f"No bundled borders for {wanted}. nearest public borders: {shown}. "
+            f"{estimate} {coarse} {source}"
+        )
+    return {
+        "ok": True,
+        "year": shown,
+        "requested": wanted,
+        "exact": shown == wanted,
+        "coarse": True,
+        "source": SOURCE,
+        "note": note,
+        "labels": modern_successors(shown),
+        "invented": False,
+    }
+
+
+def _samples(polys: list, steps: int = 6) -> list[tuple[float, float]]:
+    points: list[tuple[float, float]] = []
+    for poly in polys:
+        if not poly:
+            continue
+        ring = poly[0]
+        xs = [float(point[0]) for point in ring]
+        ys = [float(point[1]) for point in ring]
+        if not xs:
+            continue
+        west, east, south, north = min(xs), max(xs), min(ys), max(ys)
+        if east - west > 170 or east == west or north == south:
+            continue
+        for i in range(steps):
+            for j in range(steps):
+                lon = west + (i + 0.5) * (east - west) / steps
+                lat = south + (j + 0.5) * (north - south) / steps
+                if _polys_contain([poly], lon, lat):
+                    points.append((lon, lat))
+    return points
+
+
+def _boxes(year: int) -> list[tuple[float, float, float, float] | None]:
+    boxes = []
+    for _name, _area, polys in _polygons(year):
+        xs: list[float] = []
+        ys: list[float] = []
+        for poly in polys:
+            if not poly:
+                continue
+            for point in poly[0]:
+                xs.append(float(point[0]))
+                ys.append(float(point[1]))
+        boxes.append((min(xs), min(ys), max(xs), max(ys)) if xs else None)
+    return boxes
+
+
+def _modern_index() -> dict[tuple[int, int], list[int]]:
+    cells: dict[tuple[int, int], list[int]] = {}
+    for index, box in enumerate(_boxes(MODERN_YEAR)):
+        if not box:
+            continue
+        west, south, east, north = box
+        for gx in range(int(west) // 4, int(east) // 4 + 1):
+            for gy in range(int(south) // 4, int(north) // 4 + 1):
+                cells.setdefault((gx, gy), []).append(index)
+    return cells
+
+
+def modern_successors(year: Any) -> dict[str, str]:
+    """2010 basemap name only when it covers most of that era polity.
+
+    A split empire has no single modern name here. Nothing is invented.
+    """
+    shown = bundled_year(year)
+    if shown in _SUCCESSORS:
+        return _SUCCESSORS[shown]
+    if shown == MODERN_YEAR:
+        _SUCCESSORS[shown] = {}
+        return _SUCCESSORS[shown]
+    modern_rows = _polygons(MODERN_YEAR)
+    cells = _modern_index()
+    found: dict[str, str] = {}
+    for name, _area, polys in _polygons(shown):
+        counts: dict[str, int] = {}
+        samples = 0
+        for lon, lat in _samples(polys):
+            samples += 1
+            hit = ""
+            best_area = None
+            for index in cells.get((int(lon) // 4, int(lat) // 4), ()):
+                modern_name, modern_area, modern_polys = modern_rows[index]
+                if not _polys_contain(modern_polys, lon, lat):
+                    continue
+                if best_area is None or modern_area < best_area:
+                    hit = modern_name
+                    best_area = modern_area
+            if hit:
+                counts[hit] = counts.get(hit, 0) + 1
+        if samples < MIN_SAMPLES or not counts:
+            continue
+        top = max(counts, key=lambda item: counts[item])
+        if top != name and counts[top] / samples >= MAJORITY:
+            found[name] = top
+    _SUCCESSORS[shown] = found
+    return found
+
+
 def label_cards(cards: list[dict[str, Any]] | None, year: Any) -> list[dict[str, Any]]:
     rows = []
     for card in cards or []:

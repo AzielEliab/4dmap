@@ -8,13 +8,14 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
+from .anomalies import list_anomalies
 from .card import CardError
 from .chainfile import load_cards, save_cards
 from .earth import describe_frame
 from .features import list_features, list_subsurface
 from .layers import fetch_satellite, fetch_topography, lidar_lookup, street_lookup
 from .ling import load_corpus_text, propose
-from .names import era_label, label_cards
+from .names import border_note, era_label, label_cards
 from .ops import dispatch
 from .pattern import pattern_matrix
 from .scope import AUTHOR, DEFAULT_PORT, LIVE_OPS, LOOPBACK, __version__
@@ -111,6 +112,17 @@ def make_server(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> ThreadingHTTP
                     self._json(200, era_label(lat, lon, year, place))
                     return
                 self._json(200, {"ok": True, "year": year, "pins": label_cards(load_cards(), year), "source": "aourednik/historical-basemaps"})
+                return
+            if path == "/v1/borders":
+                qs = parse_qs(parsed.query)
+                year = (qs.get("year") or ["1914"])[0]
+                self._json(200, border_note(year))
+                return
+            if path == "/v1/anomalies":
+                qs = parse_qs(parsed.query)
+                year = (qs.get("year") or ["1914"])[0]
+                types = (qs.get("types") or [""])[0]
+                self._json(200, list_anomalies(year, types))
                 return
             if path == "/v1/features":
                 qs = parse_qs(parsed.query)

@@ -153,8 +153,8 @@
     #era { width: 100%; border-radius: 999px; }
     #era-note, #layer-note, .chip { color: var(--muted); font-size: 0.8rem; }
     .chip { margin: 0.35rem 0; }
-    #ocean, #geo-features, #subsurface { border: 1px solid var(--line); border-radius: 12px; margin: 0.6rem 0; padding: 0.35rem 0.6rem 0.5rem; }
-    #ocean legend, #geo-features legend, #subsurface legend { padding: 0 0.3rem; font-size: 0.86rem; }
+    #ocean, #geo-features, #anomaly, #subsurface { border: 1px solid var(--line); border-radius: 12px; margin: 0.6rem 0; padding: 0.35rem 0.6rem 0.5rem; }
+    #ocean legend, #geo-features legend, #anomaly legend, #subsurface legend { padding: 0 0.3rem; font-size: 0.86rem; }
     #geo-features .type-filters, #subsurface .type-filters {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -247,6 +247,9 @@
     .map-label {
       position: absolute;
       transform: translate(-50%, -50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       font-family: system-ui, "Segoe UI", sans-serif;
       font-weight: 500;
       letter-spacing: 0.01em;
@@ -254,6 +257,7 @@
       color: #243028;
       text-shadow: 0 1px 0 rgba(255, 252, 247, 0.85), 0 0 6px rgba(255, 252, 247, 0.75);
     }
+    .map-label .modern-name { font-size: 0.72em; font-weight: 400; opacity: 0.8; }
     @media (prefers-color-scheme: dark) {
       .map-label { color: #f4efe6; text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85); }
     }
@@ -331,11 +335,12 @@
     <h2>Layers</h2>
     <p id="layer-note">Each layer turns on and off by itself. Tiles load only after a network layer is on.</p>
     <label class="layer"><input id="layer-land" type="checkbox" checked> Blank earth, continents only</label>
-    <label class="layer"><input id="layer-borders" type="checkbox" checked> Country borders and names</label>
+    <label class="layer"><input id="layer-borders" type="checkbox" checked> Estimated country borders and names</label>
     <label class="span2">Era <output id="era-value">1914</output>
       <input id="era" type="range" min="1000" max="2010" value="1914" step="1">
     </label>
     <p id="era-note"></p>
+    <p id="chip-borders" class="chip" hidden></p>
     <label class="layer"><input id="layer-satellite" type="checkbox"> Satellite (NASA GIBS)</label>
     <p id="chip-satellite" class="chip" hidden></p>
     <label class="layer"><input id="layer-street" type="checkbox"> Street view, where a frame exists</label>
@@ -363,6 +368,11 @@
       <label class="layer"><input id="feat-plate" type="checkbox" checked> Plate boundaries</label>
       </div>
       <p id="chip-features" class="chip" hidden></p>
+    </fieldset>
+    <fieldset id="anomaly">
+      <legend>Anomaly boundaries</legend>
+      <label class="layer"><input id="layer-anomaly" type="checkbox"> Anomaly boundaries</label>
+      <p id="chip-anomaly" class="chip" hidden></p>
     </fieldset>
     <fieldset id="subsurface">
       <legend>Subsurface</legend>

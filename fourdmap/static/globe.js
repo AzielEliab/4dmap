@@ -12,7 +12,7 @@ const DIST_MAX = 14;
 const view = { lon: 10, lat: 18, dist: 4.6 };
 let userMoved = false;
 const layers = {
-  land: true, borders: true, satellite: false, street: false, lidar: false, topo: false, shadow: false,
+  land: true, borders: true, satellite: false, street: false, lidar: false, topo: false, shadow: false, anomaly: false,
   bathy: false, sst: false, ice: false, coast: false,
   features: false, subsurface: false,
 };
@@ -37,6 +37,9 @@ let placeReq = 0;
 let catalogReq = 0;
 let featureRows = [];
 let subsurfaceRows = [];
+let anomalyRows = [];
+let successors = {};
+let borderReq = 0;
 let focusFeatureId = "";
 let matrixEdges = [];
 let focusId = null;
@@ -94,7 +97,9 @@ scene.add(sun);
 const pinGroup = new THREE.Group();
 globe.add(pinGroup);
 const catalogGroup = new THREE.Group();
+const anomalyGroup = new THREE.Group();
 globe.add(catalogGroup);
+globe.add(anomalyGroup);
 const FEATURE_DOT = new THREE.SphereGeometry(0.0065, 12, 10);
 const areaGroup = new THREE.Group();
 globe.add(areaGroup);
@@ -213,10 +218,12 @@ function nearestEra(year) {
 function eraCopy(year) {
   const bundled = nearestEra(year);
   const source = "Source: aourednik/historical-basemaps, simplified offline subset.";
+  const estimate = `estimated borders; source year ${bundled}.`;
+  const coarse = "These lines are a coarse public estimate, not a surveyed boundary.";
   if (bundled === year) {
-    return `Showing ${year} borders and names. ${source}`;
+    return `${estimate} ${coarse} ${source}`;
   }
-  return `No bundled borders for ${year}. Showing ${bundled}, the nearest bundled era (${ERAS.join(", ")}). ${source}`;
+  return `No bundled borders for ${year}. nearest public borders: ${bundled}. ${estimate} ${coarse} ${source}`;
 }
 
 function eachRing(collection, visit) {
@@ -311,6 +318,21 @@ function addLines(geometry, color, opacity) {
   lineGroup.add(lines);
 }
 
+function addDashedLines(geometry, color, opacity) {
+  const material = new THREE.LineDashedMaterial({
+    color,
+    transparent: true,
+    opacity,
+    dashSize: 0.018,
+    gapSize: 0.012,
+    depthWrite: false,
+  });
+  const lines = new THREE.LineSegments(geometry, material);
+  lines.computeLineDistances();
+  lines.renderOrder = 2;
+  lineGroup.add(lines);
+}
+
 function rebuildLines() {
   const colors = palette();
   const year = nearestEra(eraYear);
@@ -326,7 +348,7 @@ function rebuildLines() {
     addLines(lineGeometry("coast", land, 1.004, 1), colors.coast, 1);
   }
   if (layers.borders && borders[year]) {
-    addLines(lineGeometry(`era-${year}`, borders[year], 1.007, 1), colors.border, 1);
+    addDashedLines(lineGeometry(`era-${year}`, borders[year], 1.007, 1), colors.border, 0.72);
   }
 }
 
@@ -338,12 +360,26 @@ function buildLabelCatalog() {
     const name = feature.properties && feature.properties.NAME;
     const box = largestRing(feature);
     if (!name || !box || box.east - box.west > 170 || box.area < 4) continue;
+    const modern = successors[name] || "";
     labelCatalog.push({
       name,
+      modern: modern && modern !== name ? modern : "",
       lon: (box.west + box.east) / 2,
       lat: (box.south + box.north) / 2,
       priority: box.area,
     });
+  }
+  if (layers.anomaly) {
+    for (const row of anomalyRows) {
+      if (row.lat == null || row.lon == null || !row.name) continue;
+      labelCatalog.push({
+        name: row.name,
+        modern: "",
+        lon: row.lon,
+        lat: row.lat,
+        priority: 240,
+      });
+    }
   }
   labelCatalog.sort((a, b) => b.priority - a.priority);
 }
@@ -395,8 +431,9 @@ function placeLabels() {
     const projected = world.project(camera);
     const x = (projected.x * 0.5 + 0.5) * width;
     const y = (-projected.y * 0.5 + 0.5) * height;
-    const labelWidth = item.name.length * fontPx * 0.54 + 8;
-    const labelHeight = fontPx + 6;
+    const modernLine = item.modern ? `Modern name: ${item.modern}` : "";
+    const labelWidth = Math.max(item.name.length, modernLine.length) * fontPx * 0.54 + 8;
+    const labelHeight = fontPx + 6 + (item.modern ? fontPx : 0);
     const box = { x: x - labelWidth / 2, y: y - labelHeight / 2, w: labelWidth, h: labelHeight };
     const cx = width / 2;
     const cy = height / 2;
@@ -412,7 +449,7 @@ function placeLabels() {
       continue;
     }
     placed.push(box);
-    shown.push({ name: item.name, x, y, fade, fontPx });
+    shown.push({ name: item.name, modern: item.modern || "", x, y, fade, fontPx });
     if (shown.length >= (view.dist < 2.4 ? 42 : 26)) break;
   }
   for (let i = 0; i < shown.length; i += 1) {
@@ -425,7 +462,17 @@ function placeLabels() {
     }
     const item = shown[i];
     node.hidden = false;
-    node.textContent = item.name;
+    node.replaceChildren();
+    const eraName = document.createElement("span");
+    eraName.className = "era-name";
+    eraName.textContent = item.name;
+    node.append(eraName);
+    if (item.modern) {
+      const modern = document.createElement("span");
+      modern.className = "modern-name";
+      modern.textContent = `Modern name: ${item.modern}`;
+      node.append(modern);
+    }
     node.style.left = `${item.x}px`;
     node.style.top = `${item.y}px`;
     node.style.fontSize = `${item.fontPx}px`;
@@ -805,11 +852,12 @@ function showEraForPin(year) {
   $("era-value").textContent = String(bundled);
   const source = "Source: aourednik/historical-basemaps, simplified offline subset.";
   $("era-note").textContent = bundled === year
-    ? `Showing ${bundled} borders for this pin's date. ${source}`
-    : `Showing ${bundled} borders, the nearest bundled era to this pin's date (${year}). ${source}`;
+    ? `Showing ${bundled} borders for this pin's date. estimated borders; source year ${bundled}. ${source}`
+    : `Showing ${bundled} borders, the nearest bundled era to this pin's date (${year}). nearest public borders: ${bundled}. estimated borders; source year ${bundled}. ${source}`;
   paintEarth();
   refreshFrames();
   refreshPlaceLabels();
+  loadBorderNote();
 }
 
 async function openPin(id) {
@@ -899,7 +947,11 @@ async function search(query) {
     const blob = `${row.name || ""} ${(row.aliases || []).join(" ")} ${row.type || ""}`.toLowerCase();
     return blob.includes(q);
   });
-  if (!hits.length && !featureHits.length) {
+  const anomalyHits = anomalyRows.filter((row) => {
+    const blob = `${row.name || ""} ${(row.aliases || []).join(" ")} ${row.type || ""}`.toLowerCase();
+    return blob.includes(q);
+  });
+  if (!hits.length && !featureHits.length && !anomalyHits.length) {
     const item = document.createElement("li");
     item.textContent = "No pin or public feature matches that.";
     list.append(item);
@@ -938,6 +990,23 @@ async function search(query) {
         $("layer-features").checked = true;
       }
       drawCatalog();
+      flyTo(row);
+      showFeature(row);
+    });
+    item.append(button);
+    list.append(item);
+  }
+  for (const row of anomalyHits) {
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = `Anomaly · ${row.name}`;
+    button.addEventListener("click", () => {
+      list.innerHTML = "";
+      $("search").value = "";
+      layers.anomaly = true;
+      $("layer-anomaly").checked = true;
+      drawAnomalies();
       flyTo(row);
       showFeature(row);
     });
@@ -1037,10 +1106,93 @@ function showFeature(row) {
   $("feature-era").textContent = row.era_note || "";
   $("feature-note").textContent = "This marker is a catalog location. It is not an event pin.";
   card.hidden = false;
-  const chipId = row.group === "subsurface" ? "chip-sub" : "chip-features";
-  const layerOn = row.group === "subsurface" ? layers.subsurface : layers.features;
+  const chipId = row.group === "subsurface" ? "chip-sub" : row.group === "anomaly" ? "chip-anomaly" : "chip-features";
+  const layerOn = row.group === "subsurface" ? layers.subsurface : row.group === "anomaly" ? layers.anomaly : layers.features;
   if (layerOn && row.era_note) showChip(chipId, row.era_note, true);
   drawFeatureDisc(row);
+}
+
+function showAnomaly(row) {
+  if (row) {
+    showFeature(row);
+    return;
+  }
+  $("pin-card").hidden = true;
+  document.body.classList.remove("card-open");
+  focusFeatureId = "";
+  $("feature-name").textContent = "Anomaly";
+  $("feature-type").textContent = "";
+  $("feature-source").textContent = "";
+  $("feature-era").textContent = "no public anomaly outline here.";
+  $("feature-note").textContent = "No cited geographic outline is at this click.";
+  $("feature-card").hidden = false;
+  if ($("pin-card").hidden) drawArea(null);
+}
+
+function drawAnomalies() {
+  while (anomalyGroup.children.length) {
+    const child = anomalyGroup.children[0];
+    anomalyGroup.remove(child);
+    if (child.geometry) child.geometry.dispose();
+    if (child.material) child.material.dispose();
+  }
+  if (!layers.anomaly) {
+    showChip("chip-anomaly", "", false);
+    return;
+  }
+  const rows = anomalyRows;
+  for (const row of rows) {
+    const ring = row.ring || [];
+    if (ring.length >= 3) {
+      const positions = [];
+      const lifted = ring.map((pair) => latLonToVector3(pair[1], pair[0], 1.014));
+      for (let i = 0; i < lifted.length; i += 1) {
+        const a = lifted[i];
+        const b = lifted[(i + 1) % lifted.length];
+        positions.push(a.x, a.y, a.z, b.x, b.y, b.z);
+      }
+      const geometry = new THREE.BufferGeometry();
+      geometry.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+      const material = new THREE.LineDashedMaterial({
+        color: 0x1f6f78,
+        transparent: true,
+        opacity: 0.95,
+        dashSize: 0.02,
+        gapSize: 0.012,
+        depthWrite: false,
+      });
+      const lines = new THREE.LineSegments(geometry, material);
+      lines.computeLineDistances();
+      lines.renderOrder = 3;
+      anomalyGroup.add(lines);
+      const face = new THREE.BufferGeometry();
+      const facePos = [];
+      const origin = lifted[0];
+      for (let i = 1; i < lifted.length - 1; i += 1) {
+        facePos.push(origin.x, origin.y, origin.z, lifted[i].x, lifted[i].y, lifted[i].z, lifted[i + 1].x, lifted[i + 1].y, lifted[i + 1].z);
+      }
+      face.setAttribute("position", new THREE.Float32BufferAttribute(facePos, 3));
+      const mesh = new THREE.Mesh(
+        face,
+        new THREE.MeshBasicMaterial({
+          color: 0x1f6f78,
+          transparent: true,
+          opacity: 0.16,
+          depthWrite: false,
+          side: THREE.DoubleSide,
+        })
+      );
+      mesh.userData.anomaly = row;
+      mesh.renderOrder = 2;
+      anomalyGroup.add(mesh);
+    }
+  }
+  const focused = rows.find((row) => row.id === focusFeatureId);
+  const note = rows.length
+    ? (focused && focused.era_note ? focused.era_note : rows[0].era_note)
+    : "no public anomaly outline here.";
+  showChip("chip-anomaly", note, true);
+  buildLabelCatalog();
 }
 
 function addCatalogLine(line, color) {
@@ -1122,14 +1274,17 @@ function drawCatalog() {
 async function loadCatalogs() {
   const ticket = ++catalogReq;
   const year = eraYear;
-  const [features, subsurface] = await Promise.all([
+  const [features, subsurface, anomalies] = await Promise.all([
     fetch(`/v1/features?year=${encodeURIComponent(year)}`).then((response) => response.json()),
     fetch(`/v1/subsurface?year=${encodeURIComponent(year)}`).then((response) => response.json()),
+    fetch(`/v1/anomalies?year=${encodeURIComponent(year)}`).then((response) => response.json()),
   ]);
   if (ticket !== catalogReq) return;
   featureRows = features.features || [];
   subsurfaceRows = subsurface.features || [];
+  anomalyRows = anomalies.features || [];
   drawCatalog();
+  drawAnomalies();
   if (focusFeatureId && !$("feature-card").hidden) {
     const row = [...featureRows, ...subsurfaceRows].find((item) => item.id === focusFeatureId);
     if (row) showFeature(row);
@@ -1660,6 +1815,20 @@ function endPointer(event) {
       return;
     }
   }
+  if (layers.anomaly) {
+    const marks = ray.intersectObjects(anomalyGroup.children, true);
+    const mark = marks.find((hit) => hit.object.userData.anomaly);
+    if (mark) {
+      const row = mark.object.userData.anomaly;
+      flyTo(row);
+      showFeature(row);
+      return;
+    }
+    if (!layers.subsurface) {
+      const ground = ray.intersectObject(earth, false);
+      if (ground.length) showAnomaly(null);
+    }
+  }
   if (layers.subsurface) {
     const ground = ray.intersectObject(earth, false);
     if (ground.length) showFeature(null);
@@ -1738,6 +1907,7 @@ $("era").addEventListener("input", () => {
   paintEarth();
   refreshFrames();
   refreshPlaceLabels();
+  loadBorderNote();
   loadCatalogs();
 });
 for (const [id, key] of [
@@ -1754,6 +1924,7 @@ for (const [id, key] of [
   ["layer-coast", "coast"],
   ["layer-features", "features"],
   ["layer-sub", "subsurface"],
+  ["layer-anomaly", "anomaly"],
 ]) {
   $(id).addEventListener("change", async () => {
     layers[key] = $(id).checked;
@@ -1771,6 +1942,12 @@ for (const [id, key] of [
       await refreshFrames();
     }
     if (key === "features" || key === "subsurface") drawCatalog();
+    if (key === "borders") {
+      paintEarth();
+      if (layers.borders) loadBorderNote();
+      else showChip("chip-borders", "", false);
+    }
+    if (key === "anomaly") drawAnomalies();
     if (key === "shadow") syncShadow();
     if ((key === "street" || key === "lidar") && focusId) {
       const pin = pins.find((item) => item.id === focusId);
@@ -1889,6 +2066,25 @@ function frame() {
   requestAnimationFrame(frame);
 }
 
+async function loadBorderNote() {
+  const ticket = ++borderReq;
+  const year = eraYear;
+  let data = null;
+  try {
+    const response = await fetch(`/v1/borders?year=${encodeURIComponent(year)}`);
+    data = await response.json();
+  } catch (_err) {
+    data = null;
+  }
+  if (ticket !== borderReq) return;
+  successors = (data && data.labels) || {};
+  const note = (data && data.note) || eraCopy(year);
+  if (!(focusId && !sliderOwnsYear)) $("era-note").textContent = note;
+  if (layers.borders) showChip("chip-borders", note, true);
+  else showChip("chip-borders", "", false);
+  buildLabelCatalog();
+}
+
 async function boot() {
   resize();
   addEventListener("resize", resize);
@@ -1910,6 +2106,7 @@ async function boot() {
   $("era-note").textContent = eraCopy(eraYear);
   syncShadow();
   paintEarth();
+  loadBorderNote();
   matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paintEarth);
   try {
     await loadPins();
