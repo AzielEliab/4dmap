@@ -109,6 +109,7 @@ const tetherGroup = new THREE.Group();
 globe.add(tetherGroup);
 const geoCache = new Map();
 const labelNodes = [];
+const pinScoreNodes = [];
 let labelCatalog = [];
 let starField = null;
 let surfaceKey = "";
@@ -481,6 +482,60 @@ function placeLabels() {
   for (let i = shown.length; i < labelNodes.length; i += 1) labelNodes[i].hidden = true;
 }
 
+function triadShort(pin) {
+  const triad = pin && pin.triad;
+  if (!triad || typeof triad.filled !== "number") return "triad not on pin";
+  return `triad ${triad.filled}/4`;
+}
+
+function triadLine(pin) {
+  const triad = pin && pin.triad;
+  if (!triad || !Array.isArray(triad.slots)) return "No triad on this pin. A score is not invented.";
+  const slots = triad.slots.map((slot) => `${slot.slot} ${slot.present ? "filled" : "empty"}`).join(", ");
+  const met = triad.met ? "met" : "not met";
+  return `AKM-TRIAD-1.0 · ${triad.filled}/4 · 3-of-4 ${met}. ${slots}. Posterior ≠ truth.`;
+}
+
+function placePinScores() {
+  const root = $("pin-scores");
+  if (!root || canvas.clientWidth < 20) return;
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+  const shown = [];
+  for (const pin of pins) {
+    if (pin.lat == null || pin.lon == null) continue;
+    const match = String(pin.clock || "").match(/(\d{4})/);
+    if (!match || nearestEra(Number(match[1])) !== nearestEra(eraYear)) continue;
+    const world = latLonToVector3(pin.lat, pin.lon, 1.04).applyQuaternion(globe.quaternion);
+    if (world.z < 0.2) continue;
+    const projected = world.project(camera);
+    const x = (projected.x * 0.5 + 0.5) * width;
+    const y = (-projected.y * 0.5 + 0.5) * height;
+    shown.push({
+      text: `${opened.has(pin.id) ? "" : "New · "}${triadShort(pin)}`.trim(),
+      fresh: !opened.has(pin.id),
+      x,
+      y,
+    });
+  }
+  for (let i = 0; i < shown.length; i += 1) {
+    let node = pinScoreNodes[i];
+    if (!node) {
+      node = document.createElement("span");
+      node.className = "pin-score";
+      root.append(node);
+      pinScoreNodes.push(node);
+    }
+    const item = shown[i];
+    node.hidden = false;
+    node.textContent = item.text;
+    node.classList.toggle("is-new", item.fresh);
+    node.style.left = `${item.x}px`;
+    node.style.top = `${item.y}px`;
+  }
+  for (let i = shown.length; i < pinScoreNodes.length; i += 1) pinScoreNodes[i].hidden = true;
+}
+
 function syncStars() {
   if (!dark()) {
     if (starField) {
@@ -645,7 +700,7 @@ function rebuildPins() {
     const item = document.createElement("li");
     const button = document.createElement("button");
     button.type = "button";
-    button.textContent = `${fresh ? "New · " : ""}${pin.event || pin.id}`;
+    button.textContent = `${fresh ? "New · " : ""}${pin.event || pin.id} · ${triadShort(pin)}`;
     if (fresh) button.className = "is-new";
     button.addEventListener("click", () => openPin(pin.id));
     item.append(button);
@@ -802,8 +857,7 @@ function fillCard(pin, area) {
   $("card-bayesian").textContent = pin.bayesian && pin.bayesian.value != null
     ? `bayesian ${Number(pin.bayesian.value).toFixed(2)} — cited belief, not truth`
     : "No Bayesian value was cited.";
-  const filled = (possibility ? 1 : 0) + (pin.bayesian && pin.bayesian.value != null ? 1 : 0) + 1;
-  $("card-triad").textContent = `AKM-TRIAD-1.0 · E evidence, C possibility, P prior empty, B ${pin.bayesian ? "cited" : "empty"}. ${filled} of 4 filled. 3-of-4 is ${filled >= 3 ? "met" : "not met"}. Posterior ≠ truth.`;
+  $("card-triad").textContent = triadLine(pin);
   const uploads = Array.isArray(pin.uploads) ? pin.uploads : [];
   $("card-uploads").textContent = uploads.length ? uploads.join(", ") : "No uploads on this pin.";
   const hash = pin.h || "";
@@ -977,7 +1031,8 @@ async function search(query) {
     const when = pin.clock ? ` · ${pin.clock.slice(0, 10)}` : "";
     const whereName = pin.eraName || pin.place || "";
     const where = whereName ? ` · ${whereName}` : "";
-    button.textContent = `${pin.event || pin.id}${when}${where}`;
+    const people = Array.isArray(pin.who) && pin.who.length ? ` · ${pin.who.join(", ")}` : "";
+    button.textContent = `${pin.event || pin.id}${when}${where}${people} · ${triadShort(pin)}`;
     button.addEventListener("click", () => {
       list.innerHTML = "";
       $("search").value = "";
@@ -1600,6 +1655,13 @@ async function loadPattern() {
   }
 }
 
+function surfaceLabel(row) {
+  if (row.surface === "REAL") return "REAL";
+  if (row.surface === "MOCK") return "MOCK";
+  if (row.surface === "CATALOG") return "catalog card, not a geo pin";
+  return "not labeled";
+}
+
 function renderCandidates(candidates) {
   const list = $("candidate-list");
   const empty = $("candidate-empty");
@@ -1619,7 +1681,7 @@ function renderCandidates(candidates) {
     badge.textContent = row.badge || "from corpus/upload";
     const surface = document.createElement("span");
     surface.className = "badge";
-    surface.textContent = row.surface === "REAL" ? "REAL" : "MOCK";
+    surface.textContent = surfaceLabel(row);
     const reason = document.createElement("p");
     reason.textContent = row.reason || "";
     item.append(badge, surface, reason);
@@ -1653,7 +1715,7 @@ function renderCandidates(candidates) {
     badge.textContent = "undated / era unknown";
     const surface = document.createElement("span");
     surface.className = "badge";
-    surface.textContent = row.surface === "REAL" ? "REAL" : "MOCK";
+    surface.textContent = surfaceLabel(row);
     const reason = document.createElement("p");
     reason.textContent = row.reason || "";
     item.append(badge, surface, reason);
@@ -1905,11 +1967,15 @@ $("search-form").addEventListener("submit", (event) => {
   const first = $("search-results").querySelector("button");
   if (first) first.click();
 });
-$("layers-toggle").addEventListener("click", () => {
+function setLayersOpen(open) {
   const panel = $("layers");
-  panel.hidden = !panel.hidden;
-  $("layers-toggle").setAttribute("aria-expanded", String(!panel.hidden));
+  panel.hidden = !open;
+  $("layers-toggle").setAttribute("aria-expanded", String(open));
+}
+$("layers-toggle").addEventListener("click", () => {
+  setLayersOpen($("layers").hidden);
 });
+$("layers-close").addEventListener("click", () => setLayersOpen(false));
 $("board-toggle").addEventListener("click", () => {
   $("board").classList.toggle("open");
 });
@@ -2103,6 +2169,7 @@ function frame() {
     if (child.userData.feature) child.scale.setScalar(featureScale);
   }
   placeLabels();
+  placePinScores();
   renderer.render(scene, camera);
   requestAnimationFrame(frame);
 }

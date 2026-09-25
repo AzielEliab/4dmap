@@ -220,7 +220,7 @@ def test_page_lists_ocean_pattern_and_corpus() -> None:
     assert 'id="act-tether"' in html
     assert "No connected pattern yet." in html
     assert "from corpus/upload" in html
-    assert "Event, year, or place" in html
+    assert "Event, person, time, or place" in html
     assert "Topography" in html
     assert 'id="chip-topo"' in html
     assert 'id="layer-topo"' in html

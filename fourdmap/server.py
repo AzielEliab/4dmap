@@ -152,7 +152,7 @@ def make_server(host: str = LOOPBACK, port: int = DEFAULT_PORT) -> ThreadingHTTP
                 self._json(200, matrix)
                 return
             if path == "/v1/corpus":
-                self._json(200, collect_corpus(load_cards()))
+                self._json(200, collect_corpus(load_cards(), public=True))
                 return
             if path == "/v1/tiles/topography":
                 qs = parse_qs(parsed.query)

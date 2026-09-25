@@ -47,18 +47,34 @@ _PHYSICS = (
 )
 
 
-def triad_view(hooks: dict[str, Any] | None) -> dict[str, Any]:
+def triad_view(
+    hooks: dict[str, Any] | None,
+    *,
+    event: Any = None,
+    clock: Any = None,
+    lat: Any = None,
+    lon: Any = None,
+    gazetteer_id: Any = None,
+) -> dict[str, Any]:
+    """AKM 3-of-4 on one pin. Empty slots stay empty. Not a posterior."""
+    del lon  # lon is only meaningful together with lat; the anchor check uses lat or a gazetteer id
     hooks = hooks or {}
     possibility = hooks.get("possibility")
     bayesian = hooks.get("bayesian")
+    anchor = lat is not None or bool(str(gazetteer_id or "").strip())
+    e_present = bool(str(event or "").strip() and str(clock or "").strip() and anchor)
     c_present = isinstance(possibility, dict) and possibility.get("value") is not None
     b_present = isinstance(bayesian, dict) and bayesian.get("value") is not None
     slots = [
         {
             "slot": "E",
             "name": "evidence",
-            "present": True,
-            "note": "The pin has an event, a paper date, and an anchor.",
+            "present": e_present,
+            "note": (
+                "The pin has an event, a paper date, and an anchor."
+                if e_present
+                else "Evidence slot stays empty until the pin has an event, a paper date, and an anchor."
+            ),
         },
         {
             "slot": "C",

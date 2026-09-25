@@ -14,6 +14,8 @@ import os
 import re
 from pathlib import Path
 from typing import Any
+from urllib.error import HTTPError, URLError
+from urllib.request import Request, urlopen
 
 from .earth import BUNDLED_ERAS
 from .lattice import pin_frame_of
@@ -27,6 +29,11 @@ NO_PERSON = "no person in source"
 PLACES_PATH = Path(__file__).resolve().parent / "static" / "geo" / "places.json"
 CORPUS_PATH = Path(__file__).resolve().parent / "static" / "geo" / "corpus-mention.txt"
 CORPUS_DIR = Path(__file__).resolve().parent / "static" / "geo" / "corpus"
+PUBLIC_INDEX_URL = "https://www.azielcorpuslibrary.net/v1/library-index"
+PUBLIC_UNREACHABLE = "public library index was not reachable. No rows were invented."
+PUBLIC_EMPTY = "public library index had no record list. No rows were invented."
+UPLOAD_TIME_REFUSED = "upload time is not used"
+CATALOG_CARD = "public index card. Not a geo pin."
 
 MONTHS = {
     "january": 1,
@@ -394,8 +401,82 @@ def _json_records(path: Path, cards: list[dict[str, Any]] | None, places: list[d
     return found
 
 
-def collect_corpus(cards: list[dict[str, Any]] | None = None) -> dict[str, Any]:
-    """Read every reachable corpus file. Do not invent a missing row."""
+def candidates_from_index(payload: dict[str, Any] | None) -> list[dict[str, Any]]:
+    """Public index cards. No paper date and no coordinate means undated, unpinned."""
+    records = payload.get("records") if isinstance(payload, dict) else None
+    if not isinstance(records, list):
+        return []
+    found = []
+    for row in records:
+        if not isinstance(row, dict):
+            continue
+        title = str(row.get("title") or "").strip()
+        record_id = str(row.get("record_id") or row.get("id") or "").strip()
+        if not title and not record_id:
+            continue
+        display = row.get("triad_display")
+        triad_note = ""
+        if display is not None and display != "":
+            triad_note = (
+                f" Library triad display {display} is a cited catalog score, "
+                "not an AKM 3-of-4 and not truth."
+            )
+        reason = (
+            f"{CATALOG_CARD} no paper date in source. "
+            f"{UPLOAD_TIME_REFUSED}. {NO_GEO}. {NO_PERSON}. "
+            "A year is not invented. Catalog author is not copied onto a pin."
+            f"{triad_note}"
+        )
+        if record_id:
+            reason += f" Record {record_id}."
+        found.append(
+            {
+                "event": title or record_id,
+                "date": None,
+                "time": None,
+                "who": [],
+                "place": "",
+                "lat": None,
+                "lon": None,
+                "era": UNDATED,
+                "confidence": "low",
+                "seal": False,
+                "folded": False,
+                "existing_id": None,
+                "reason": reason,
+                "badge": BADGE,
+                "source": "aziel-corpus",
+                "surface": "CATALOG",
+                "fixture": False,
+                "library_triad": display,
+                "record_id": record_id or None,
+            }
+        )
+    return found
+
+
+def fetch_public_index(timeout: float = 8.0) -> dict[str, Any]:
+    """One public index GET. A failure adds no rows."""
+    if os.environ.get("FOURDMAP_CORPUS_PUBLIC") == "0":
+        return {"ok": False, "reachable": False, "records": [], "message": PUBLIC_UNREACHABLE}
+    url = os.environ.get("FOURDMAP_CORPUS_INDEX") or PUBLIC_INDEX_URL
+    req = Request(url, headers={"User-Agent": "Mozilla/5.0", "Accept": "application/json"})
+    try:
+        with urlopen(req, timeout=timeout) as response:  # noqa: S310 — fixed public index host
+            data = json.loads(response.read().decode("utf-8"))
+    except (HTTPError, URLError, TimeoutError, OSError, json.JSONDecodeError, UnicodeError):
+        return {"ok": False, "reachable": False, "records": [], "message": PUBLIC_UNREACHABLE}
+    if not isinstance(data, dict) or not isinstance(data.get("records"), list):
+        return {"ok": False, "reachable": True, "records": [], "message": PUBLIC_EMPTY}
+    return {"ok": True, "reachable": True, "records": data["records"], "n": len(data["records"]), "message": ""}
+
+
+def collect_corpus(cards: list[dict[str, Any]] | None = None, *, public: Any = False) -> dict[str, Any]:
+    """Read every reachable corpus file. Do not invent a missing row.
+
+    public=False skips the network. public=True fetches the library index.
+    A dict is a fixture index and is not fetched.
+    """
     places = load_places()
     files = corpus_files()
     candidates: list[dict[str, Any]] = []
@@ -431,15 +512,14 @@ def collect_corpus(cards: list[dict[str, Any]] | None = None) -> dict[str, Any]:
         elif row.get("seal"):
             seen.add(key)
         kept.append(row)
-    if not names:
-        return {
-            "ok": True,
-            "candidates": [],
-            "n": 0,
-            "files": [],
-            "badge": BADGE,
-            "message": "No local corpus mention is on this computer.",
-        }
+    public_rows, public_note = _public_rows(public)
+    kept.extend(public_rows)
+    if names:
+        message = f"Read {len(names)} corpus files."
+    else:
+        message = "No local corpus mention is on this computer."
+    if public_note:
+        message = f"{message} {public_note}"
     return {
         "ok": True,
         "candidates": kept,
@@ -447,5 +527,24 @@ def collect_corpus(cards: list[dict[str, Any]] | None = None) -> dict[str, Any]:
         "files": names,
         "badge": BADGE,
         "source": "corpus",
-        "message": f"Read {len(names)} corpus files.",
+        "message": message,
     }
+
+
+def _public_rows(public: Any) -> tuple[list[dict[str, Any]], str]:
+    if public is False or public is None:
+        return [], ""
+    if isinstance(public, dict):
+        rows = candidates_from_index(public)
+        return rows, f"Public index fixture: {len(rows)} catalog cards. None were sealed."
+    fetched = fetch_public_index()
+    if not fetched.get("ok"):
+        return [], str(fetched.get("message") or PUBLIC_UNREACHABLE)
+    rows = candidates_from_index(fetched)
+    return (
+        rows,
+        (
+            f"Public index: {len(rows)} catalog cards with no paper date or geo. "
+            "Upload time was not used. None were sealed."
+        ),
+    )

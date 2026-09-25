@@ -13,6 +13,7 @@ import math
 import re
 from typing import Any
 
+from .area import triad_view
 from .card import CardError, axis_of, card_receipt, make_card, scan_identity, scan_intent, verify_card
 from .scope import (
     AXIS_GLYPH,
@@ -491,6 +492,14 @@ def plot_model(cards: list[dict[str, Any]]) -> dict[str, Any]:
                     "note": card.get("note") or "",
                     "possibility": hooks.get("possibility"),
                     "bayesian": hooks.get("bayesian"),
+                    "triad": triad_view(
+                        hooks,
+                        event=frame.get("event"),
+                        clock=frame.get("clock"),
+                        lat=frame.get("lat"),
+                        lon=frame.get("lon"),
+                        gazetteer_id=frame.get("gazetteer_id"),
+                    ),
                     "exact_point": False,
                 }
             )
