@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased — AZNews desk beside the inspection frame
+
+Author: Aziel Eliab. Spec: 4DM-WP-1.0. Softwares bucket: Plain.
+
+- `news_ingest` stores a story with no pin. `pin` still works with no story.
+- `news_pin` and `news_open` are the join. A fixture or a supplied story does not mark it live.
+- The join is marked live only after one complete fetched item is stored off the map and read back from the pin. 4DMap is not marked live. AZNews is not a Softwares card. This package does not fetch a feed and does not update AZ-OS, AZInterface, or aziel-runtime.
+
 ## 0.3.0 — library pin frames + hashchain lattice memory
 
 Author: Aziel Eliab. Spec: 4DM-WP-1.0. Softwares bucket: Plain. Growth-ON.

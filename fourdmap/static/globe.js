@@ -2129,6 +2129,40 @@ $("act-walk").addEventListener("click", () => advanced("walk", { tip: $("from-id
 $("act-tip").addEventListener("click", () => advanced("lattice_tip", {}));
 $("act-verify").addEventListener("click", () => advanced("verify_chain", { tip: $("from-id").value || $("to-id").value }));
 $("act-export").addEventListener("click", () => advanced("card_export", {}));
+
+let newsItemId = "";
+
+async function newsCall(op, payload) {
+  const response = await fetch(`/v1/${op}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ payload: payload || {} }),
+  });
+  const data = await response.json();
+  const summary = data.summary || data.message || data.note || "The news desk did not answer.";
+  $("news-status").textContent = summary;
+  $("receipt").textContent = summary;
+  if (data.item_id) newsItemId = data.item_id;
+  if (data.card) await loadPins();
+  return data;
+}
+
+function newsPayload(extra) {
+  return Object.assign({
+    date: $("news-date").value,
+    event: $("news-event").value,
+    place: $("news-place").value,
+    wording: $("news-wording").value,
+    id: newsItemId || undefined,
+  }, extra || {});
+}
+
+$("news-save").addEventListener("click", () => newsCall("news_ingest", newsPayload()));
+$("news-pin").addEventListener("click", () => newsCall("news_pin", newsPayload()));
+$("news-open").addEventListener("click", () => newsCall("news_open", { id: newsItemId, date: $("news-date").value, event: $("news-event").value, place: $("news-place").value }));
+newsCall("news_status", {}).catch(() => {
+  $("news-status").textContent = "The news desk could not be read.";
+});
 $("act-import").addEventListener("click", () => {
   const text = $("bundle").value.trim();
   if (!text) {

@@ -118,6 +118,8 @@ _TITLES = {
     "card_import": "Imported cards",
     "import": "Imported cards",
     "frame_status": "Inspection frame status",
+    "news_status": "AZNews and 4DMap status",
+    "news-status": "AZNews and 4DMap status",
     "frame-status": "Inspection frame status",
     "axis_describe": "Axis description",
     "axis-describe": "Axis description",
@@ -306,6 +308,11 @@ def _build_parser() -> MapParser:
         "doctor",
         parents=[json_flags],
         help="Self-check on this computer. No network",
+    )
+    sub.add_parser(
+        "news-status",
+        parents=[json_flags],
+        help="AZNews standalone and 4DMap join status. Does not fetch a feed",
     )
     p_ui = sub.add_parser(
         "ui",
@@ -662,6 +669,7 @@ def main(argv: Sequence[str] | None = None) -> int:
             "export": "card_export",
             "import": "card_import",
             "frame-status": "frame_status",
+            "news-status": "news_status",
             "axis-describe": "axis_describe",
             "walk-trace": "walk_trace",
             "verify-chain": "verify_chain",

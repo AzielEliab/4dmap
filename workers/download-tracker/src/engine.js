@@ -559,6 +559,12 @@ export async function runOp(op, payload = {}, cards = []) {
   const pushCard = (card) => {
     store.push(card);
   };
+  if (resolved === "news_status" || resolved === "news_ingest" || resolved === "news_pin" || resolved === "news_open") {
+    const news = await import("./aznews.js");
+    const result = await news.runAznews(resolved, payload, store);
+    if (result && result.card && result.card.h) pushCard(result.card);
+    return result;
+  }
   if (resolved === "library_pin" || (resolved === "pin" && wantsLibraryPin(payload) && normalizeAxis(payload.axis || "T") === "T")) {
     const L = await lattice();
     return withReceipt(await L.runLibraryPin(payload, store));
@@ -852,6 +858,7 @@ export async function runOp(op, payload = {}, cards = []) {
       guardrail: GUARDRAIL,
       pipeline: PIPELINE,
       pipeline_note: PIPELINE_NOTE,
+      aznews: (await import("./aznews.js")).joinCard([]),
       ...MASTER33,
     };
   }
@@ -957,7 +964,7 @@ export async function runOp(op, payload = {}, cards = []) {
 
 export function displayEnvelope(op, result) {
   const fields = [];
-  for (const key of ["ok", "code", "id", "h", "join", "pi", "score", "capped", "forks_kept", "axis", "glyph", "n", "verified", "format", "role", "surface", "feature_h", "lattice", "collapsed"]) {
+  for (const key of ["ok", "code", "id", "h", "join", "pi", "score", "capped", "forks_kept", "axis", "glyph", "n", "verified", "format", "role", "surface", "feature_h", "lattice", "collapsed", "join_live", "aznews_live", "fourdmap_live"]) {
     if (result && result[key] !== undefined) fields.push({ label: key, value: String(result[key]) });
   }
   return {
@@ -1010,4 +1017,8 @@ export const LIVE_OPS = [
   "lattice_tip",
   "poison_refuse",
   "neighbor_cite",
+  "news_status",
+  "news_ingest",
+  "news_pin",
+  "news_open",
 ];

@@ -502,6 +502,17 @@
         <p id="pattern-empty">No connected pattern yet.</p>
         <div id="pattern-matrix"></div>
       </details>
+      <h3>AZNews</h3>
+      <p id="news-status">AZNews can store a story without a pin. 4DMap can pin without a story. This page does not fetch a feed, so the join stays unmarked.</p>
+      <label>Date <input id="news-date" placeholder="YYYY-MM-DD" autocomplete="off"></label>
+      <label>Event <input id="news-event" autocomplete="off"></label>
+      <label>Place <input id="news-place" autocomplete="off"></label>
+      <label>Story <textarea id="news-wording" rows="3"></textarea></label>
+      <p>
+        <button type="button" class="ghost" id="news-save">Save story</button>
+        <button type="button" class="ghost" id="news-pin">Pin story</button>
+        <button type="button" class="ghost" id="news-open">Open pin</button>
+      </p>
       <h3>Import</h3>
       <label>Paste a card bundle
         <textarea id="bundle" rows="4"></textarea>
