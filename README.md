@@ -129,6 +129,7 @@ The Worker hosts a **stateless** JSON API. It does not increment DOWNLOADS. It n
 - `POST /v1/{card_export,card_import,frame_status,axis_describe,walk_trace,verify_chain}`
 - `POST /v1/{memory_cite,memory_observe}` — optional AKM-TRIAD-1.0 fabric cite/observe (not a Softwares slug; posterior ≠ truth; no history rewrite)
 - `POST /v1/{library_pin,plot,possibility,pattern_recall,lattice_tip,poison_refuse,neighbor_cite}` — library pin frames + hashchain lattice memory (Growth-ON)
+- `POST /v1/{news_status,news_ingest,news_pin,news_open}` — AZNews can store a story with no pin. 4DMap can pin with no story. The join reads a stored story back from a pin. This package does not fetch a feed, does not mark 4DMap live, and does not update AZ-OS or the human interface. The join is marked live only after one complete fetched item has done both and been opened.
 - OpenAPI: `/openapi.json`
 - MCP: this Worker `/mcp` and catalog `https://aziel-runtime.vibelock.workers.dev/mcp`
 

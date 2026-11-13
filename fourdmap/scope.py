@@ -233,6 +233,10 @@ LIVE_OPS = (
     "lattice_tip",
     "poison_refuse",
     "neighbor_cite",
+    "news_status",
+    "news_ingest",
+    "news_pin",
+    "news_open",
 )
 
 OP_ALIASES = {

@@ -156,6 +156,10 @@ def _check_frame() -> Check:
         "lattice_tip",
         "poison_refuse",
         "neighbor_cite",
+        "news_status",
+        "news_ingest",
+        "news_pin",
+        "news_open",
     )
     missing = [op for op in needed if op not in LIVE_OPS]
     if missing:
@@ -223,6 +227,33 @@ def _check_lattice() -> Check:
     return _ok("lattice", "library pin + labeled scores + hashchain refuse")
 
 
+def _check_aznews() -> Check:
+    from .aznews import ABSENT_CODE, reset_aznews_store
+
+    reset_aznews_store()
+    status = dispatch("news_status", {})
+    if status.get("live") is not False or status.get("join_live") is not False:
+        return _fail("aznews", "empty desk marked the join live")
+    if status.get("aznews_live") is not False or status.get("fourdmap_live") is not False:
+        return _fail("aznews", "a product was marked live with no item")
+    if status.get("feed_configured") is not False or status.get("fetched_from_network") is not False:
+        return _fail("aznews", "a feed was claimed")
+    paths = (status.get("aznews") or {}).get("paths") or {}
+    if paths.get("standalone", {}).get("op") != "news_ingest":
+        return _fail("aznews", "standalone path missing")
+    if paths.get("joined", {}).get("ops") != ["news_pin", "news_open"]:
+        return _fail("aznews", "join path missing")
+    if status.get("code") != ABSENT_CODE:
+        return _fail("aznews", str(status.get("code")))
+    if status.get("software_tab") is not False or status.get("merged") is not False:
+        return _fail("aznews", "AZNews leaked onto a Softwares card")
+    lone = dispatch("pin", {"t": "2026-09-10T00:00:00Z", "src": "synthetic", "note": "doctor pin without news"})
+    if lone.get("ok") is not True or lone.get("card", {}).get("src") == "aznews":
+        return _fail("aznews", "4DMap pin now requires news")
+    reset_aznews_store()
+    return _ok("aznews", "standalone pin and both news paths; live stays false")
+
+
 CHECKS: tuple[Callable[[], Check], ...] = (
     _check_version,
     _check_identity,
@@ -234,6 +265,7 @@ CHECKS: tuple[Callable[[], Check], ...] = (
     _check_limitation,
     _check_frame,
     _check_lattice,
+    _check_aznews,
 )
 
 

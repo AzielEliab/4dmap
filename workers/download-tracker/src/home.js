@@ -242,6 +242,22 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
         <button class="btn gold" type="submit">Span</button>
       </div>
     </form>
+    <form id="news-form" autocomplete="off">
+      <label>AZNews — a story can stay here with no pin. 4DMap can pin with no story. This page does not fetch a feed, so the join stays unmarked until a fetched item is stored both ways and opened.</label>
+      <div class="inline">
+        <input id="news-date" placeholder="YYYY-MM-DD">
+        <input id="news-event" placeholder="event">
+        <input id="news-place" placeholder="place">
+      </div>
+      <label>Story <textarea id="news-wording" rows="3"></textarea></label>
+      <p id="news-status">No feed is configured. The join is not live.</p>
+      <p>
+        <button class="btn gold" type="button" id="news-save">Save story</button>
+        <button class="btn gold" type="button" id="news-pin">Pin story</button>
+        <button class="btn gold" type="button" id="news-open">Open pin</button>
+        <button class="btn gold" type="button" id="news-state">News status</button>
+      </p>
+    </form>
     <form id="join-form" autocomplete="off">
       <label>Typed join — T↔Δ, Δ↔Γ, Γ↔Π, T↔Π. Π→T backdate refuses. Companions cited, not merged.</label>
       <div class="inline">
@@ -407,6 +423,8 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
     })();
     (function () {
       var cards = [];
+      var newsRecords = [];
+      var newsItemId = "";
       function $(id) { return document.getElementById(id); }
       function axisOf(c) {
         if (c.delta) return "DELTA";
@@ -563,6 +581,29 @@ ${escapeHtml(PIPELINE_NOTE)}</pre>
       };
       $("trace-btn").onclick = function () { call("walk_trace", { tip: $("walk-tip").value }); };
       $("chain-btn").onclick = function () { call("verify_chain", { tip: $("walk-tip").value }); };
+      function newsCall(op, payload) {
+        var body = Object.assign({}, payload || {}, { records: newsRecords });
+        return call(op, body).then(function (inner) {
+          if (inner && Array.isArray(inner.records)) newsRecords = inner.records;
+          if (inner && inner.item_id) newsItemId = inner.item_id;
+          var line = $("news-status");
+          if (line) line.textContent = (inner && (inner.summary || inner.message || inner.note)) || "The news desk did not answer.";
+          return inner;
+        });
+      }
+      function newsBody() {
+        return {
+          date: $("news-date").value,
+          event: $("news-event").value,
+          place: $("news-place").value,
+          wording: $("news-wording").value,
+          id: newsItemId || undefined
+        };
+      }
+      $("news-save").onclick = function () { newsCall("news_ingest", newsBody()); };
+      $("news-pin").onclick = function () { newsCall("news_pin", newsBody()); };
+      $("news-open").onclick = function () { newsCall("news_open", { id: newsItemId, date: $("news-date").value, event: $("news-event").value, place: $("news-place").value }); };
+      $("news-state").onclick = function () { newsCall("news_status", {}); };
       $("frame-btn").onclick = function () { call("frame_status", {}); };
       $("axis-btn").onclick = function () { call("axis_describe", {}); };
       $("memory-cite-btn").onclick = function () { call("memory_cite", { id: $("walk-tip").value }); };

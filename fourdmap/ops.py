@@ -503,6 +503,7 @@ def frame_status(payload: dict[str, Any] | None = None, store: MapStore | None =
         "guardrail": GUARDRAIL,
         "pipeline": PIPELINE,
         "pipeline_note": PIPELINE_NOTE,
+        "aznews": _aznews_card(),
         **MASTER33,
     }
 
@@ -632,6 +633,22 @@ def _area_estimate(payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
     return estimate_area(payload)
 
 
+def _aznews_card() -> dict[str, Any]:
+    from .aznews import join_card
+
+    return join_card()
+
+
+def _news(op: str, payload: dict[str, Any], store: MapStore) -> dict[str, Any]:
+    from .aznews import run_aznews
+
+    result = run_aznews(op, payload, store.as_list())
+    card = result.get("card")
+    if isinstance(card, dict) and card.get("h"):
+        store.add(card)
+    return result
+
+
 OPS = {
     "pin": pin,
     "span": span,
@@ -663,6 +680,10 @@ OPS = {
     "poison_refuse": _poison_refuse,
     "neighbor_cite": _neighbor_cite,
     "area_estimate": _area_estimate,
+    "news_status": lambda payload, store: _news("news_status", payload, store),
+    "news_ingest": lambda payload, store: _news("news_ingest", payload, store),
+    "news_pin": lambda payload, store: _news("news_pin", payload, store),
+    "news_open": lambda payload, store: _news("news_open", payload, store),
 }
 
 
